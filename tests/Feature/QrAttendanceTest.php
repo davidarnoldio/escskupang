@@ -1,0 +1,128 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Attendance;
+use App\Models\Student;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class QrAttendanceTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_guests_cannot_access_qr_scanner(): void
+    {
+        $response = $this->get(route('qr.scan'));
+        $response->assertRedirect(route('login'));
+    }
+
+    public function test_authenticated_users_can_view_qr_scanner_page(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('qr.scan'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Scan QR Code Presensi');
+    }
+
+    public function test_scanning_valid_student_nis_records_attendance(): void
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create(['nis' => '10201', 'nama' => 'Ahmad Subagja']);
+
+        $response = $this->actingAs($user)->postJson(route('qr.process'), [
+            'nis' => '10201',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+            'student' => [
+                'nis' => '10201',
+                'nama' => 'Ahmad Subagja',
+            ],
+        ]);
+
+        $this->assertDatabaseHas('attendances', [
+            'student_id' => $student->id,
+            'tanggal' => now()->format('Y-m-d'),
+            'status' => 'hadir',
+        ]);
+    }
+
+    public function test_scanning_invalid_student_nis_returns_error(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson(route('qr.process'), [
+            'nis' => '99999',
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'success' => false,
+        ]);
+    }
+
+    public function test_scanning_already_recorded_student_updates_and_returns_success(): void
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create(['nis' => '10201']);
+
+        // Record initial attendance as izin
+        Attendance::create([
+            'student_id' => $student->id,
+            'tanggal' => now()->format('Y-m-d'),
+            'status' => 'izin',
+        ]);
+
+        // Scanning QR updates status to hadir
+        $response = $this->actingAs($user)->postJson(route('qr.process'), [
+            'nis' => '10201',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson(['success' => true]);
+
+        $this->assertDatabaseHas('attendances', [
+            'student_id' => $student->id,
+            'tanggal' => now()->format('Y-m-d'),
+            'status' => 'hadir',
+        ]);
+    }
+
+    public function test_authenticated_users_can_view_student_qr_card(): void
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create(['nama' => 'Ahmad Subagja']);
+
+        $response = $this->actingAs($user)->get(route('students.qr-card', $student));
+
+        $response->assertStatus(200);
+        $response->assertSee('Kartu Pelajar');
+        $response->assertSee('Ahmad Subagja');
+    }
+
+    public function test_scanning_json_and_prefixed_qr_payloads_works(): void
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create(['nis' => '0003.26.0236', 'nama' => 'Sierrafim Malelak']);
+
+        // JSON payload scan
+        $responseJson = $this->actingAs($user)->postJson(route('qr.process'), [
+            'nis' => json_encode(['nis' => '0003.26.0236']),
+        ]);
+        $responseJson->assertStatus(200);
+        $responseJson->assertJson(['success' => true]);
+
+        // Prefixed string scan
+        $responsePrefixed = $this->actingAs($user)->postJson(route('qr.process'), [
+            'nis' => 'NIS: 0003.26.0236',
+        ]);
+        $responsePrefixed->assertStatus(200);
+        $responsePrefixed->assertJson(['success' => true]);
+    }
+}
