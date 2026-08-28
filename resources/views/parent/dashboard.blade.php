@@ -207,14 +207,34 @@
                             <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Login (@student.sch.id)</label>
                             <input type="email" id="email" name="email" value="{{ old('email', Auth::user()->email) }}" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-sky-500 focus:bg-white transition">
                         </div>
-                        <div>
+                        <div x-data="{ showPassword: false }">
                             <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Kata Sandi Baru (Opsional)</label>
-                            <input type="password" id="password" name="password" placeholder="Kosongkan jika tidak diubah" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-sky-500 focus:bg-white transition">
+                            <div class="relative">
+                                <input :type="showPassword ? 'text' : 'password'" id="password" name="password" placeholder="Kosongkan jika tidak diubah" class="w-full px-3 py-2 pe-10 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-sky-500 focus:bg-white transition">
+                                <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 end-0 px-2.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer">
+                                    <template x-if="!showPassword">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    </template>
+                                    <template x-if="showPassword">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/></svg>
+                                    </template>
+                                </button>
+                            </div>
                         </div>
-                        <div>
+                        <div x-data="{ showConfirmPassword: false }">
                             <label for="password_confirmation" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Konfirmasi Kata Sandi Baru</label>
                             <div class="flex items-center gap-2">
-                                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Ulangi kata sandi baru" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-sky-500 focus:bg-white transition">
+                                <div class="relative flex-1">
+                                    <input :type="showConfirmPassword ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" placeholder="Ulangi kata sandi baru" class="w-full px-3 py-2 pe-10 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-sky-500 focus:bg-white transition">
+                                    <button type="button" @click="showConfirmPassword = !showConfirmPassword" class="absolute inset-y-0 end-0 px-2.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer">
+                                        <template x-if="!showConfirmPassword">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        </template>
+                                        <template x-if="showConfirmPassword">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/></svg>
+                                        </template>
+                                    </button>
+                                </div>
                                 <button type="submit" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-sky-400 font-bold text-xs rounded-xl transition cursor-pointer shrink-0">
                                     Simpan
                                 </button>

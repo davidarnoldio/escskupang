@@ -87,6 +87,7 @@ class TeacherController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'plain_password' => $validated['password'],
             'role' => 'guru',
             'assigned_class' => $validated['assigned_class'] ?? null,
         ]);
@@ -135,6 +136,7 @@ class TeacherController extends Controller
 
         if (!empty($validated['password'])) {
             $data['password'] = Hash::make($validated['password']);
+            $data['plain_password'] = $validated['password'];
         }
 
         $teacher->update($data);

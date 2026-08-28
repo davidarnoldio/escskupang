@@ -103,12 +103,12 @@
                                                         {{ $teacher->assigned_class ?? 'Belum Ditentukan' }}
                                                     </span>
                                                 </div>
-                                                <div class="flex items-center justify-between text-[11px]">
-                                                    <span class="font-semibold text-slate-500">Kata Sandi:</span>
-                                                    <span class="font-mono font-bold text-slate-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 text-[10px]">
-                                                        {{ $teacher->plain_password ?? 'admin123' }}
-                                                    </span>
-                                                </div>
+                                                 <div class="flex items-center justify-between text-[11px]">
+                                                     <span class="font-semibold text-slate-500">Kata Sandi:</span>
+                                                     <span class="font-mono font-bold text-slate-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 text-[10px]">
+                                                         {{ $teacher->plain_password ?? (explode('@', $teacher->email)[0] . '123') }}
+                                                     </span>
+                                                 </div>
                                             </div>
                                         </div>
 
