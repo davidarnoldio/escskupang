@@ -121,7 +121,7 @@
                                                 $scanCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $timeMatches[1], 'Asia/Makassar');
                                                 $thresholdCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
                                                 if ($scanCarbon->greaterThan($thresholdCarbon)) {
-                                                    $lateMinutesDisplay = (int) $scanCarbon->diffInMinutes($thresholdCarbon);
+                                                    $lateMinutesDisplay = abs((int) $scanCarbon->diffInMinutes($thresholdCarbon));
                                                 }
                                             }
                                             // 2. Priority: Extract explicit "Terlambat X menit" string
@@ -133,7 +133,7 @@
                                                 $scanTime = \Carbon\Carbon::parse($att->updated_at)->timezone('Asia/Makassar');
                                                 $threshold = \Carbon\Carbon::parse($att->tanggal . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
                                                 if ($scanTime->greaterThan($threshold)) {
-                                                    $lateMinutesDisplay = (int) $scanTime->diffInMinutes($threshold);
+                                                    $lateMinutesDisplay = abs((int) $scanTime->diffInMinutes($threshold));
                                                 }
                                             }
 

@@ -69,9 +69,9 @@ class QRController extends Controller
         $isLate = $currentTimeHM > $jamTerlambatConfig;
         $lateMinutes = 0;
         if ($isLate) {
-            $scanCarbon = \Carbon\Carbon::parse($today . ' ' . $time);
-            $thresholdCarbon = \Carbon\Carbon::parse($today . ' ' . $jamTerlambatConfig . ':00');
-            $lateMinutes = max(1, (int) $scanCarbon->diffInMinutes($thresholdCarbon));
+            $scanCarbon = \Carbon\Carbon::parse($today . ' ' . $time, 'Asia/Makassar');
+            $thresholdCarbon = \Carbon\Carbon::parse($today . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
+            $lateMinutes = max(1, abs((int) $scanCarbon->diffInMinutes($thresholdCarbon)));
         }
 
         $abkLabel = $student->is_abk ? ' (ABK)' : '';

@@ -125,4 +125,28 @@ class QrAttendanceTest extends TestCase
         $responsePrefixed->assertStatus(200);
         $responsePrefixed->assertJson(['success' => true]);
     }
+
+    public function test_scanning_qr_when_late_computes_exact_late_minutes_starting_from_threshold_time(): void
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create(['nis' => '10202', 'nama' => 'Budi Late Student', 'is_abk' => false]);
+
+        // Mock current time to 15:20 WITA
+        \Carbon\Carbon::setTestNow(\Carbon\Carbon::parse(now()->format('Y-m-d') . ' 15:20:00', 'Asia/Makassar'));
+
+        $response = $this->actingAs($user)->postJson(route('qr.process'), [
+            'nis' => '10202',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+            'attendance' => [
+                'is_late' => true,
+                'late_minutes' => 470,
+            ],
+        ]);
+
+        \Carbon\Carbon::setTestNow();
+    }
 }
