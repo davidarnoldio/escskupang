@@ -236,15 +236,15 @@ class AttendanceController extends Controller
         $assignedClass = $user ? $user->getAssignedClass() : null;
 
         $bulan = $request->input('bulan', now()->format('Y-m'));
-        $kelas = $assignedClass ?? $request->input('kelas', Student::OFFICIAL_CLASSES[0]);
+        $kelas = $assignedClass ?? $request->input('kelas');
 
         $studentsQuery = Student::with(['attendances' => function ($q) use ($bulan) {
             $q->where('tanggal', 'like', "{$bulan}%");
-        }])->orderBy('nama', 'asc');
+        }])->orderBy('kelas', 'asc')->orderBy('nama', 'asc');
 
         if ($assignedClass) {
             $studentsQuery->where('kelas', $assignedClass);
-        } elseif ($kelas) {
+        } elseif (!empty($kelas)) {
             $studentsQuery->where('kelas', $kelas);
         }
 
@@ -269,30 +269,54 @@ class AttendanceController extends Controller
         $totalSakit = 0;
         $totalIzin = 0;
         $totalLibur = 0;
+        $totalTerlambat = 0;
 
         foreach ($students as $student) {
-            $totalHadir += $student->attendances->where('status', 'hadir')->count();
-            $totalAlpa += $student->attendances->where('status', 'alpa')->count();
-            $totalSakit += $student->attendances->where('status', 'sakit')->count();
-            $totalIzin += $student->attendances->where('status', 'izin')->count();
-            $totalLibur += $student->attendances->where('status', 'libur')->count();
+            foreach ($student->attendances as $att) {
+                if ($att->status === 'hadir') {
+                    $totalHadir++;
+                    if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
+                        $totalTerlambat++;
+                    }
+                } elseif ($att->status === 'alpa') {
+                    $totalAlpa++;
+                } elseif ($att->status === 'sakit') {
+                    $totalSakit++;
+                } elseif ($att->status === 'izin') {
+                    $totalIzin++;
+                } elseif ($att->status === 'libur') {
+                    $totalLibur++;
+                }
+            }
         }
 
-        $waliKelasUser = \App\Models\User::where('role', 'guru')
-            ->where('name', 'like', "%{$kelas}%")
-            ->first();
-        $teacherName = $waliKelasUser ? $waliKelasUser->name : 'Wali Kelas ' . $kelas;
+        $displayKelas = !empty($kelas) ? $kelas : 'Semua Kelas';
+
+        $teacherName = 'Wali Kelas / Koordinator Presensi';
+        if (!empty($kelas)) {
+            $waliKelasUser = \App\Models\User::where('role', 'guru')
+                ->where('assigned_class', $kelas)
+                ->first();
+            if (!$waliKelasUser) {
+                $waliKelasUser = \App\Models\User::where('role', 'guru')
+                    ->where('name', 'like', "%{$kelas}%")
+                    ->first();
+            }
+            $teacherName = $waliKelasUser ? $waliKelasUser->name : 'Wali Kelas ' . $kelas;
+        }
 
         return view('attendances.print_rekap', compact(
             'students',
             'bulan',
             'kelas',
+            'displayKelas',
             'effectiveDays',
             'totalHadir',
             'totalAlpa',
             'totalSakit',
             'totalIzin',
             'totalLibur',
+            'totalTerlambat',
             'teacherName'
         ));
     }

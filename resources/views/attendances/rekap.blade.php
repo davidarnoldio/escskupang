@@ -19,9 +19,9 @@
     <!-- Include Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div class="space-y-6" x-data="{ autoRefresh: false, timer: null, toggleRefresh() { this.autoRefresh = !this.autoRefresh; if (this.autoRefresh) { this.timer = setInterval(() => window.location.reload(), 15000); } else { clearInterval(this.timer); } } }">
+    <div class="space-y-6" x-data="{ init() { setInterval(() => window.location.reload(), 12000); } }">
         
-        <!-- Filter & Live Refresh Status Bar Card -->
+        <!-- Filter & Live Sync Status Bar Card -->
         <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <form method="GET" action="{{ route('attendances.rekap') }}" class="flex flex-wrap items-center gap-4">
                 <div>
@@ -55,12 +55,6 @@
             </form>
 
             <div class="flex items-center gap-3">
-                <!-- Auto Refresh Toggle Button -->
-                <button type="button" @click="toggleRefresh()" :class="autoRefresh ? 'bg-emerald-500 text-white border-emerald-600 shadow-md shadow-emerald-500/20' : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'" class="px-4 py-2 rounded-2xl border font-extrabold text-xs transition duration-200 flex items-center gap-2 cursor-pointer">
-                    <span class="w-2 h-2 rounded-full" :class="autoRefresh ? 'bg-white animate-ping' : 'bg-slate-400'"></span>
-                    <span x-text="autoRefresh ? 'Auto Refresh ON (15s)' : 'Auto Refresh OFF'"></span>
-                </button>
-
                 <!-- Export & Print Action Buttons -->
                 <a href="{{ route('attendances.export', ['bulan' => $bulan, 'kelas' => $kelas]) }}" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs shadow-md shadow-emerald-600/30 transition cursor-pointer flex items-center gap-1.5">
                     <span>📊 Export Excel</span>

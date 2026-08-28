@@ -3,7 +3,7 @@
 Sistem Informasi Manajemen Presensi Sekolah Terpadu Berbasis Web yang dirancang menggunakan Laravel 11, Tailwind CSS, Alpine.js, Chart.js, dan Cropper.js. Sistem ini menyesuaikan standar operasional dan identitas visual Excellent Spirit Christian School (ESCS) Kupang.
 
 ![PHP Version](https://img.shields.io/badge/PHP-8.3-777BB4?style=flat&logo=php)
-![Laravel Version](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=flat&logo=laravel)
+![Laravel Version](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=flat&logo=laravel)
 ![Tests Status](https://img.shields.io/badge/Tests-82%20Passed-emerald?style=flat&logo=phpunit)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
@@ -11,15 +11,18 @@ Sistem Informasi Manajemen Presensi Sekolah Terpadu Berbasis Web yang dirancang 
 
 ## Daftar Isi
 
-- [Deskripsi Sistem](#deskripsi-sistem)
-- [Akun Pengguna dan Hak Akses](#akun-pengguna-dan-hak-akses)
-  - [1. Administrator Utama](#1-administrator-utama)
-  - [2. Wali Kelas Per Tingkat](#2-wali-kelas-per-tingkat)
-  - [3. Portal Orang Tua Siswa](#3-portal-orang-tua-siswa)
-- [Fitur Utama Sistem](#fitur-utama-sistem)
-- [Panduan Instalasi dan Pengoperasian](#panduan-instalasi-dan-pengoperasian)
-- [Pengujian Otomatis (Testing)](#pengujian-otomatis-testing)
-- [Lisensi](#lisensi)
+- [Portal Absensi Sekolah Digital - ESCS Kupang](#portal-absensi-sekolah-digital---escs-kupang)
+  - [Daftar Isi](#daftar-isi)
+  - [Deskripsi Sistem](#deskripsi-sistem)
+  - [Akun Pengguna dan Hak Akses](#akun-pengguna-dan-hak-akses)
+    - [1. Administrator Utama](#1-administrator-utama)
+    - [2. Wali Kelas Per Tingkat](#2-wali-kelas-per-tingkat)
+    - [3. Portal Orang Tua Siswa](#3-portal-orang-tua-siswa)
+      - [Contoh Akun Demo Orang Tua:](#contoh-akun-demo-orang-tua)
+  - [Fitur Utama Sistem](#fitur-utama-sistem)
+  - [Panduan Instalasi dan Pengoperasian](#panduan-instalasi-dan-pengoperasian)
+  - [Pengujian Otomatis (Testing)](#pengujian-otomatis-testing)
+  - [Lisensi](#lisensi)
 
 ---
 

@@ -109,7 +109,7 @@
     <div class="no-print" style="margin-bottom: 15px; padding: 10px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
         <div>
             <strong>Cetak Rekap Absensi Siswa (Lanskap A4)</strong>
-            <span style="color: #64748b; margin-left: 8px;">Kelas: {{ $kelas }} | Bulan: {{ \Carbon\Carbon::parse($bulan.'-01')->isoFormat('MMMM YYYY') }}</span>
+            <span style="color: #64748b; margin-left: 8px;">Kelas: {{ $displayKelas }} | Bulan: {{ \Carbon\Carbon::parse($bulan.'-01')->isoFormat('MMMM YYYY') }}</span>
         </div>
         <div style="display: flex; gap: 8px;">
             <button onclick="window.print()" style="padding: 6px 16px; background: #0f172a; color: #fbbf24; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
@@ -142,7 +142,7 @@
     <!-- Title Section -->
     <div class="title-section">
         <h1>REKAP ABSENSI SISWA</h1>
-        <p>Bulan: <strong>{{ \Carbon\Carbon::parse($bulan.'-01')->isoFormat('MMMM YYYY') }}</strong> | Kelas: <strong>{{ $kelas }}</strong></p>
+        <p>Bulan: <strong>{{ \Carbon\Carbon::parse($bulan.'-01')->isoFormat('MMMM YYYY') }}</strong> | Kelas: <strong>{{ $displayKelas }}</strong></p>
         <p>Hari Efektif: <strong>{{ count($effectiveDays) }} hari</strong></p>
     </div>
 
@@ -152,6 +152,9 @@
             <tr>
                 <th style="width: 28px;">No</th>
                 <th style="width: 170px;">Nama</th>
+                @if(empty($kelas))
+                    <th style="width: 75px;">Kelas</th>
+                @endif
                 @foreach($effectiveDays as $day)
                     <th style="width: 20px;">{{ $day }}</th>
                 @endforeach
@@ -181,6 +184,9 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td class="student-name">{{ $student->nama }}</td>
+                    @if(empty($kelas))
+                        <td style="font-weight: 600;">{{ $student->kelas }}</td>
+                    @endif
                     @foreach($effectiveDays as $day)
                         @php
                             $att = $attMap->get($day);
@@ -190,6 +196,9 @@
                                     case 'hadir':
                                         $code = 'H';
                                         $hCount++;
+                                        if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
+                                            $tlCount++;
+                                        }
                                         break;
                                     case 'alpa':
                                         $code = 'A';
@@ -226,19 +235,19 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="{{ count($effectiveDays) + 8 }}">Tidak ada data siswa untuk kelas ini.</td>
+                    <td colspan="{{ count($effectiveDays) + (empty($kelas) ? 9 : 8) }}">Tidak ada data siswa untuk {{ $displayKelas }}.</td>
                 </tr>
             @endforelse
             
             <!-- Total Kelas Footer Row -->
             <tr style="background-color: #f1f5f9; font-weight: bold;">
-                <td colspan="{{ count($effectiveDays) + 2 }}" style="text-align: center; font-weight: 800;">TOTAL KELAS</td>
+                <td colspan="{{ count($effectiveDays) + (empty($kelas) ? 3 : 2) }}" style="text-align: center; font-weight: 800;">TOTAL KELAS</td>
                 <td>{{ $totalHadir }}</td>
                 <td>{{ $totalAlpa }}</td>
                 <td>{{ $totalSakit }}</td>
                 <td>{{ $totalIzin }}</td>
                 <td>{{ $totalLibur }}</td>
-                <td>0</td>
+                <td>{{ $totalTerlambat }}</td>
                 <td></td>
             </tr>
         </tbody>
@@ -246,8 +255,8 @@
 
     <!-- Summary Box -->
     <div class="summary-box">
-        <strong>Ringkasan Kelas {{ $kelas }}:</strong><br>
-        Total Hadir: {{ $totalHadir }} | Alpa: {{ $totalAlpa }} | Sakit: {{ $totalSakit }} | Izin: {{ $totalIzin }} | Libur: {{ $totalLibur }} | Terlambat: 0
+        <strong>Ringkasan {{ $displayKelas }}:</strong><br>
+        Total Hadir: {{ $totalHadir }} | Alpa: {{ $totalAlpa }} | Sakit: {{ $totalSakit }} | Izin: {{ $totalIzin }} | Libur: {{ $totalLibur }} | Terlambat: {{ $totalTerlambat }}
     </div>
 
     <!-- Signature Section -->
@@ -262,7 +271,7 @@
                 </td>
                 <td>
                     {{ \Carbon\Carbon::parse($bulan.'-01')->isoFormat('MMMM YYYY') }},<br>
-                    <strong>Wali Kelas</strong>
+                    <strong>Wali Kelas / Guru Pengajar</strong>
                     <div class="signature-space"></div>
                     <strong>{{ $teacherName }}</strong>
                 </td>
