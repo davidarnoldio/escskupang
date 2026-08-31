@@ -80,32 +80,32 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Total Hadir</div>
-                    <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalHadir }}</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Total Hadir (Siswa)</div>
+                    <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalHadir }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
                 <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-lg">✓</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-sky-600">Total Izin</div>
-                    <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalIzin }}</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-sky-600">Total Izin (Siswa)</div>
+                    <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalIzin }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
                 <div class="w-10 h-10 rounded-2xl bg-sky-500/10 text-sky-600 flex items-center justify-center font-bold text-lg">ⓘ</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-blue-600">Total Sakit</div>
-                    <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalSakit }}</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-blue-600">Total Sakit (Siswa)</div>
+                    <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalSakit }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
                 <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 flex items-center justify-center font-bold text-lg">🏥</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-rose-600">Total Alpa</div>
-                    <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalAlpa }}</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-rose-600">Total Alpa (Siswa)</div>
+                    <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalAlpa }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
                 <div class="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center font-bold text-lg">✕</div>
             </div>

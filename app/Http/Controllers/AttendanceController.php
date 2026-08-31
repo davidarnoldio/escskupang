@@ -109,7 +109,19 @@ class AttendanceController extends Controller
             }
         }
 
-        // Calculate Indicator Totals across loaded students
+        // Determine active date for indicator summary cards (latest date in selected month with attendance data, or today)
+        $latestDateInMonth = Attendance::where('tanggal', 'like', "{$bulan}%")
+            ->whereIn('student_id', $students->pluck('id'))
+            ->max('tanggal');
+
+        $summaryDate = $latestDateInMonth ?? now()->format('Y-m-d');
+
+        $summaryAttendances = Attendance::where('tanggal', $summaryDate)
+            ->whereIn('student_id', $students->pluck('id'))
+            ->get()
+            ->keyBy('student_id');
+
+        // Calculate Indicator Totals per student for active summary date (bounded by total students)
         $totalHadir = 0;
         $totalIzin = 0;
         $totalSakit = 0;
@@ -117,15 +129,27 @@ class AttendanceController extends Controller
         $totalLibur = 0;
 
         foreach ($students as $student) {
-            $totalHadir += $student->attendances->where('status', 'hadir')->count();
-            $totalIzin += $student->attendances->where('status', 'izin')->count();
-            $totalSakit += $student->attendances->where('status', 'sakit')->count();
-            $totalAlpa += $student->attendances->where('status', 'alpa')->count();
-            $totalLibur += $student->attendances->where('status', 'libur')->count();
+            $att = $summaryAttendances->get($student->id);
+            if ($att) {
+                if ($att->status === 'hadir') {
+                    $totalHadir++;
+                } elseif ($att->status === 'izin') {
+                    $totalIzin++;
+                } elseif ($att->status === 'sakit') {
+                    $totalSakit++;
+                } elseif ($att->status === 'alpa') {
+                    $totalAlpa++;
+                } elseif ($att->status === 'libur') {
+                    $totalLibur++;
+                }
+            } else {
+                // If no record on summary date yet, student is counted under Hadir by default
+                $totalHadir++;
+            }
         }
 
         $totalRecords = $totalHadir + $totalIzin + $totalSakit + $totalAlpa;
-        $rataRataKehadiran = $totalRecords > 0 ? round(($totalHadir / $totalRecords) * 100, 1) : 0;
+        $rataRataKehadiran = $students->count() > 0 ? round(($totalHadir / $students->count()) * 100, 1) : 0;
 
         return view('attendances.rekap', compact(
             'students',
@@ -141,7 +165,8 @@ class AttendanceController extends Controller
             'totalLibur',
             'totalRecords',
             'rataRataKehadiran',
-            'assignedClass'
+            'assignedClass',
+            'summaryDate'
         ));
     }
 
