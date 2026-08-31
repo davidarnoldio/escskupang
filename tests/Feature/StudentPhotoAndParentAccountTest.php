@@ -53,26 +53,9 @@ class StudentPhotoAndParentAccountTest extends TestCase
         $response->assertRedirect(route('parent.dashboard'));
     }
 
-    public function test_parent_can_upload_student_profile_photo(): void
+    public function test_parent_photo_upload_route_has_been_removed(): void
     {
-        Storage::fake('public');
-        $student = Student::factory()->create();
-        $parent = User::factory()->create([
-            'role' => 'orang_tua',
-            'student_id' => $student->id,
-            'email' => 'parent.photo@student.sch.id',
-        ]);
-
-        $file = UploadedFile::fake()->create('profile.jpg', 100, 'image/jpeg');
-
-        $response = $this->actingAs($parent)->post(route('parent.upload-photo'), [
-            'foto' => $file,
-        ]);
-
-        $response->assertRedirect(route('parent.dashboard'));
-        $student->refresh();
-        $this->assertNotNull($student->foto);
-        $this->assertStringContainsString('uploads/students/', $student->foto);
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('parent.upload-photo'));
     }
 
     public function test_parent_can_update_email_requiring_student_sch_id_suffix(): void

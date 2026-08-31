@@ -34,7 +34,6 @@ Route::middleware('auth')->group(function () {
 
     // Parent Portal
     Route::get('/parent/dashboard', [ParentController::class, 'dashboard'])->name('parent.dashboard');
-    Route::post('/parent/upload-photo', [ParentController::class, 'uploadPhoto'])->name('parent.upload-photo');
     Route::post('/parent/upload-letter', [ParentController::class, 'uploadLetter'])->name('parent.upload-letter');
     Route::post('/parent/update-account', [ParentController::class, 'updateAccount'])->name('parent.update-account');
 
@@ -49,8 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/scan-qr', [QRController::class, 'index'])->name('qr.scan');
     Route::post('/scan-qr/process', [QRController::class, 'process'])->name('qr.process');
 
-    // Attendance CRUD, Rekap, Print & Excel Export
-    Route::get('/attendances/export', [AttendanceController::class, 'export'])->name('attendances.export');
+    // Attendance CRUD, Rekap & Print
     Route::get('/attendances/print-rekap', [AttendanceController::class, 'printRekap'])->name('attendances.print-rekap');
     Route::get('/attendances/letters', [AttendanceController::class, 'letters'])->name('attendances.letters');
     Route::resource('attendances', AttendanceController::class);

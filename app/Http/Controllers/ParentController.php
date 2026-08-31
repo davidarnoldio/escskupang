@@ -96,48 +96,6 @@ class ParentController extends Controller
         ));
     }
 
-    /**
-     * Upload cropped student profile photo by parent.
-     */
-    public function uploadPhoto(Request $request)
-    {
-        $user = Auth::user();
-        $student = $user->student ?? Student::first();
-
-        if (!$student) {
-            return back()->with('error', 'Siswa tidak ditemukan.');
-        }
-
-        // Support base64 cropped image data or standard file upload
-        if ($request->filled('cropped_image')) {
-            $imageData = $request->input('cropped_image');
-            if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
-                $data = substr($imageData, strpos($imageData, ',') + 1);
-                $data = base64_decode($data);
-                $ext = strtolower($type[1]) ?: 'png';
-                $filename = 'student_' . $student->id . '_' . time() . '.' . $ext;
-                
-                if (!file_exists(public_path('uploads/students'))) {
-                    mkdir(public_path('uploads/students'), 0777, true);
-                }
-                file_put_contents(public_path('uploads/students/' . $filename), $data);
-                $student->update(['foto' => 'uploads/students/' . $filename]);
-            }
-        } elseif ($request->hasFile('foto')) {
-            $request->validate([
-                'foto' => ['required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
-            ]);
-            $file = $request->file('foto');
-            $filename = 'student_' . $student->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-            if (!file_exists(public_path('uploads/students'))) {
-                mkdir(public_path('uploads/students'), 0777, true);
-            }
-            $file->move(public_path('uploads/students'), $filename);
-            $student->update(['foto' => 'uploads/students/' . $filename]);
-        }
-
-        return redirect()->route('parent.dashboard')->with('success', 'Foto profil siswa berhasil diperbarui!');
-    }
 
     /**
      * Upload Permission / Sick Letter Photo to Homeroom Teacher.

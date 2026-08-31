@@ -98,10 +98,9 @@ Setiap siswa memiliki akun Portal Orang Tua terintegrasi dengan format email `na
 3. **Fitur Impersonate Akun Guru (Switch Account):**
    - Fasilitas bagi Administrator untuk beralih sesi ke akun wali kelas tertentu tanpa perlu melakukan logout dan login ulang.
 
-4. **Portal Orang Tua dan Pemutakhiran Foto Profil:**
+4. **Portal Orang Tua dan Pengiriman Surat Izin:**
    - Grafik tren presensi harian dan bulanan khusus untuk setiap anak.
-   - Pengunggahan dan pemotongan (crop 1:1) foto profil siswa secara mandiri oleh orang tua menggunakan Cropper.js.
-   - Pengiriman surat perizinan / sakit beserta lampiran foto fisik.
+   - Pengiriman surat perizinan / sakit beserta lampiran foto fisik dokumen.
 
 5. **Manajemen Presensi 5-Status dan Batch Input:**
    - Opsi status presensi: Hadir, Izin, Sakit, Alpa, dan Libur.
@@ -109,7 +108,6 @@ Setiap siswa memiliki akun Portal Orang Tua terintegrasi dengan format email `na
 
 6. **Pelaporan dan Rekapitulasi Presensi Cetak A4:**
    - Cetak rekapitulasi bulanan berformat resmi A4 Lanskap.
-   - Export rekapitulasi data ke format Excel / CSV UTF-8.
 
 ---
 

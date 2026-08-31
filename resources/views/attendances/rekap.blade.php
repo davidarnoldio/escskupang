@@ -55,10 +55,7 @@
             </form>
 
             <div class="flex items-center gap-3">
-                <!-- Export & Print Action Buttons -->
-                <a href="{{ route('attendances.export', ['bulan' => $bulan, 'kelas' => $kelas]) }}" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs shadow-md shadow-emerald-600/30 transition cursor-pointer flex items-center gap-1.5">
-                    <span>📊 Export Excel</span>
-                </a>
+                <!-- Print Action Button -->
                 <a href="{{ route('attendances.print-rekap', ['bulan' => $bulan, 'kelas' => $kelas]) }}" target="_blank" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-2xl text-xs shadow-md transition cursor-pointer flex items-center gap-1.5">
                     <span>🖨️ Cetak A4</span>
                 </a>

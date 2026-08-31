@@ -11,28 +11,8 @@ class ExcelExportTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guests_cannot_download_excel_export(): void
+    public function test_excel_export_route_has_been_removed(): void
     {
-        $response = $this->get(route('attendances.export'));
-        $response->assertRedirect(route('login'));
-    }
-
-    public function test_authenticated_user_can_download_excel_attendance_report(): void
-    {
-        $user = User::factory()->create();
-        Student::factory()->create([
-            'nis' => '0003.26.0236',
-            'nama' => 'Sierrafim Malelak',
-            'kelas' => 'Primary A',
-        ]);
-
-        $response = $this->actingAs($user)->get(route('attendances.export', [
-            'bulan' => now()->format('Y-m'),
-            'kelas' => 'Primary A',
-        ]));
-
-        $response->assertStatus(200);
-        $response->assertHeader('Content-Type', 'text/csv; charset=utf-8');
-        $this->assertTrue(str_contains($response->headers->get('Content-Disposition'), 'Laporan_Presensi_ESCS_'));
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('attendances.export'));
     }
 }

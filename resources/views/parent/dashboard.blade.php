@@ -1,9 +1,5 @@
 <x-app-layout>
     <x-slot name="header">
-        <!-- Include Cropper.js Assets -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h2 class="font-bold text-2xl text-slate-900 leading-tight flex items-center gap-2">
@@ -21,7 +17,7 @@
         </div>
     </x-slot>
 
-    <div class="py-8" x-data="parentPhotoCropper()">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <!-- Flash Alert Messages -->
@@ -76,16 +72,6 @@
                                     </span>
                                 </div>
                             </div>
-
-                            <!-- Interactive Photo Crop Form -->
-                            <form id="photoForm" method="POST" action="{{ route('parent.upload-photo') }}" enctype="multipart/form-data" class="mt-3 pt-3 border-t border-slate-800/80">
-                                @csrf
-                                <input type="hidden" name="cropped_image" id="croppedImageInput">
-                                <label class="block text-[11px] font-bold text-sky-300 mb-1">Unggah & Crop Foto Siswa (1:1)</label>
-                                <div class="flex items-center gap-2">
-                                    <input type="file" id="fileInput" accept="image/*" @change="onFileSelected($event)" class="block w-full text-[11px] text-slate-300 file:me-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-sky-500 file:text-white hover:file:bg-sky-600 cursor-pointer">
-                                </div>
-                            </form>
                         </div>
                     </div>
 
@@ -355,84 +341,10 @@
                     </div>
                 </div>
 
-                <!-- Cropper Modal -->
-                <div x-show="showCropModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4" x-cloak>
-                    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h3 class="font-bold text-base text-slate-900">Potong (Crop) Foto Siswa</h3>
-                            <button type="button" @click="closeCropModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
-                        </div>
-                        <div class="max-h-[350px] overflow-hidden bg-slate-950 rounded-2xl flex items-center justify-center">
-                            <img id="cropperImage" class="max-w-full block">
-                        </div>
-                        <div class="flex items-center justify-end gap-3 pt-2">
-                            <button type="button" @click="closeCropModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">
-                                Batal
-                            </button>
-                            <button type="button" @click="cropAndSave()" class="px-5 py-2 bg-sky-500 hover:bg-sky-600 text-white font-extrabold text-xs rounded-xl shadow-md transition cursor-pointer">
-                                Potong & Simpan Foto
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
             @endif
 
         </div>
     </div>
-
-    <!-- Alpine Cropper Logic -->
-    <script>
-        function parentPhotoCropper() {
-            return {
-                showCropModal: false,
-                cropper: null,
-                onFileSelected(e) {
-                    const files = e.target.files;
-                    if (files && files.length > 0) {
-                        const file = files[0];
-                        const reader = new FileReader();
-                        reader.onload = (event) => {
-                            const img = document.getElementById('cropperImage');
-                            img.src = event.target.result;
-                            this.showCropModal = true;
-                            
-                            this.$nextTick(() => {
-                                if (this.cropper) {
-                                    this.cropper.destroy();
-                                }
-                                this.cropper = new Cropper(img, {
-                                    aspectRatio: 1,
-                                    viewMode: 1,
-                                    autoCropArea: 1,
-                                });
-                            });
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                },
-                closeCropModal() {
-                    this.showCropModal = false;
-                    if (this.cropper) {
-                        this.cropper.destroy();
-                        this.cropper = null;
-                    }
-                    document.getElementById('fileInput').value = '';
-                },
-                cropAndSave() {
-                    if (this.cropper) {
-                        const canvas = this.cropper.getCroppedCanvas({
-                            width: 400,
-                            height: 400
-                        });
-                        const base64Image = canvas.toDataURL('image/jpeg', 0.9);
-                        document.getElementById('croppedImageInput').value = base64Image;
-                        document.getElementById('photoForm').submit();
-                    }
-                }
-            };
-        }
-    </script>
 
     <!-- Chart.js CDN for Parent Portal -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
