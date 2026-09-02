@@ -88,25 +88,30 @@ Setiap siswa memiliki akun Portal Orang Tua terintegrasi dengan format email `na
 1. **Pemindaian QR Code dan Kalkulasi Keterlambatan Presisi:**
    - Pemindaian NIS via kamera atau scanner barcode.
    - Deteksi keterlambatan otomatis berdasarkan jam masuk reguler (07:30 WITA) dan khusus siswa ABK (08:30 WITA).
-   - Pencatatan durasi keterlambatan presisi dalam satuan menit (contoh: Hadir - Terlambat 15m).
+   - Pencatatan durasi keterlambatan presisi dalam satuan menit dan jam (contoh: Hadir - Terlambat 15m).
+   - Perlindungan stempel scan pertama: Pemindaian ulang pada hari yang sama tetap mempertahankan jam scan dan durasi keterlambatan pertama.
 
-2. **Permintaan Reset Kata Sandi dan Panel Admin:**
+2. **Modul Rekapitulasi Keterlambatan Siswa:**
+   - Kartu statistik indikator khusus Total Terlambat (Siswa).
+   - Tabel rekapitulasi khusus siswa yang terlambat beserta jam scan, batas jam masuk, dan durasi keterlambatan.
+
+3. **Permintaan Reset Kata Sandi dan Panel Admin:**
    - Pengajuan permohonan reset password dari pengguna tanpa pengiriman email SMTP.
    - Panel persetujuan Admin untuk memperbarui kata sandi secara instan.
    - Fitur Show / Hide Password (Ikon Mata) pada seluruh formulir autentikasi.
 
-3. **Fitur Impersonate Akun Guru (Switch Account):**
+4. **Fitur Impersonate Akun Guru (Switch Account):**
    - Fasilitas bagi Administrator untuk beralih sesi ke akun wali kelas tertentu tanpa perlu melakukan logout dan login ulang.
 
-4. **Portal Orang Tua dan Pengiriman Surat Izin:**
+5. **Portal Orang Tua dan Pengiriman Surat Izin:**
    - Grafik tren presensi harian dan bulanan khusus untuk setiap anak.
    - Pengiriman surat perizinan / sakit beserta lampiran foto fisik dokumen.
 
-5. **Manajemen Presensi 5-Status dan Batch Input:**
+6. **Manajemen Presensi 5-Status dan Batch Input:**
    - Opsi status presensi: Hadir, Izin, Sakit, Alpa, dan Libur.
    - Fitur cepat "Set Semua Hadir" dan "Set Semua Libur".
 
-6. **Pelaporan dan Rekapitulasi Presensi Cetak A4:**
+7. **Pelaporan dan Rekapitulasi Presensi Cetak A4:**
    - Cetak rekapitulasi bulanan berformat resmi A4 Lanskap.
 
 ---

@@ -66,6 +66,57 @@ class QRController extends Controller
             ? \App\Models\Setting::get('jam_terlambat_abk', '08:30')
             : \App\Models\Setting::get('jam_terlambat', '07:30');
 
+        // Check if student ALREADY has an attendance record for today to prevent overwriting initial scan time
+        $existingAttendance = Attendance::where('student_id', $student->id)
+            ->where('tanggal', $today)
+            ->first();
+
+        if ($existingAttendance && $existingAttendance->status === 'hadir' && preg_match('/\[(\d{2}:\d{2}:\d{2})\]/', $existingAttendance->keterangan ?? '', $existingTimeMatches)) {
+            $originalTime = $existingTimeMatches[1];
+            $originalLateMins = 0;
+            $originalIsLate = false;
+
+            if (preg_match('/Terlambat\s+(\d+)\s+menit/i', $existingAttendance->keterangan, $m)) {
+                $originalLateMins = (int) $m[1];
+                $originalIsLate = true;
+            } else {
+                $scanCarbon = \Carbon\Carbon::parse($today . ' ' . $originalTime, 'Asia/Makassar');
+                $thresholdCarbon = \Carbon\Carbon::parse($today . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
+                if ($scanCarbon->greaterThan($thresholdCarbon)) {
+                    $originalLateMins = max(1, abs((int) $scanCarbon->diffInMinutes($thresholdCarbon)));
+                    $originalIsLate = true;
+                }
+            }
+
+            $statusText = $originalIsLate ? "HADIR (Terlambat {$originalLateMins}m)" : "HADIR";
+            $message = $originalIsLate
+                ? "Siswa {$student->nama} ({$student->kelas}) SUDAH presensi hari ini jam [{$originalTime}] - TERLAMBAT {$originalLateMins} menit. Waktu scan pertama tetap dipertahankan."
+                : "Siswa {$student->nama} ({$student->kelas}) SUDAH presensi hari ini jam [{$originalTime}] (Tepat Waktu). Waktu scan pertama tetap dipertahankan.";
+
+            return response()->json([
+                'success' => true,
+                'already_scanned' => true,
+                'message' => $message,
+                'student' => [
+                    'id' => $student->id,
+                    'nis' => $student->nis,
+                    'nama' => $student->nama,
+                    'kelas' => $student->kelas,
+                    'jenis_kelamin' => $student->jenis_kelamin,
+                    'is_abk' => $student->is_abk,
+                ],
+                'attendance' => [
+                    'tanggal' => $today,
+                    'waktu' => $originalTime,
+                    'status' => 'hadir',
+                    'is_late' => $originalIsLate,
+                    'late_minutes' => $originalLateMins,
+                    'status_text' => $statusText,
+                    'jam_terlambat' => $jamTerlambatConfig,
+                ],
+            ]);
+        }
+
         $isLate = $currentTimeHM > $jamTerlambatConfig;
         $lateMinutes = 0;
         if ($isLate) {

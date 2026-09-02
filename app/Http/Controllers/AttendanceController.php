@@ -148,6 +148,54 @@ class AttendanceController extends Controller
             }
         }
 
+        // Calculate late students list across selected month
+        $lateStudentsList = collect();
+        foreach ($students as $student) {
+            foreach ($student->attendances as $att) {
+                if ($att->status === 'hadir' && str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
+                    $jamTerlambatConfig = $student->is_abk
+                        ? \App\Models\Setting::get('jam_terlambat_abk', '08:30')
+                        : \App\Models\Setting::get('jam_terlambat', '07:30');
+
+                    $scanTimeStr = '-';
+                    $lateMins = 0;
+
+                    if (preg_match('/\[(\d{2}:\d{2}:\d{2})\]/', $att->keterangan, $timeMatches)) {
+                        $scanTimeStr = $timeMatches[1];
+                        $scanCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $scanTimeStr, 'Asia/Makassar');
+                        $thresholdCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
+                        if ($scanCarbon->greaterThan($thresholdCarbon)) {
+                            $lateMins = abs((int) $scanCarbon->diffInMinutes($thresholdCarbon));
+                        }
+                    } elseif (preg_match('/Terlambat\s+(\d+)\s+menit/i', $att->keterangan, $m)) {
+                        $lateMins = (int) $m[1];
+                    }
+
+                    $lateFormatted = '';
+                    if ($lateMins >= 60) {
+                        $hrs = floor($lateMins / 60);
+                        $mins = $lateMins % 60;
+                        $lateFormatted = $mins > 0 ? "{$hrs}j {$mins}m" : "{$hrs}j";
+                    } else {
+                        $lateFormatted = "{$lateMins}m";
+                    }
+
+                    $lateStudentsList->push((object)[
+                        'student' => $student,
+                        'tanggal' => $att->tanggal,
+                        'waktu_scan' => $scanTimeStr,
+                        'jam_terlambat' => $jamTerlambatConfig,
+                        'late_minutes' => $lateMins,
+                        'late_formatted' => $lateFormatted,
+                        'keterangan' => $att->keterangan,
+                    ]);
+                }
+            }
+        }
+
+        $lateStudentsList = $lateStudentsList->sortByDesc('tanggal')->values();
+        $totalTerlambat = $lateStudentsList->pluck('student.id')->unique()->count();
+
         $totalRecords = $totalHadir + $totalIzin + $totalSakit + $totalAlpa;
         $rataRataKehadiran = $students->count() > 0 ? round(($totalHadir / $students->count()) * 100, 1) : 0;
 
@@ -159,6 +207,8 @@ class AttendanceController extends Controller
             'daysInMonth',
             'matrix',
             'totalHadir',
+            'totalTerlambat',
+            'lateStudentsList',
             'totalIzin',
             'totalSakit',
             'totalAlpa',

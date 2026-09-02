@@ -149,4 +149,50 @@ class QrAttendanceTest extends TestCase
 
         \Carbon\Carbon::setTestNow();
     }
+
+    public function test_rescanning_qr_on_same_day_preserves_initial_scan_time_and_does_not_overwrite_late_minutes(): void
+    {
+        $user = User::factory()->create();
+        $student = Student::factory()->create(['nis' => '10740', 'nama' => 'Sierrafim Malelak', 'is_abk' => false]);
+        $todayStr = now()->format('Y-m-d');
+
+        // First scan at 07:40 WITA (10 minutes late)
+        \Carbon\Carbon::setTestNow(\Carbon\Carbon::parse($todayStr . ' 07:40:00', 'Asia/Makassar'));
+        $firstResponse = $this->actingAs($user)->postJson(route('qr.process'), [
+            'nis' => '10740',
+        ]);
+
+        $firstResponse->assertStatus(200);
+        $firstResponse->assertJson([
+            'success' => true,
+            'attendance' => [
+                'waktu' => '07:40:00',
+                'late_minutes' => 10,
+            ],
+        ]);
+
+        // Second scan at 09:15 WITA (95 minutes late if overwritten)
+        \Carbon\Carbon::setTestNow(\Carbon\Carbon::parse($todayStr . ' 09:15:00', 'Asia/Makassar'));
+        $secondResponse = $this->actingAs($user)->postJson(route('qr.process'), [
+            'nis' => '10740',
+        ]);
+
+        $secondResponse->assertStatus(200);
+        $secondResponse->assertJson([
+            'success' => true,
+            'already_scanned' => true,
+            'attendance' => [
+                'waktu' => '07:40:00', // MUST STILL BE ORIGINAL 07:40:00!
+                'late_minutes' => 10,  // MUST STILL BE ORIGINAL 10 MINUTES!
+            ],
+        ]);
+
+        $this->assertDatabaseHas('attendances', [
+            'student_id' => $student->id,
+            'tanggal' => $todayStr,
+            'keterangan' => 'Scan QR [07:40:00] - Terlambat 10 menit',
+        ]);
+
+        \Carbon\Carbon::setTestNow();
+    }
 }
