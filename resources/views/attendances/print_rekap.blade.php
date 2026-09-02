@@ -68,9 +68,23 @@
             font-weight: 600;
             white-space: nowrap;
         }
+        table.rekap-table td.cell-hadir {
+            background-color: #dcfce7 !important;
+            color: #166534 !important;
+            font-weight: 800 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
         table.rekap-table td.cell-terlambat {
             background-color: #fef08a !important;
             color: #854d0e !important;
+            font-weight: 800 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        table.rekap-table td.cell-alpa {
+            background-color: #ffe4e6 !important;
+            color: #9f1239 !important;
             font-weight: 800 !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
@@ -207,11 +221,14 @@
                                         if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
                                             $tlCount++;
                                             $cellClass = 'cell-terlambat';
+                                        } else {
+                                            $cellClass = 'cell-hadir';
                                         }
                                         break;
                                     case 'alpa':
                                         $code = 'A';
                                         $aCount++;
+                                        $cellClass = 'cell-alpa';
                                         break;
                                     case 'sakit':
                                         $code = 'S';

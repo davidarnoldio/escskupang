@@ -168,10 +168,10 @@
                                         $badgeBg = match(true) {
                                             $isLate => 'bg-amber-400 text-amber-950 font-black border border-amber-500 shadow-2xs',
                                             $st === 'hadir' => 'bg-emerald-500 text-white font-bold',
-                                            $st === 'izin' => 'bg-sky-500 text-white font-bold',
-                                            $st === 'sakit' => 'bg-blue-600 text-white font-bold',
+                                            $st === 'izin' => 'bg-slate-100 text-slate-700 font-semibold border border-slate-200',
+                                            $st === 'sakit' => 'bg-slate-100 text-slate-700 font-semibold border border-slate-200',
                                             $st === 'alpa' => 'bg-rose-500 text-white font-bold',
-                                            $st === 'libur' => 'bg-slate-300 text-slate-700 font-bold',
+                                            $st === 'libur' => 'bg-slate-200 text-slate-600 font-medium',
                                             default => 'text-slate-300',
                                         };
                                     @endphp
