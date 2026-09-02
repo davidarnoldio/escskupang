@@ -15,7 +15,7 @@ class StudentPhotoAndParentAccountTest extends TestCase
 
     public function test_storing_student_auto_creates_parent_account_with_student_sch_id_email(): void
     {
-        $admin = User::factory()->create(['role' => 'guru', 'name' => 'Administrator']);
+        $admin = User::factory()->create(['role' => 'admin', 'name' => 'Administrator']);
 
         $response = $this->actingAs($admin)->post(route('students.store'), [
             'nis' => '9999.26.0001',

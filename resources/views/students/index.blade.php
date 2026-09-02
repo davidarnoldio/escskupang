@@ -7,10 +7,12 @@
                 </h2>
                 <p class="text-xs font-semibold text-slate-500 mt-0.5">Kelola data seluruh siswa terdaftar di sekolah</p>
             </div>
-            <a href="{{ route('students.create') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-blue-600/30 transition duration-200 cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                <span>Tambah Siswa Baru</span>
-            </a>
+            @if(Auth::user() && Auth::user()->isAdmin())
+                <a href="{{ route('students.create') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-blue-600/30 transition duration-200 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <span>Tambah Siswa Baru</span>
+                </a>
+            @endif
         </div>
     </x-slot>
 
@@ -133,16 +135,18 @@
                                     <button type="button" @click="openQrModal({{ json_encode($student) }})" class="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-xl text-xs font-bold transition cursor-pointer">
                                         📷 QR Code
                                     </button>
-                                    <a href="{{ route('students.edit', $student) }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition">
-                                        ✏️ Edit
-                                    </a>
-                                    <form method="POST" action="{{ route('students.destroy', $student) }}" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data siswa ini?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="inline-flex items-center gap-1 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition cursor-pointer">
-                                            🗑️ Hapus
-                                        </button>
-                                    </form>
+                                    @if(Auth::user() && Auth::user()->isAdmin())
+                                        <a href="{{ route('students.edit', $student) }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition">
+                                            ✏️ Edit
+                                        </a>
+                                        <form method="POST" action="{{ route('students.destroy', $student) }}" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data siswa ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="inline-flex items-center gap-1 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition cursor-pointer">
+                                                🗑️ Hapus
+                                            </button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

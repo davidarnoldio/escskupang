@@ -107,4 +107,33 @@ class TeacherClassScopingAndPermissionLetterTest extends TestCase
             'keterangan' => 'Libur Nasional',
         ]);
     }
+
+    public function test_teacher_cannot_create_edit_or_delete_students_only_admin_can(): void
+    {
+        $student = Student::factory()->create(['kelas' => 'Pre-K', 'nama' => 'Original Student']);
+        $teacher = User::factory()->create([
+            'role' => 'guru',
+            'name' => 'Pre-K (Wali Kelas Pre-K)',
+        ]);
+
+        // Teacher tries to edit student
+        $editResponse = $this->actingAs($teacher)->get(route('students.edit', $student));
+        $editResponse->assertRedirect(route('students.index'));
+        $editResponse->assertSessionHas('error');
+
+        // Teacher tries to update student
+        $updateResponse = $this->actingAs($teacher)->put(route('students.update', $student), [
+            'nis' => $student->nis,
+            'nama' => 'Hacked Name',
+            'kelas' => 'Pre-K',
+            'jenis_kelamin' => 'L',
+        ]);
+        $updateResponse->assertRedirect(route('students.index'));
+        $this->assertDatabaseHas('students', ['id' => $student->id, 'nama' => 'Original Student']);
+
+        // Teacher tries to delete student
+        $deleteResponse = $this->actingAs($teacher)->delete(route('students.destroy', $student));
+        $deleteResponse->assertRedirect(route('students.index'));
+        $this->assertDatabaseHas('students', ['id' => $student->id]);
+    }
 }

@@ -47,6 +47,10 @@ class StudentController extends Controller
      */
     public function create()
     {
+        if (!Auth::user() || !Auth::user()->isAdmin()) {
+            return redirect()->route('students.index')->with('error', 'Hanya Admin yang berhak menambahkan data siswa.');
+        }
+
         return view('students.create');
     }
 
@@ -55,6 +59,10 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user() || !Auth::user()->isAdmin()) {
+            return redirect()->route('students.index')->with('error', 'Hanya Admin yang berhak menambahkan data siswa.');
+        }
+
         $validated = $request->validate([
             'nis' => ['required', 'string', 'max:50', 'unique:students,nis'],
             'nama' => ['required', 'string', 'max:255'],
@@ -118,6 +126,10 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
+        if (!Auth::user() || !Auth::user()->isAdmin()) {
+            return redirect()->route('students.index')->with('error', 'Hanya Admin yang berhak mengubah data siswa.');
+        }
+
         return view('students.edit', compact('student'));
     }
 
@@ -126,6 +138,10 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
+        if (!Auth::user() || !Auth::user()->isAdmin()) {
+            return redirect()->route('students.index')->with('error', 'Hanya Admin yang berhak mengubah data siswa.');
+        }
+
         $validated = $request->validate([
             'nis' => ['required', 'string', 'max:50', Rule::unique('students', 'nis')->ignore($student->id)],
             'nama' => ['required', 'string', 'max:255'],
@@ -148,6 +164,10 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
+        if (!Auth::user() || !Auth::user()->isAdmin()) {
+            return redirect()->route('students.index')->with('error', 'Hanya Admin yang berhak menghapus data siswa.');
+        }
+
         $student->delete();
 
         return redirect()->route('students.index')->with('success', 'Data siswa berhasil dihapus.');

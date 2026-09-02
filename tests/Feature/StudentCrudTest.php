@@ -49,7 +49,7 @@ class StudentCrudTest extends TestCase
 
     public function test_authenticated_users_can_create_a_student(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => 'admin']);
 
         $studentData = [
             'nis' => '0003.26.0236',
@@ -72,7 +72,7 @@ class StudentCrudTest extends TestCase
 
     public function test_student_creation_validation_fails_for_duplicate_nis(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => 'admin']);
         Student::factory()->create(['nis' => '10201']);
 
         $studentData = [
@@ -89,7 +89,7 @@ class StudentCrudTest extends TestCase
 
     public function test_student_creation_validation_fails_for_invalid_gender(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => 'admin']);
 
         $studentData = [
             'nis' => '10201',
@@ -105,7 +105,7 @@ class StudentCrudTest extends TestCase
 
     public function test_authenticated_users_can_update_student(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => 'admin']);
         $student = Student::factory()->create(['nis' => '10201', 'nama' => 'Nama Lama']);
 
         $updateData = [
@@ -128,7 +128,7 @@ class StudentCrudTest extends TestCase
 
     public function test_authenticated_users_can_delete_student(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['role' => 'admin']);
         $student = Student::factory()->create();
 
         $response = $this->actingAs($user)->delete(route('students.destroy', $student));
