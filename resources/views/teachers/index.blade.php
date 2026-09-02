@@ -112,27 +112,14 @@
                                             </div>
                                         </div>
 
-                                        <!-- Action Buttons: Switch Akun + Edit + Delete -->
-                                        <div class="pt-3 border-t border-slate-200/60 flex items-center justify-between gap-2">
-                                            <form method="POST" action="{{ route('impersonate.switch', $teacher) }}" class="inline-block flex-1">
+                                        <!-- Action Buttons: Switch Akun -->
+                                        <div class="pt-3 border-t border-slate-200/60">
+                                            <form method="POST" action="{{ route('impersonate.switch', $teacher) }}" class="w-full">
                                                 @csrf
-                                                <button type="submit" class="w-full py-1.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-xl text-xs transition cursor-pointer shadow-xs flex items-center justify-center gap-1">
+                                                <button type="submit" class="w-full py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-xl text-xs transition cursor-pointer shadow-xs flex items-center justify-center gap-1">
                                                     <span>⚡ Switch Akun</span>
                                                 </button>
                                             </form>
-
-                                            <div class="flex items-center gap-1">
-                                                <a href="{{ route('teachers.edit', $teacher) }}" class="p-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition" title="Edit Data Guru">
-                                                    ✏️
-                                                </a>
-                                                <form method="POST" action="{{ route('teachers.destroy', $teacher) }}" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data guru ini?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="p-1.5 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-xl transition cursor-pointer" title="Hapus Guru">
-                                                        🗑️
-                                                    </button>
-                                                </form>
-                                            </div>
                                         </div>
                                     </div>
                                 @endforeach
