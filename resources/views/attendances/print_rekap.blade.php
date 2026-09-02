@@ -68,6 +68,13 @@
             font-weight: 600;
             white-space: nowrap;
         }
+        table.rekap-table td.cell-terlambat {
+            background-color: #fef08a !important;
+            color: #854d0e !important;
+            font-weight: 800 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
         .summary-box {
             border: 1px solid #cbd5e1;
             padding: 8px 12px;
@@ -191,6 +198,7 @@
                         @php
                             $att = $attMap->get($day);
                             $code = '-';
+                            $cellClass = '';
                             if ($att) {
                                 switch ($att->status) {
                                     case 'hadir':
@@ -198,6 +206,7 @@
                                         $hCount++;
                                         if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
                                             $tlCount++;
+                                            $cellClass = 'cell-terlambat';
                                         }
                                         break;
                                     case 'alpa':
@@ -219,7 +228,7 @@
                                 }
                             }
                         @endphp
-                        <td>{{ $code }}</td>
+                        <td class="{{ $cellClass }}">{{ $code }}</td>
                     @endforeach
                     @php
                         $totEff = count($effectiveDays);

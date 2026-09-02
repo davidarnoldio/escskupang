@@ -163,17 +163,20 @@
                                         elseif ($st === 'sakit') $sCount++;
                                         elseif ($st === 'alpa') $aCount++;
 
-                                        $badgeBg = match($st) {
-                                            'hadir' => 'bg-emerald-500 text-white font-bold',
-                                            'izin' => 'bg-sky-500 text-white font-bold',
-                                            'sakit' => 'bg-blue-600 text-white font-bold',
-                                            'alpa' => 'bg-rose-500 text-white font-bold',
-                                            'libur' => 'bg-slate-300 text-slate-700 font-bold',
+                                        $isLate = ($st === 'hadir') && str_contains(strtolower($attRecord->keterangan ?? ''), 'terlambat');
+
+                                        $badgeBg = match(true) {
+                                            $isLate => 'bg-amber-400 text-amber-950 font-black border border-amber-500 shadow-2xs',
+                                            $st === 'hadir' => 'bg-emerald-500 text-white font-bold',
+                                            $st === 'izin' => 'bg-sky-500 text-white font-bold',
+                                            $st === 'sakit' => 'bg-blue-600 text-white font-bold',
+                                            $st === 'alpa' => 'bg-rose-500 text-white font-bold',
+                                            $st === 'libur' => 'bg-slate-300 text-slate-700 font-bold',
                                             default => 'text-slate-300',
                                         };
                                     @endphp
                                     <td class="px-1 py-3 text-center text-[10px]">
-                                        <span class="inline-block w-5 h-5 leading-5 rounded-md text-center {{ $badgeBg }}">
+                                        <span class="inline-block w-5 h-5 leading-5 rounded-md text-center {{ $badgeBg }}" title="{{ $isLate ? ($attRecord->keterangan ?? 'Hadir Terlambat') : strtoupper($st) }}">
                                             {{ strtoupper(substr($st, 0, 1)) }}
                                         </span>
                                     </td>
