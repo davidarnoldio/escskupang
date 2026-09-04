@@ -15,8 +15,8 @@
             --nto-bg: #f7f9fb;
 
             width: 100%;
-            min-height: 100vh;
-            min-height: 100dvh;
+            height: 100vh;
+            height: 100dvh;
             display: grid;
             grid-template-columns: 42% 58%;
             overflow: hidden;
@@ -31,14 +31,14 @@
         .nto-left {
             position: relative;
             min-width: 0;
-            min-height: 100vh;
+            height: 100vh;
             overflow: hidden;
             background: linear-gradient(135deg, #024a35 0%, #013b2a 50%, #002b1f 100%);
             color: white;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 32px 48px;
+            padding: 22px 36px 18px;
             z-index: 2;
         }
 
@@ -58,30 +58,30 @@
         }
 
         .nto-circle-1 {
-            width: 650px;
-            height: 650px;
-            left: -310px;
-            top: -170px;
+            width: 600px;
+            height: 600px;
+            left: -280px;
+            top: -150px;
         }
 
         .nto-circle-2 {
-            width: 540px;
-            height: 540px;
-            left: -250px;
-            top: -115px;
+            width: 480px;
+            height: 480px;
+            left: -220px;
+            top: -100px;
         }
 
         .nto-circle-3 {
-            width: 430px;
-            height: 430px;
-            left: -190px;
-            top: -60px;
+            width: 380px;
+            height: 380px;
+            left: -170px;
+            top: -50px;
         }
 
         .nto-glow {
             position: absolute;
-            width: 320px;
-            height: 320px;
+            width: 300px;
+            height: 300px;
             right: -80px;
             top: -80px;
             border-radius: 50%;
@@ -92,11 +92,11 @@
         /* Dot Grid */
         .nto-dots {
             position: absolute;
-            top: 40px;
-            right: 40px;
+            top: 25px;
+            right: 30px;
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 12px;
+            gap: 10px;
             opacity: .18;
         }
 
@@ -113,9 +113,9 @@
             z-index: 10;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             align-self: flex-start;
-            padding: 8px 18px;
+            padding: 6px 14px;
             border-radius: 999px;
             background: rgba(255, 255, 255, .1);
             border: 1px solid rgba(255, 255, 255, .18);
@@ -123,16 +123,16 @@
         }
 
         .nto-top-badge-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #34d399;
-            box-shadow: 0 0 10px #34d399;
+            box-shadow: 0 0 8px #34d399;
         }
 
         .nto-top-badge-text {
             color: rgba(255, 255, 255, .95);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             letter-spacing: .08em;
             text-transform: uppercase;
@@ -143,7 +143,7 @@
             position: relative;
             z-index: 10;
             margin: auto 0;
-            padding: 20px 0;
+            padding: 10px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -153,12 +153,12 @@
         /* Logo Card */
         .nto-logo-card {
             position: relative;
-            width: 270px;
-            padding: 26px 24px;
-            border-radius: 28px;
+            width: 230px;
+            padding: 18px 18px 16px;
+            border-radius: 22px;
             background: rgba(255, 255, 255, .97);
             border: 1px solid rgba(255, 255, 255, .4);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .35), 0 0 0 1px rgba(255, 255, 255, .2);
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, .35), 0 0 0 1px rgba(255, 255, 255, .2);
             backdrop-filter: blur(16px);
             display: flex;
             flex-direction: column;
@@ -168,12 +168,12 @@
         }
 
         .nto-logo-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-3px);
         }
 
         .nto-logo-image-wrapper {
             width: 100%;
-            height: 190px;
+            height: 135px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -184,13 +184,13 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, .12));
+            filter: drop-shadow(0 8px 12px rgba(0, 0, 0, .12));
         }
 
         .nto-school-name {
-            margin-top: 14px;
+            margin-top: 10px;
             color: #0f172a;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 900;
             letter-spacing: .04em;
             line-height: 1.2;
@@ -198,51 +198,51 @@
 
         .nto-school-level {
             color: #059669;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
-            letter-spacing: .18em;
-            margin-top: 3px;
+            letter-spacing: .16em;
+            margin-top: 2px;
         }
 
         .nto-logo-line {
-            width: 42px;
-            height: 4px;
-            margin: 12px auto;
+            width: 36px;
+            height: 3px;
+            margin: 8px auto;
             border-radius: 999px;
             background: #10b981;
         }
 
         .nto-school-motto {
             color: #64748b;
-            font-size: 10px;
-            line-height: 1.5;
+            font-size: 9px;
+            line-height: 1.4;
             font-style: italic;
             font-weight: 600;
         }
 
         /* Portal Title */
         .nto-portal-title {
-            margin-top: 28px;
+            margin-top: 16px;
             color: white;
-            font-size: 36px;
+            font-size: 26px;
             line-height: 1.15;
             font-weight: 900;
-            letter-spacing: -.035em;
+            letter-spacing: -.03em;
         }
 
         .nto-title-line {
-            width: 48px;
-            height: 4px;
-            margin: 15px auto;
+            width: 40px;
+            height: 3px;
+            margin: 10px auto;
             border-radius: 999px;
             background: #34d399;
         }
 
         .nto-description {
-            max-width: 380px;
+            max-width: 340px;
             color: rgba(236, 253, 245, .92);
-            font-size: 14px;
-            line-height: 1.6;
+            font-size: 12px;
+            line-height: 1.5;
             font-weight: 500;
         }
 
@@ -250,41 +250,43 @@
         .nto-location-wrapper {
             position: relative;
             z-index: 10;
-            padding-left: 8px;
+            padding-left: 0;
+            display: flex;
+            justify-content: center;
         }
 
         .nto-location {
             display: inline-flex;
             align-items: center;
-            gap: 9px;
-            padding: 10px 18px;
+            gap: 7px;
+            padding: 7px 15px;
             border: 1px solid rgba(167, 243, 208, .3);
             border-radius: 999px;
-            background: rgba(0, 50, 40, .3);
+            background: rgba(0, 50, 40, .45);
             backdrop-filter: blur(10px);
         }
 
         .nto-location svg {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             flex-shrink: 0;
             color: #34d399;
         }
 
         .nto-location span {
             color: #ecfdf5;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
         }
 
         /* School Silhouette */
         .nto-school-silhouette {
             position: absolute;
-            left: -30px;
-            bottom: -2px;
-            width: 500px;
-            height: 310px;
-            opacity: .20;
+            left: -20px;
+            bottom: 0;
+            width: 440px;
+            height: 230px;
+            opacity: .18;
             z-index: 1;
             pointer-events: none;
         }
@@ -294,7 +296,7 @@
             position: absolute;
             top: 0;
             right: -1px;
-            width: 145px;
+            width: 130px;
             height: 100%;
             z-index: 3;
             pointer-events: none;
@@ -309,13 +311,13 @@
             fill: #f7f9fb;
         }
 
-        /* Shield Badge on Curve */
+        /* Shield Badge on Curve - Positioned on main container to avoid clipping */
         .nto-shield {
             position: absolute;
-            right: -36px;
+            left: 42%;
             top: 50%;
-            transform: translateY(-50%);
-            z-index: 4;
+            transform: translate(-50%, -50%);
+            z-index: 25;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -324,28 +326,28 @@
 
         .nto-shield-glow {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             background: rgba(16, 185, 129, .15);
-            filter: blur(20px);
+            filter: blur(18px);
         }
 
         .nto-shield-badge {
             position: relative;
-            width: 72px;
-            height: 72px;
+            width: 66px;
+            height: 66px;
             border-radius: 50%;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, .18);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .18);
         }
 
         .nto-shield-inner {
-            width: 54px;
-            height: 54px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             border: 2px dashed #10b981;
             display: flex;
@@ -354,8 +356,8 @@
         }
 
         .nto-shield-inner svg {
-            width: 28px;
-            height: 28px;
+            width: 25px;
+            height: 25px;
             color: #059669;
         }
 
@@ -365,14 +367,14 @@
         .nto-right {
             position: relative;
             min-width: 0;
-            min-height: 100vh;
+            height: 100vh;
             overflow: hidden;
             background: #f7f9fb;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 35px 55px 20px;
+            padding: 24px 44px 16px;
         }
 
         .nto-right-decoration {
@@ -384,29 +386,29 @@
 
         .nto-right-circle-1 {
             position: absolute;
-            width: 650px;
-            height: 650px;
-            top: -350px;
-            right: -310px;
+            width: 600px;
+            height: 600px;
+            top: -320px;
+            right: -280px;
             border-radius: 50%;
-            border: 55px solid rgba(226, 232, 240, .55);
+            border: 50px solid rgba(226, 232, 240, .55);
         }
 
         .nto-right-circle-2 {
             position: absolute;
-            width: 720px;
-            height: 720px;
-            bottom: -430px;
-            right: -350px;
+            width: 680px;
+            height: 680px;
+            bottom: -400px;
+            right: -320px;
             border-radius: 50%;
-            border: 38px solid rgba(226, 232, 240, .4);
+            border: 35px solid rgba(226, 232, 240, .4);
         }
 
         .nto-right-arc {
             position: absolute;
             right: 0;
             top: 0;
-            width: 280px;
+            width: 260px;
             height: 100%;
         }
 
@@ -420,82 +422,82 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 520px;
+            max-width: 460px;
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 30px 0;
+            padding: 10px 0;
         }
 
         /* Login Card */
         .nto-login-card {
             width: 100%;
             background: white;
-            border-radius: 28px;
+            border-radius: 24px;
             border: 1px solid #e7edf1;
-            box-shadow: 0 25px 70px rgba(15, 23, 42, .12);
+            box-shadow: 0 20px 60px rgba(15, 23, 42, .12);
             overflow: hidden;
         }
 
         .nto-login-accent {
             width: 100%;
-            height: 7px;
+            height: 6px;
             background: linear-gradient(90deg, #10b981, #08a77c, #024a35);
         }
 
         .nto-login-inner {
-            padding: 40px 44px 35px;
+            padding: 28px 36px 24px;
         }
 
         .nto-user-icon-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 22px;
+            margin-bottom: 14px;
         }
 
         .nto-user-icon {
-            width: 66px;
-            height: 66px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: #ecfdf5;
             border: 1px solid #a7f3d0;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 25px rgba(16, 185, 129, .14);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, .14);
         }
 
         .nto-user-icon svg {
-            width: 32px;
-            height: 32px;
+            width: 26px;
+            height: 26px;
             color: #059669;
         }
 
         .nto-login-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 22px;
         }
 
         .nto-login-header h2 {
             margin: 0;
             color: #0f172a;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 900;
             letter-spacing: -.03em;
         }
 
         .nto-login-header p {
-            margin: 8px 0 0;
+            margin: 6px 0 0;
             color: #64748b;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
         }
 
         .nto-login-header-line {
-            width: 44px;
-            height: 4px;
-            margin: 16px auto 0;
+            width: 38px;
+            height: 3px;
+            margin: 12px auto 0;
             border-radius: 999px;
             background: #10b981;
         }
@@ -504,7 +506,7 @@
         .nto-form {
             display: flex;
             flex-direction: column;
-            gap: 22px;
+            gap: 16px;
         }
 
         .nto-field {
@@ -513,9 +515,9 @@
         }
 
         .nto-field label {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #1e293b;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
         }
 
@@ -523,7 +525,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .nto-password-label label {
@@ -532,7 +534,7 @@
 
         .nto-forgot {
             color: #059669;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             text-decoration: none;
             transition: color .2s ease;
@@ -551,9 +553,9 @@
 
         .nto-input-icon {
             position: absolute;
-            left: 16px;
-            width: 20px;
-            height: 20px;
+            left: 14px;
+            width: 18px;
+            height: 18px;
             color: #94a3b8;
             pointer-events: none;
             transition: color .2s ease;
@@ -565,20 +567,20 @@
 
         .nto-input {
             width: 100%;
-            height: 52px;
-            padding: 0 16px 0 48px;
-            border-radius: 14px;
+            height: 46px;
+            padding: 0 14px 0 44px;
+            border-radius: 12px;
             border: 1.5px solid #e2e8f0;
             background: #f8fafc;
             color: #0f172a;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             outline: none;
             transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
         }
 
         .nto-input.password {
-            padding-right: 48px;
+            padding-right: 44px;
         }
 
         .nto-input::placeholder {
@@ -588,16 +590,16 @@
         .nto-input:focus {
             border-color: #10b981;
             background: white;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, .12);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, .12);
         }
 
         .nto-eye-button {
             position: absolute;
-            right: 14px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             padding: 0;
             border: 0;
             background: transparent;
@@ -606,7 +608,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: 6px;
             transition: color .2s ease, background-color .2s ease;
         }
 
@@ -616,8 +618,8 @@
         }
 
         .nto-eye-button svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
         }
 
         /* Remember */
@@ -629,42 +631,42 @@
         }
 
         .nto-remember input {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             accent-color: #059669;
             cursor: pointer;
             border-radius: 4px;
         }
 
         .nto-remember span {
-            margin-left: 9px;
+            margin-left: 8px;
             color: #475569;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
         }
 
         /* Login Button */
         .nto-login-button {
             width: 100%;
-            height: 54px;
+            height: 48px;
             border: 0;
-            border-radius: 16px;
+            border-radius: 14px;
             background: linear-gradient(90deg, #10b981, #059669);
             color: white;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            box-shadow: 0 12px 25px rgba(5, 150, 105, .22);
+            gap: 8px;
+            box-shadow: 0 10px 22px rgba(5, 150, 105, .22);
             transition: transform .2s ease, box-shadow .2s ease;
         }
 
         .nto-login-button:hover {
             transform: translateY(-1px);
-            box-shadow: 0 16px 30px rgba(5, 150, 105, .28);
+            box-shadow: 0 14px 26px rgba(5, 150, 105, .28);
         }
 
         .nto-login-button:active {
@@ -672,8 +674,8 @@
         }
 
         .nto-login-button svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             transition: transform .2s ease;
         }
 
@@ -683,25 +685,25 @@
 
         /* Security */
         .nto-security {
-            margin-top: 25px;
-            padding-top: 20px;
+            margin-top: 16px;
+            padding-top: 14px;
             border-top: 1px solid #eef2f5;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .nto-security svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             flex-shrink: 0;
             color: #059669;
         }
 
         .nto-security span {
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
         }
 
@@ -711,13 +713,13 @@
             z-index: 10;
             width: 100%;
             text-align: center;
-            padding-bottom: 5px;
+            padding-bottom: 0;
         }
 
         .nto-footer p {
             margin: 0;
             color: #64748b;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
         }
 
@@ -730,11 +732,13 @@
         @media (max-width: 1023px) {
             .nto-login-page {
                 display: block;
+                height: auto;
                 min-height: 100vh;
                 overflow: auto;
             }
 
             .nto-left {
+                height: auto;
                 min-height: auto;
                 padding: 25px 22px 45px;
             }
@@ -745,6 +749,7 @@
             }
 
             .nto-right {
+                height: auto;
                 min-height: auto;
                 padding: 35px 22px 25px;
             }
@@ -765,25 +770,25 @@
             }
 
             .nto-logo-card {
-                width: 230px;
-                padding: 20px;
+                width: 210px;
+                padding: 16px;
             }
 
             .nto-logo-image-wrapper {
-                height: 170px;
+                height: 120px;
             }
 
             .nto-logo-image {
-                width: 145px;
-                height: 145px;
+                width: 125px;
+                height: 125px;
             }
 
             .nto-portal-title {
-                font-size: 29px;
+                font-size: 24px;
             }
 
             .nto-description {
-                font-size: 13px;
+                font-size: 12px;
             }
 
             .nto-location span {
@@ -796,15 +801,15 @@
             }
 
             .nto-login-card {
-                border-radius: 22px;
+                border-radius: 20px;
             }
 
             .nto-login-inner {
-                padding: 30px 20px 25px;
+                padding: 24px 18px 20px;
             }
 
             .nto-login-header h2 {
-                font-size: 24px;
+                font-size: 22px;
             }
         }
     </style>
@@ -915,23 +920,23 @@
 
             {{-- Curved Divider --}}
             <div class="nto-divider">
-                <svg viewBox="0 0 145 800" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path class="nto-divider-path" d="M145 0 C45 250 45 550 145 800 L145 800 L145 0 Z" />
+                <svg viewBox="0 0 130 800" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="nto-divider-path" d="M130 0 C35 250 35 550 130 800 L130 800 L130 0 Z" />
                 </svg>
             </div>
+        </section>
 
-            {{-- Floating Shield Badge --}}
-            <div class="nto-shield">
-                <div class="nto-shield-glow"></div>
-                <div class="nto-shield-badge">
-                    <div class="nto-shield-inner">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
+        {{-- Floating Shield Badge - Placed at main page level to prevent overflow clipping --}}
+        <div class="nto-shield">
+            <div class="nto-shield-glow"></div>
+            <div class="nto-shield-badge">
+                <div class="nto-shield-inner">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
                 </div>
             </div>
-        </section>
+        </div>
 
         {{-- =====================================================
            RIGHT PANEL
@@ -973,7 +978,7 @@
                         </div>
 
                         {{-- Session Status --}}
-                        <x-auth-session-status class="mb-5 text-sm" :status="session('status')" />
+                        <x-auth-session-status class="mb-4 text-xs" :status="session('status')" />
 
                         {{-- Login Form --}}
                         <form method="POST" action="{{ route('login') }}" class="nto-form">
@@ -991,7 +996,7 @@
                                         autofocus autocomplete="username" placeholder="admin@nto-kupang.sch.id"
                                         class="nto-input">
                                 </div>
-                                <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs text-rose-600 font-semibold" />
+                                <x-input-error :messages="$errors->get('email')" class="mt-1.5 text-xs text-rose-600 font-semibold" />
                             </div>
 
                             {{-- PASSWORD --}}
@@ -1027,7 +1032,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <x-input-error :messages="$errors->get('password')" class="mt-2 text-xs text-rose-600 font-semibold" />
+                                <x-input-error :messages="$errors->get('password')" class="mt-1.5 text-xs text-rose-600 font-semibold" />
                             </div>
 
                             {{-- REMEMBER --}}
