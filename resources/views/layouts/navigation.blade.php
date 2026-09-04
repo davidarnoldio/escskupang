@@ -28,6 +28,20 @@
                     <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                     <span>Portal Presensi Anak</span>
                 </a>
+
+                <!-- Parent Payments Link -->
+                <a href="{{ route('parent.payments') }}"
+                   class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('parent.payments') ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <span>Tagihan Pembayaran</span>
+                </a>
+
+                <!-- Parent Homeworks Link -->
+                <a href="{{ route('parent.homeworks') }}"
+                   class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('parent.homeworks') ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <span>Tugas Sekolah (PR)</span>
+                </a>
             @else
                 <!-- Dashboard Link -->
                 <a href="{{ route('dashboard') }}"
@@ -76,7 +90,21 @@
                     @endif
                 </a>
 
+                <!-- Homework / PR Link (Guru & Admin) -->
+                <a href="{{ route('homeworks.index') }}"
+                   class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('homeworks.*') ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <span>Pekerjaan Rumah (PR)</span>
+                </a>
+
                 @if($user && $user->isAdmin())
+                    <!-- Pembayaran SPP Link (Admin Only) -->
+                    <a href="{{ route('payments.index') }}"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('payments.*') ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <span>Pembayaran SPP</span>
+                    </a>
+
                     <!-- Reset Password Link (Admin Only) -->
                     <a href="{{ route('admin.password-requests.index') }}"
                        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('admin.password-requests.*') ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
@@ -200,6 +228,8 @@
     <div x-show="mobileOpen" @click.away="mobileOpen = false" class="fixed inset-x-0 top-14 bg-[#0b1329] border-b border-slate-800 p-4 space-y-2 text-xs shadow-2xl z-50" style="display: none;">
         @if($user && $user->isParent())
             <a href="{{ route('parent.dashboard') }}" class="block px-4 py-2 rounded-xl bg-blue-600 text-white font-bold">Portal Presensi Anak</a>
+            <a href="{{ route('parent.payments') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Tagihan Pembayaran</a>
+            <a href="{{ route('parent.homeworks') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Tugas Sekolah (PR)</a>
         @else
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Dashboard</a>
             <a href="{{ route('students.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Data Siswa</a>
@@ -207,7 +237,9 @@
             <a href="{{ route('attendances.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Presensi Harian</a>
             <a href="{{ route('attendances.rekap') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Rekap Presensi</a>
             <a href="{{ route('attendances.letters') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Surat Izin Ortu</a>
+            <a href="{{ route('homeworks.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Pekerjaan Rumah (PR)</a>
             @if($user && $user->isAdmin())
+                <a href="{{ route('payments.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Pembayaran SPP</a>
                 <a href="{{ route('admin.password-requests.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Reset Password ({{ $pendingPassRequests }})</a>
                 <a href="{{ route('teachers.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Kelola Guru</a>
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Pengaturan Jam</a>

@@ -3,8 +3,10 @@
 use App\Http\Controllers\AdminPasswordController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeworkController;
 use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\ParentController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QRController;
 use App\Http\Controllers\SettingController;
@@ -36,6 +38,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/parent/dashboard', [ParentController::class, 'dashboard'])->name('parent.dashboard');
     Route::post('/parent/upload-letter', [ParentController::class, 'uploadLetter'])->name('parent.upload-letter');
     Route::post('/parent/update-account', [ParentController::class, 'updateAccount'])->name('parent.update-account');
+
+    // Payments Module (Admin & Parent)
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
+    Route::post('/payments/{payment}/verify', [PaymentController::class, 'verify'])->name('payments.verify');
+    Route::delete('/payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
+    Route::get('/parent/payments', [PaymentController::class, 'parentIndex'])->name('parent.payments');
+    Route::post('/parent/payments/{payment}/upload-proof', [PaymentController::class, 'uploadProof'])->name('parent.upload-proof');
+
+    // Homework Module (Teacher & Parent)
+    Route::get('/homeworks', [HomeworkController::class, 'index'])->name('homeworks.index');
+    Route::post('/homeworks', [HomeworkController::class, 'store'])->name('homeworks.store');
+    Route::get('/homeworks/{homework}/submissions', [HomeworkController::class, 'submissions'])->name('homeworks.submissions');
+    Route::post('/homework-submissions/{submission}/grade', [HomeworkController::class, 'gradeSubmission'])->name('homeworks.grade');
+    Route::delete('/homeworks/{homework}', [HomeworkController::class, 'destroy'])->name('homeworks.destroy');
+    Route::get('/parent/homeworks', [HomeworkController::class, 'parentIndex'])->name('parent.homeworks');
+    Route::post('/parent/homeworks/{homework}/submit', [HomeworkController::class, 'submitHomework'])->name('parent.submit-homework');
 
     // Student CRUD & QR Card
     Route::resource('students', StudentController::class);

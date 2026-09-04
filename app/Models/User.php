@@ -26,6 +26,11 @@ class User extends Authenticatable
         return $this->belongsTo(Student::class);
     }
 
+    public function homeworks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Homework::class, 'teacher_id');
+    }
+
     /**
      * Role helper checks.
      */

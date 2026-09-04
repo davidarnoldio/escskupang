@@ -42,6 +42,16 @@ class Student extends Model
         return $this->hasMany(Attendance::class);
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function homeworkSubmissions(): HasMany
+    {
+        return $this->hasMany(HomeworkSubmission::class);
+    }
+
     /**
      * Check if a user has permission to view this student's profile photo.
      * Allowed: Admin, Student's own Wali Kelas (class homeroom teacher), and Student's own Parent.
