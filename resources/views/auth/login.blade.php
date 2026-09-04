@@ -1,61 +1,77 @@
 <x-guest-layout>
-    <div class="min-h-screen grid lg:grid-cols-12 bg-[#fee6a8]">
+    <div class="min-h-screen grid lg:grid-cols-12 bg-[#f8fafc] overflow-hidden relative">
 
-        <!-- PANEL KIRI: ~45% Width (lg:col-span-5) Dark Forest Green Hero Panel -->
-        <div
-            class="lg:col-span-5 relative bg-[#025a3f] p-8 lg:p-10 flex flex-col justify-between overflow-hidden text-white min-h-[520px] lg:min-h-screen shadow-2xl z-10">
+        <!-- PANEL KIRI: ~45% Width (lg:col-span-5) Dark Forest Green Hero Panel with Curved Edge -->
+        <div class="lg:col-span-5 relative bg-[#024a35] p-8 lg:p-10 flex flex-col justify-between overflow-hidden text-white min-h-[520px] lg:min-h-screen shadow-2xl z-10">
 
-            <!-- Monochromatic Mint Tree Silhouette Watermark (Matching Gambar 1) -->
-            <div class="absolute -left-28 top-1/2 -translate-y-1/2 w-[540px] h-[540px] opacity-20 pointer-events-none z-0 select-none">
-                <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-emerald-300">
-                    <!-- Ground curve -->
-                    <path d="M 30 350 Q 200 310 370 350" stroke="currentColor" stroke-width="8" stroke-linecap="round" opacity="0.5"/>
-                    <path d="M 50 360 Q 200 325 350 360" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity="0.3"/>
+            <!-- Curved Right Edge Boundary Overlay (Desktop Only) -->
+            <svg viewBox="0 0 100 1000" preserveAspectRatio="none" class="hidden lg:block absolute top-0 bottom-0 -right-12 h-full w-24 text-[#024a35] fill-current pointer-events-none z-20">
+                <path d="M 0 0 Q 90 500 0 1000 Z"/>
+            </svg>
 
-                    <!-- Trunk -->
-                    <path d="M 190 330 C 190 260 170 210 155 170 M 210 330 C 210 260 230 210 245 170" stroke="currentColor" stroke-width="14" stroke-linecap="round"/>
-                    <path d="M 200 330 L 200 140" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>
+            <!-- Floating Circular Shield Badge on Curved Boundary (Desktop Only) -->
+            <div class="hidden lg:flex absolute -right-6 top-1/2 -translate-y-1/2 z-30 items-center justify-center">
+                <div class="w-16 h-16 rounded-full bg-white shadow-xl border border-slate-100 p-1 flex items-center justify-center">
+                    <div class="w-full h-full rounded-full border-2 border-dashed border-emerald-400 flex items-center justify-center text-emerald-600 bg-white">
+                        <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- Main Spreading Branches -->
-                    <path d="M 200 240 C 150 210 100 200 50 210" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
-                    <path d="M 200 240 C 250 210 300 200 350 210" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
-                    <path d="M 200 190 C 140 160 90 140 60 150" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
-                    <path d="M 200 190 C 260 160 310 140 340 150" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
-                    <path d="M 200 140 C 160 90 120 70 90 60" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-                    <path d="M 200 140 C 240 90 280 70 310 60" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-                    <path d="M 200 120 L 200 40" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+            <!-- School Building & Clock Tower Silhouette Background on Lower Left -->
+            <div class="absolute -bottom-4 -left-12 w-[440px] h-[300px] opacity-25 pointer-events-none z-0 select-none text-emerald-950">
+                <svg viewBox="0 0 500 350" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <!-- Clock Tower -->
+                    <rect x="90" y="70" width="55" height="190"/>
+                    <polygon points="90,70 117.5,15 145,70"/>
+                    <circle cx="117.5" cy="110" r="14" fill="#024a35"/>
+                    <circle cx="117.5" cy="110" r="11" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <line x1="117.5" y1="110" x2="117.5" y2="103" stroke="currentColor" stroke-width="2"/>
+                    <line x1="117.5" y1="110" x2="123" y2="110" stroke="currentColor" stroke-width="2"/>
 
-                    <!-- Leaf Clusters / Circles -->
-                    <circle cx="50" cy="210" r="25" fill="currentColor" opacity="0.35"/>
-                    <circle cx="100" cy="190" r="32" fill="currentColor" opacity="0.4"/>
-                    <circle cx="150" cy="160" r="38" fill="currentColor" opacity="0.45"/>
-                    <circle cx="250" cy="160" r="38" fill="currentColor" opacity="0.45"/>
-                    <circle cx="300" cy="190" r="32" fill="currentColor" opacity="0.4"/>
-                    <circle cx="350" cy="210" r="25" fill="currentColor" opacity="0.35"/>
-                    <circle cx="90" cy="120" r="30" fill="currentColor" opacity="0.4"/>
-                    <circle cx="140" cy="85" r="36" fill="currentColor" opacity="0.45"/>
-                    <circle cx="200" cy="55" r="42" fill="currentColor" opacity="0.5"/>
-                    <circle cx="260" cy="85" r="36" fill="currentColor" opacity="0.45"/>
-                    <circle cx="310" cy="120" r="30" fill="currentColor" opacity="0.4"/>
-                    <circle cx="150" cy="45" r="28" fill="currentColor" opacity="0.4"/>
-                    <circle cx="250" cy="45" r="28" fill="currentColor" opacity="0.4"/>
+                    <!-- Main Building Gable Wings -->
+                    <rect x="25" y="150" width="185" height="150" rx="2"/>
+                    <polygon points="25,150 117.5,95 210,150"/>
 
-                    <!-- Apples Fruits -->
-                    <circle cx="65" cy="198" r="8" fill="currentColor" opacity="0.8"/>
-                    <circle cx="115" cy="172" r="9" fill="currentColor" opacity="0.85"/>
-                    <circle cx="165" cy="135" r="10" fill="currentColor" opacity="0.9"/>
-                    <circle cx="235" cy="135" r="10" fill="currentColor" opacity="0.9"/>
-                    <circle cx="285" cy="172" r="9" fill="currentColor" opacity="0.85"/>
-                    <circle cx="335" cy="198" r="8" fill="currentColor" opacity="0.8"/>
-                    <circle cx="115" cy="100" r="9" fill="currentColor" opacity="0.85"/>
-                    <circle cx="200" cy="35" r="10" fill="currentColor" opacity="0.9"/>
-                    <circle cx="285" cy="100" r="9" fill="currentColor" opacity="0.85"/>
-                    <circle cx="155" cy="65" r="9" fill="currentColor" opacity="0.85"/>
-                    <circle cx="245" cy="65" r="9" fill="currentColor" opacity="0.85"/>
+                    <rect x="210" y="170" width="160" height="130" rx="2"/>
+                    <polygon points="210,170 290,130 370,170"/>
 
-                    <!-- Ground apples -->
-                    <circle cx="160" cy="335" r="7" fill="currentColor" opacity="0.7"/>
-                    <circle cx="240" cy="338" r="7" fill="currentColor" opacity="0.7"/>
+                    <rect x="370" y="190" width="120" height="110" rx="2"/>
+
+                    <!-- Windows -->
+                    <rect x="105" y="145" width="25" height="38" rx="12" fill="#024a35"/>
+
+                    <rect x="45" y="175" width="22" height="30" rx="2" fill="#024a35"/>
+                    <rect x="80" y="175" width="22" height="30" rx="2" fill="#024a35"/>
+                    <rect x="135" y="175" width="22" height="30" rx="2" fill="#024a35"/>
+                    <rect x="170" y="175" width="22" height="30" rx="2" fill="#024a35"/>
+
+                    <rect x="45" y="225" width="22" height="30" rx="2" fill="#024a35"/>
+                    <rect x="80" y="225" width="22" height="30" rx="2" fill="#024a35"/>
+                    <rect x="135" y="225" width="22" height="30" rx="2" fill="#024a35"/>
+                    <rect x="170" y="225" width="22" height="30" rx="2" fill="#024a35"/>
+
+                    <rect x="230" y="195" width="20" height="28" rx="2" fill="#024a35"/>
+                    <rect x="260" y="195" width="20" height="28" rx="2" fill="#024a35"/>
+                    <rect x="290" y="195" width="20" height="28" rx="2" fill="#024a35"/>
+                    <rect x="320" y="195" width="20" height="28" rx="2" fill="#024a35"/>
+
+                    <rect x="230" y="240" width="20" height="28" rx="2" fill="#024a35"/>
+                    <rect x="260" y="240" width="20" height="28" rx="2" fill="#024a35"/>
+                    <rect x="290" y="240" width="20" height="28" rx="2" fill="#024a35"/>
+                    <rect x="320" y="240" width="20" height="28" rx="2" fill="#024a35"/>
+
+                    <!-- Trees -->
+                    <circle cx="15" cy="275" r="35"/>
+                    <circle cx="45" cy="285" r="25"/>
+                    <circle cx="410" cy="275" r="35"/>
+                    <circle cx="450" cy="265" r="40"/>
+                    <circle cx="485" cy="285" r="30"/>
+
+                    <!-- Ground -->
+                    <rect x="0" y="295" width="500" height="55"/>
                 </svg>
             </div>
 
@@ -70,8 +86,7 @@
 
             <!-- Top Left Pill Badge -->
             <div class="relative z-10 flex items-center">
-                <span
-                    class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-400/40 bg-emerald-950/40 text-emerald-100 text-[11px] font-semibold backdrop-blur-md shadow-xs">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-400/40 bg-emerald-950/40 text-emerald-100 text-[11px] font-semibold backdrop-blur-md shadow-xs">
                     <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                     <span>NTO National Plus Primary School</span>
                 </span>
@@ -81,8 +96,7 @@
             <div class="relative z-10 my-auto py-6 flex flex-col items-center text-center">
 
                 <!-- School Logo Emblem Box Card -->
-                <div
-                    class="w-full max-w-[260px] bg-white rounded-3xl p-6 shadow-2xl border border-white/60 mb-6 text-center transform hover:scale-105 transition duration-300">
+                <div class="w-full max-w-[260px] bg-white rounded-3xl p-6 shadow-2xl border border-white/60 mb-6 text-center transform hover:scale-105 transition duration-300">
                     <img src="{{ asset('images/logo.png') }}" alt="Logo NTO National Plus"
                         class="h-28 w-auto mx-auto object-contain drop-shadow-sm mb-3"
                         onerror="this.src='{{ asset('logo.png') }}'">
@@ -115,14 +129,10 @@
 
             <!-- Bottom Location Badge Pill -->
             <div class="relative z-10 flex justify-center lg:justify-start">
-                <span
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-400/40 bg-emerald-950/40 text-emerald-100 text-[11px] font-medium backdrop-blur-md shadow-xs">
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-400/40 bg-emerald-950/40 text-emerald-100 text-[11px] font-medium backdrop-blur-md shadow-xs">
                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                        </path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                     <span>Kupang, Nusa Tenggara Timur - Indonesia</span>
                 </span>
@@ -130,22 +140,28 @@
 
         </div>
 
-        <!-- PANEL KANAN: ~55% Width (lg:col-span-7) Soft Cream Page Background -->
-        <div
-            class="lg:col-span-7 flex flex-col justify-between items-center p-6 lg:p-12 relative min-h-screen z-10 bg-[#f8fafc]">
+        <!-- PANEL KANAN: ~55% Width (lg:col-span-7) Soft Neutral Background -->
+        <div class="lg:col-span-7 flex flex-col justify-between items-center p-6 lg:p-12 relative min-h-screen z-10 bg-[#f8fafc]">
+
+            <!-- Background Subtle Curved Watermark Graphics on Right Edge -->
+            <div class="absolute inset-y-0 right-0 w-80 opacity-40 pointer-events-none z-0">
+                <svg viewBox="0 0 300 800" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-slate-200">
+                    <path d="M 150 0 Q 300 400 150 800" stroke="currentColor" stroke-width="40" opacity="0.3"/>
+                    <path d="M 220 0 Q 350 400 220 800" stroke="currentColor" stroke-width="20" opacity="0.2"/>
+                </svg>
+            </div>
 
             <!-- Login Card Container -->
-            <div class="w-full my-auto flex flex-col items-center">
-                <div
-                    class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10 transition-all duration-300">
+            <div class="w-full my-auto flex flex-col items-center relative z-10">
+                <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10 transition-all duration-300 overflow-hidden relative">
 
-                    <!-- Top Circular Shield Icon Badge -->
-                    <div
-                        class="w-14 h-14 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto mb-5 text-emerald-600 shadow-xs">
+                    <!-- Top Accent Bar on Card -->
+                    <div class="h-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-t-full -mt-8 -mx-8 sm:-mt-10 sm:-mx-10 mb-6"></div>
+
+                    <!-- Top Circular User Icon Badge -->
+                    <div class="w-14 h-14 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto mb-5 text-emerald-600 shadow-xs">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                     </div>
 
@@ -166,23 +182,18 @@
 
                         <!-- Email Address -->
                         <div>
-                            <label for="email" class="block text-xs font-bold text-slate-700 mb-1.5">Alamat
-                                Email</label>
+                            <label for="email" class="block text-xs font-bold text-slate-700 mb-1.5">Alamat Email</label>
                             <div class="relative">
-                                <div
-                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-600">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-600">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                     </svg>
                                 </div>
                                 <input id="email" type="email" name="email" :value="old('email')" required autofocus
                                     autocomplete="username" placeholder="admin@nto-kupang.sch.id"
                                     class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-xs transition duration-200">
                             </div>
-                            <x-input-error :messages="$errors->get('email')"
-                                class="mt-1.5 text-xs text-rose-600 font-semibold" />
+                            <x-input-error :messages="$errors->get('email')" class="mt-1.5 text-xs text-rose-600 font-semibold" />
                         </div>
 
                         <!-- Password -->
@@ -190,19 +201,15 @@
                             <div class="flex items-center justify-between mb-1.5">
                                 <label for="password" class="block text-xs font-bold text-slate-700">Kata Sandi</label>
                                 @if (Route::has('password.request'))
-                                    <a class="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition"
-                                        href="{{ route('password.request') }}">
+                                    <a class="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition" href="{{ route('password.request') }}">
                                         Lupa kata sandi?
                                     </a>
                                 @endif
                             </div>
                             <div class="relative">
-                                <div
-                                    class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-600">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-600">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                                     </svg>
                                 </div>
                                 <input id="password" :type="showPassword ? 'text' : 'password'" name="password" required
@@ -213,22 +220,16 @@
                                 <button type="button" @click="showPassword = !showPassword" id="togglePasswordBtn"
                                     class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-emerald-600 focus:outline-none transition cursor-pointer"
                                     title="Tampilkan / Sembunyikan Kata Sandi">
-                                    <svg x-show="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    <svg x-show="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
-                                    <svg x-show="showPassword" class="w-5 h-5" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" style="display: none;">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.02 10.02 0 013.122-.563c4.478 0 8.268 2.943 9.542 7a9.97 9.97 0 01-2.43 3.978m-3.83-3.83a3 3 0 00-4.243-4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                                    <svg x-show="showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.02 10.02 0 013.122-.563c4.478 0 8.268 2.943 9.542 7a9.97 9.97 0 01-2.43 3.978m-3.83-3.83a3 3 0 00-4.243-4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
                                     </svg>
                                 </button>
                             </div>
-                            <x-input-error :messages="$errors->get('password')"
-                                class="mt-1.5 text-xs text-rose-600 font-semibold" />
+                            <x-input-error :messages="$errors->get('password')" class="mt-1.5 text-xs text-rose-600 font-semibold" />
                         </div>
 
                         <!-- Remember Me -->
@@ -236,8 +237,7 @@
                             <label for="remember_me" class="inline-flex items-center cursor-pointer">
                                 <input id="remember_me" type="checkbox" name="remember"
                                     class="rounded border-slate-300 text-emerald-600 shadow-xs focus:ring-emerald-500 w-4 h-4 cursor-pointer">
-                                <span class="ms-2.5 text-xs font-semibold text-slate-700">Ingat saya di perangkat
-                                    ini</span>
+                                <span class="ms-2.5 text-xs font-semibold text-slate-700">Ingat saya di perangkat ini</span>
                             </label>
                         </div>
 
@@ -247,20 +247,16 @@
                                 class="w-full py-3.5 px-6 bg-[#059669] hover:bg-[#047857] text-white font-bold rounded-xl shadow-md shadow-emerald-700/20 text-sm flex items-center justify-center gap-2 cursor-pointer transition duration-200 transform active:scale-[0.99]">
                                 <span>Masuk Sekarang</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                                 </svg>
                             </button>
                         </div>
                     </form>
 
                     <!-- Security Guarantee Notice -->
-                    <div
-                        class="mt-6 pt-5 border-t border-slate-100 text-center flex items-center justify-center gap-2 text-xs font-medium text-slate-400">
+                    <div class="mt-6 pt-5 border-t border-slate-100 text-center flex items-center justify-center gap-2 text-xs font-medium text-slate-400">
                         <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                         </svg>
                         <span>Keamanan data kami terjamin dan terenkripsi.</span>
                     </div>
@@ -269,9 +265,11 @@
             </div>
 
             <!-- Footer Copyright Notice -->
-            <div class="text-center text-xs text-slate-500 font-medium pb-2">
-                &copy; {{ date('Y') }} <strong class="text-emerald-700 font-bold">NTO National Plus Primary
-                    School</strong>. Hak Cipta Dilindungi.
+            <div class="text-center text-xs text-slate-500 font-medium pb-2 relative z-10 flex items-center justify-center gap-1.5">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                <span>&copy; {{ date('Y') }} <strong class="text-emerald-700 font-bold">NTO National Plus Primary School</strong>. Hak Cipta Dilindungi.</span>
             </div>
 
         </div>
