@@ -8,9 +8,15 @@ $uri = urldecode(
     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? ''
 );
 
-$publicFile = __DIR__ . '/public' . $uri;
+// Determine target static file path
+if (str_starts_with($uri, '/storage/')) {
+    $relativePath = substr($uri, strlen('/storage/'));
+    $publicFile = __DIR__ . '/storage/app/public/' . $relativePath;
+} else {
+    $publicFile = __DIR__ . '/public' . $uri;
+}
 
-// Serve static assets directly from public directory
+// Serve static assets directly from public directory or storage
 if ($uri !== '/' && file_exists($publicFile) && !is_dir($publicFile)) {
     $extension = strtolower(pathinfo($publicFile, PATHINFO_EXTENSION));
     $mimeTypes = [
@@ -26,6 +32,8 @@ if ($uri !== '/' && file_exists($publicFile) && !is_dir($publicFile)) {
         'woff2' => 'font/woff2',
         'ttf'   => 'font/ttf',
         'json'  => 'application/json',
+        'webp'  => 'image/webp',
+        'pdf'   => 'application/pdf',
     ];
 
     if (isset($mimeTypes[$extension])) {
