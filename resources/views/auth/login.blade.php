@@ -12,7 +12,7 @@
             --nto-green: #024a35;
             --nto-green-dark: #013727;
             --nto-green-light: #059669;
-            --nto-bg: #f7f9fb;
+            --nto-bg: #dfc88b;
 
             width: 100%;
             height: 100vh;
@@ -308,7 +308,7 @@
         }
 
         .nto-divider-path {
-            fill: #f7f9fb;
+            fill: #dfc88b;
         }
 
         /* Shield Badge on Curve - Positioned on main container to avoid clipping */
@@ -369,7 +369,7 @@
             min-width: 0;
             height: 100vh;
             overflow: hidden;
-            background: #f7f9fb;
+            background: #dfc88b;
             display: flex;
             flex-direction: column;
             align-items: center;
