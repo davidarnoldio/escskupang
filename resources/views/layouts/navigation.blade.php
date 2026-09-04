@@ -48,7 +48,7 @@
 @endphp
 
 <!-- Sidebar Desktop (lg:flex) -->
-<aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#024a35] text-slate-100 z-40 flex-col justify-between border-r border-emerald-900/60 shadow-2xl overflow-hidden relative">
+<aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#024a35] text-slate-100 z-40 flex-col justify-between border-r border-emerald-900/60 shadow-2xl overflow-hidden">
     
     <!-- Background Tree Logo Watermark Shadow (Monochromatic Mint Matching Gambar 1) -->
     <div class="absolute -bottom-16 -right-16 w-72 h-72 opacity-15 pointer-events-none z-0 select-none">
