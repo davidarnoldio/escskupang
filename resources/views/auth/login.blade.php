@@ -311,55 +311,7 @@
             fill: #dfc88b;
         }
 
-        /* Shield Badge on Curve - Positioned on main container to avoid clipping */
-        .nto-shield {
-            position: absolute;
-            left: 42%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 25;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: auto;
-        }
 
-        .nto-shield-glow {
-            position: absolute;
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: rgba(16, 185, 129, .15);
-            filter: blur(18px);
-        }
-
-        .nto-shield-badge {
-            position: relative;
-            width: 66px;
-            height: 66px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, .18);
-        }
-
-        .nto-shield-inner {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px dashed #10b981;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .nto-shield-inner svg {
-            width: 25px;
-            height: 25px;
-            color: #059669;
-        }
 
         /* =========================================================
            RIGHT PANEL
@@ -743,8 +695,7 @@
                 padding: 25px 22px 45px;
             }
 
-            .nto-divider,
-            .nto-shield {
+            .nto-divider {
                 display: none;
             }
 
@@ -926,17 +877,7 @@
             </div>
         </section>
 
-        {{-- Floating Shield Badge - Placed at main page level to prevent overflow clipping --}}
-        <div class="nto-shield">
-            <div class="nto-shield-glow"></div>
-            <div class="nto-shield-badge">
-                <div class="nto-shield-inner">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
-            </div>
-        </div>
+
 
         {{-- =====================================================
            RIGHT PANEL
