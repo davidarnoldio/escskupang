@@ -1,7 +1,50 @@
 @php
     $user = Auth::user();
+
+    // Admin Counts
     $pendingPassRequests = $user?->isAdmin() ? \App\Models\PasswordResetRequest::where('status', 'pending')->count() : 0;
-    $pendingLettersCount = \App\Models\Attendance::whereNotNull('surat_izin')->where('status', 'izin')->count();
+    $pendingPaymentsCount = $user?->isAdmin() ? \App\Models\Payment::where('status', 'menunggu_konfirmasi')->count() : 0;
+
+    // Guru & Admin Homework Submissions Needing Grading
+    $pendingHomeworkSubmissionsCount = 0;
+    if ($user && ($user->isTeacher() || $user->isAdmin())) {
+        $assignedClass = $user->getAssignedClass();
+        $hwSubQuery = \App\Models\HomeworkSubmission::whereNull('nilai');
+        if ($user->isTeacher() && $assignedClass) {
+            $hwSubQuery->whereHas('homework', fn($q) => $q->where('kelas', $assignedClass));
+        }
+        $pendingHomeworkSubmissionsCount = $hwSubQuery->count();
+    }
+
+    // Guru & Admin Attendance Letters
+    $pendingLettersCount = 0;
+    if ($user && ($user->isTeacher() || $user->isAdmin())) {
+        $assignedClass = $user->getAssignedClass();
+        $letterQuery = \App\Models\Attendance::whereNotNull('surat_izin')->where('status', 'izin');
+        if ($user->isTeacher() && $assignedClass) {
+            $letterQuery->whereHas('student', fn($q) => $q->where('kelas', $assignedClass));
+        }
+        $pendingLettersCount = $letterQuery->count();
+    }
+
+    // Parent Portal Badges
+    $parentUnpaidCount = 0;
+    $parentPendingPRCount = 0;
+    if ($user && $user->isParent() && $user->student_id) {
+        $parentUnpaidCount = \App\Models\Payment::where('student_id', $user->student_id)
+            ->whereIn('status', ['belum_lunas', 'ditolak'])
+            ->count();
+
+        $studentClass = $user->student?->kelas;
+        if ($studentClass) {
+            $parentPendingPRCount = \App\Models\Homework::where('kelas', $studentClass)
+                ->where(function($q) use ($user) {
+                    $q->whereNull('student_id')->orWhere('student_id', $user->student_id);
+                })
+                ->whereDoesntHave('submissions', fn($q) => $q->where('student_id', $user->student_id))
+                ->count();
+        }
+    }
 @endphp
 
 <!-- Sidebar Desktop (lg:flex) -->
@@ -33,14 +76,24 @@
                 <a href="{{ route('parent.payments') }}"
                    class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('parent.payments') ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                    <span>Tagihan Pembayaran</span>
+                    <span class="flex-1">Tagihan Pembayaran</span>
+                    @if($parentUnpaidCount > 0)
+                        <span class="px-2 py-0.5 text-[9px] font-black bg-rose-500 text-white rounded-full animate-pulse shadow-sm shadow-rose-500/50">
+                            {{ $parentUnpaidCount }}
+                        </span>
+                    @endif
                 </a>
 
                 <!-- Parent Homeworks Link -->
                 <a href="{{ route('parent.homeworks') }}"
                    class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('parent.homeworks') ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    <span>Tugas Sekolah (PR)</span>
+                    <span class="flex-1">Tugas Sekolah (PR)</span>
+                    @if($parentPendingPRCount > 0)
+                        <span class="px-2 py-0.5 text-[9px] font-black bg-amber-500 text-white rounded-full animate-pulse shadow-sm shadow-amber-500/50">
+                            {{ $parentPendingPRCount }}
+                        </span>
+                    @endif
                 </a>
             @else
                 <!-- Dashboard Link -->
@@ -84,7 +137,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     <span class="flex-1">Surat Izin Ortu</span>
                     @if($pendingLettersCount > 0)
-                        <span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-500 text-white rounded-full">
+                        <span class="px-2 py-0.5 text-[9px] font-black bg-emerald-500 text-white rounded-full animate-pulse shadow-sm shadow-emerald-500/50">
                             {{ $pendingLettersCount }}
                         </span>
                     @endif
@@ -94,7 +147,12 @@
                 <a href="{{ route('homeworks.index') }}"
                    class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('homeworks.*') ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    <span>Pekerjaan Rumah (PR)</span>
+                    <span class="flex-1">Pekerjaan Rumah (PR)</span>
+                    @if($pendingHomeworkSubmissionsCount > 0)
+                        <span class="px-2 py-0.5 text-[9px] font-black bg-amber-500 text-white rounded-full animate-pulse shadow-sm shadow-amber-500/50" title="{{ $pendingHomeworkSubmissionsCount }} PR perlu dinilai">
+                            {{ $pendingHomeworkSubmissionsCount }}
+                        </span>
+                    @endif
                 </a>
 
                 @if($user && $user->isAdmin())
@@ -102,7 +160,12 @@
                     <a href="{{ route('payments.index') }}"
                        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('payments.*') ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        <span>Pembayaran SPP</span>
+                        <span class="flex-1">Pembayaran SPP</span>
+                        @if($pendingPaymentsCount > 0)
+                            <span class="px-2 py-0.5 text-[9px] font-black bg-rose-500 text-white rounded-full animate-pulse shadow-sm shadow-rose-500/50" title="{{ $pendingPaymentsCount }} bukti pembayaran perlu konfirmasi">
+                                {{ $pendingPaymentsCount }}
+                            </span>
+                        @endif
                     </a>
 
                     <!-- Reset Password Link (Admin Only) -->
@@ -111,7 +174,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
                         <span class="flex-1">Reset Password</span>
                         @if($pendingPassRequests > 0)
-                            <span class="px-1.5 py-0.5 text-[9px] font-black bg-rose-500 text-white rounded-full animate-pulse">
+                            <span class="px-2 py-0.5 text-[9px] font-black bg-rose-500 text-white rounded-full animate-pulse shadow-sm shadow-rose-500/50">
                                 {{ $pendingPassRequests }}
                             </span>
                         @endif
@@ -228,19 +291,61 @@
     <div x-show="mobileOpen" @click.away="mobileOpen = false" class="fixed inset-x-0 top-14 bg-[#024a35] border-b border-emerald-900 p-4 space-y-2 text-xs shadow-2xl z-50" style="display: none;">
         @if($user && $user->isParent())
             <a href="{{ route('parent.dashboard') }}" class="block px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold">Portal Presensi Anak</a>
-            <a href="{{ route('parent.payments') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Tagihan Pembayaran</a>
-            <a href="{{ route('parent.homeworks') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Tugas Sekolah (PR)</a>
+            <a href="{{ route('parent.payments') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
+                <span>Tagihan Pembayaran</span>
+                @if($parentUnpaidCount > 0)
+                    <span class="px-2 py-0.5 text-[9px] font-black bg-rose-500 text-white rounded-full">
+                        {{ $parentUnpaidCount }}
+                    </span>
+                @endif
+            </a>
+            <a href="{{ route('parent.homeworks') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
+                <span>Tugas Sekolah (PR)</span>
+                @if($parentPendingPRCount > 0)
+                    <span class="px-2 py-0.5 text-[9px] font-black bg-amber-500 text-white rounded-full">
+                        {{ $parentPendingPRCount }}
+                    </span>
+                @endif
+            </a>
         @else
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Dashboard</a>
             <a href="{{ route('students.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Data Siswa</a>
             <a href="{{ route('qr.scan') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Scan QR Code</a>
             <a href="{{ route('attendances.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Presensi Harian</a>
             <a href="{{ route('attendances.rekap') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Rekap Presensi</a>
-            <a href="{{ route('attendances.letters') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Surat Izin Ortu</a>
-            <a href="{{ route('homeworks.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Pekerjaan Rumah (PR)</a>
+            <a href="{{ route('attendances.letters') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
+                <span>Surat Izin Ortu</span>
+                @if($pendingLettersCount > 0)
+                    <span class="px-2 py-0.5 text-[9px] font-black bg-emerald-500 text-white rounded-full">
+                        {{ $pendingLettersCount }}
+                    </span>
+                @endif
+            </a>
+            <a href="{{ route('homeworks.index') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
+                <span>Pekerjaan Rumah (PR)</span>
+                @if($pendingHomeworkSubmissionsCount > 0)
+                    <span class="px-2 py-0.5 text-[9px] font-black bg-amber-500 text-white rounded-full">
+                        {{ $pendingHomeworkSubmissionsCount }}
+                    </span>
+                @endif
+            </a>
             @if($user && $user->isAdmin())
-                <a href="{{ route('payments.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Pembayaran SPP</a>
-                <a href="{{ route('admin.password-requests.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Reset Password ({{ $pendingPassRequests }})</a>
+                <a href="{{ route('payments.index') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
+                    <span>Pembayaran SPP</span>
+                    @if($pendingPaymentsCount > 0)
+                        <span class="px-2 py-0.5 text-[9px] font-black bg-rose-500 text-white rounded-full">
+                            {{ $pendingPaymentsCount }}
+                        </span>
+                    @endif
+                </a>
+                <a href="{{ route('admin.password-requests.index') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
+                    <span>Reset Password</span>
+                    @if($pendingPassRequests > 0)
+                        <span class="px-2 py-0.5 text-[9px] font-black bg-rose-500 text-white rounded-full">
+                            {{ $pendingPassRequests }}
+                        </span>
+                    @endif
+                </a>
                 <a href="{{ route('teachers.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Kelola Guru</a>
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Pengaturan Jam</a>
             @endif
