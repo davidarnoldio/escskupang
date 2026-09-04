@@ -5,18 +5,58 @@
         <div
             class="lg:col-span-5 relative bg-[#025a3f] p-8 lg:p-10 flex flex-col justify-between overflow-hidden text-white min-h-[520px] lg:min-h-screen shadow-2xl z-10">
 
-            <!-- Large Background School Tree Logo Watermark Shadow -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden"
-                 style="-webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 65%); mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 65%);">
-                <img src="{{ asset('images/logo.png') }}" alt="Watermark Tree Logo"
-                    class="w-[650px] h-[650px] max-w-none opacity-30 mix-blend-multiply filter contrast-150 brightness-90 transform -rotate-12 scale-110 select-none"
-                    onerror="this.src='{{ asset('logo.png') }}'">
-            </div>
+            <!-- Monochromatic Mint Tree Silhouette Watermark (Matching Gambar 1) -->
+            <div class="absolute -left-28 top-1/2 -translate-y-1/2 w-[540px] h-[540px] opacity-20 pointer-events-none z-0 select-none">
+                <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-emerald-300">
+                    <!-- Ground curve -->
+                    <path d="M 30 350 Q 200 310 370 350" stroke="currentColor" stroke-width="8" stroke-linecap="round" opacity="0.5"/>
+                    <path d="M 50 360 Q 200 325 350 360" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity="0.3"/>
 
-            <!-- Additional Corner Watermark Shadow -->
-            <div class="absolute -bottom-20 -left-20 w-96 h-96 opacity-20 pointer-events-none z-0 mix-blend-multiply transform rotate-6 select-none"
-                 style="-webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%); mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%);">
-                <img src="{{ asset('images/logo.png') }}" alt="Tree Shadow" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
+                    <!-- Trunk -->
+                    <path d="M 190 330 C 190 260 170 210 155 170 M 210 330 C 210 260 230 210 245 170" stroke="currentColor" stroke-width="14" stroke-linecap="round"/>
+                    <path d="M 200 330 L 200 140" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>
+
+                    <!-- Main Spreading Branches -->
+                    <path d="M 200 240 C 150 210 100 200 50 210" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M 200 240 C 250 210 300 200 350 210" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M 200 190 C 140 160 90 140 60 150" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                    <path d="M 200 190 C 260 160 310 140 340 150" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+                    <path d="M 200 140 C 160 90 120 70 90 60" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M 200 140 C 240 90 280 70 310 60" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M 200 120 L 200 40" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+
+                    <!-- Leaf Clusters / Circles -->
+                    <circle cx="50" cy="210" r="25" fill="currentColor" opacity="0.35"/>
+                    <circle cx="100" cy="190" r="32" fill="currentColor" opacity="0.4"/>
+                    <circle cx="150" cy="160" r="38" fill="currentColor" opacity="0.45"/>
+                    <circle cx="250" cy="160" r="38" fill="currentColor" opacity="0.45"/>
+                    <circle cx="300" cy="190" r="32" fill="currentColor" opacity="0.4"/>
+                    <circle cx="350" cy="210" r="25" fill="currentColor" opacity="0.35"/>
+                    <circle cx="90" cy="120" r="30" fill="currentColor" opacity="0.4"/>
+                    <circle cx="140" cy="85" r="36" fill="currentColor" opacity="0.45"/>
+                    <circle cx="200" cy="55" r="42" fill="currentColor" opacity="0.5"/>
+                    <circle cx="260" cy="85" r="36" fill="currentColor" opacity="0.45"/>
+                    <circle cx="310" cy="120" r="30" fill="currentColor" opacity="0.4"/>
+                    <circle cx="150" cy="45" r="28" fill="currentColor" opacity="0.4"/>
+                    <circle cx="250" cy="45" r="28" fill="currentColor" opacity="0.4"/>
+
+                    <!-- Apples Fruits -->
+                    <circle cx="65" cy="198" r="8" fill="currentColor" opacity="0.8"/>
+                    <circle cx="115" cy="172" r="9" fill="currentColor" opacity="0.85"/>
+                    <circle cx="165" cy="135" r="10" fill="currentColor" opacity="0.9"/>
+                    <circle cx="235" cy="135" r="10" fill="currentColor" opacity="0.9"/>
+                    <circle cx="285" cy="172" r="9" fill="currentColor" opacity="0.85"/>
+                    <circle cx="335" cy="198" r="8" fill="currentColor" opacity="0.8"/>
+                    <circle cx="115" cy="100" r="9" fill="currentColor" opacity="0.85"/>
+                    <circle cx="200" cy="35" r="10" fill="currentColor" opacity="0.9"/>
+                    <circle cx="285" cy="100" r="9" fill="currentColor" opacity="0.85"/>
+                    <circle cx="155" cy="65" r="9" fill="currentColor" opacity="0.85"/>
+                    <circle cx="245" cy="65" r="9" fill="currentColor" opacity="0.85"/>
+
+                    <!-- Ground apples -->
+                    <circle cx="160" cy="335" r="7" fill="currentColor" opacity="0.7"/>
+                    <circle cx="240" cy="338" r="7" fill="currentColor" opacity="0.7"/>
+                </svg>
             </div>
 
             <!-- Subtle Matrix Dot Grid Pattern on Upper Right -->
@@ -57,7 +97,7 @@
                     <div class="w-10 h-0.5 bg-emerald-500 mx-auto my-2 rounded-full"></div>
 
                     <p class="text-[9px] font-medium text-slate-500 italic leading-snug">
-                        "Nurtured in God • Observed in Humanity • Teached in Knowledge"
+                        "Nurtured in God • Observed in Humanity • Taught in Knowledge"
                     </p>
                 </div>
 
@@ -92,7 +132,7 @@
 
         <!-- PANEL KANAN: ~55% Width (lg:col-span-7) Soft Cream Page Background -->
         <div
-            class="lg:col-span-7 flex flex-col justify-between items-center p-6 lg:p-12 relative min-h-screen z-10 bg-[#fee6a8]">
+            class="lg:col-span-7 flex flex-col justify-between items-center p-6 lg:p-12 relative min-h-screen z-10 bg-[#f8fafc]">
 
             <!-- Login Card Container -->
             <div class="w-full my-auto flex flex-col items-center">

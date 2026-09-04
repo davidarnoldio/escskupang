@@ -50,10 +50,22 @@
 <!-- Sidebar Desktop (lg:flex) -->
 <aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#024a35] text-slate-100 z-40 flex-col justify-between border-r border-emerald-900/60 shadow-2xl overflow-hidden relative">
     
-    <!-- Background Tree Logo Watermark Shadow -->
-    <div class="absolute -bottom-20 -right-20 w-80 h-80 opacity-15 pointer-events-none z-0 mix-blend-multiply select-none"
-         style="-webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%); mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%);">
-        <img src="{{ asset('images/logo.png') }}" alt="Sidebar Tree Shadow" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
+    <!-- Background Tree Logo Watermark Shadow (Monochromatic Mint Matching Gambar 1) -->
+    <div class="absolute -bottom-16 -right-16 w-72 h-72 opacity-15 pointer-events-none z-0 select-none">
+        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-emerald-400">
+            <path d="M 30 350 Q 200 310 370 350" stroke="currentColor" stroke-width="8" opacity="0.5"/>
+            <path d="M 190 330 C 190 260 170 210 155 170 M 210 330 C 210 260 230 210 245 170" stroke="currentColor" stroke-width="14"/>
+            <path d="M 200 330 L 200 140" stroke="currentColor" stroke-width="16"/>
+            <path d="M 200 240 C 150 210 100 200 50 210" stroke="currentColor" stroke-width="8"/>
+            <path d="M 200 240 C 250 210 300 200 350 210" stroke="currentColor" stroke-width="8"/>
+            <circle cx="50" cy="210" r="25" fill="currentColor" opacity="0.35"/>
+            <circle cx="100" cy="190" r="32" fill="currentColor" opacity="0.4"/>
+            <circle cx="150" cy="160" r="38" fill="currentColor" opacity="0.45"/>
+            <circle cx="250" cy="160" r="38" fill="currentColor" opacity="0.45"/>
+            <circle cx="300" cy="190" r="32" fill="currentColor" opacity="0.4"/>
+            <circle cx="350" cy="210" r="25" fill="currentColor" opacity="0.35"/>
+            <circle cx="200" cy="55" r="42" fill="currentColor" opacity="0.5"/>
+        </svg>
     </div>
     
     <!-- Top Header: Logo & Brand -->
