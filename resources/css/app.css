@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    /* Brand Theme Design Tokens - NTO National Plus Primary School */
+    --color-primary: #10b981;          /* Emerald 500 */
+    --color-primary-hover: #059669;    /* Emerald 600 */
+    --color-primary-dark: #047857;     /* Emerald 700 */
+    --color-primary-darker: #064e3b;   /* Emerald 900 */
+    --color-primary-light: #ecfdf5;    /* Emerald 50 */
+    --color-primary-border: #a7f3d0;   /* Emerald 200 */
+    --color-primary-glow: rgba(16, 185, 129, 0.35);
+
+    --color-accent: #dc2626;           /* Crimson Red 600 */
+    --color-accent-hover: #b91c1c;     /* Crimson Red 700 */
+    --color-accent-light: #fef2f2;     /* Crimson Red 50 */
+    --color-accent-border: #fecaca;    /* Crimson Red 200 */
+
+    --color-canvas-bg: #f8fafc;
+    --color-sidebar-from: #064e3b;
+    --color-sidebar-to: #022c22;
+}
+
 @layer utilities {
     /* Custom Scrollbar for sleek sidebar and tables */
     ::-webkit-scrollbar {
@@ -19,30 +39,65 @@
         background: rgba(100, 116, 139, 0.7);
     }
 
+    /* Brand Utility Classes for Global Dynamic Color Inheritance */
+    .bg-brand-primary { background-color: var(--color-primary); }
+    .bg-brand-primary-dark { background-color: var(--color-primary-dark); }
+    .bg-brand-primary-light { background-color: var(--color-primary-light); }
+    .bg-brand-accent { background-color: var(--color-accent); }
+    .bg-brand-accent-light { background-color: var(--color-accent-light); }
+
+    .text-brand-primary { color: var(--color-primary); }
+    .text-brand-primary-dark { color: var(--color-primary-dark); }
+    .text-brand-accent { color: var(--color-accent); }
+
+    .border-brand-primary { border-color: var(--color-primary); }
+    .border-brand-accent { border-color: var(--color-accent); }
+
+    .btn-brand-primary {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+        color: #ffffff;
+        box-shadow: 0 10px 25px -5px var(--color-primary-glow);
+        transition: all 0.2s ease-in-out;
+    }
+    .btn-brand-primary:hover {
+        background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary-darker));
+        box-shadow: 0 15px 30px -5px var(--color-primary-glow);
+    }
+
+    .btn-brand-accent {
+        background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
+        color: #ffffff;
+        box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.35);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .focus-ring-brand:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-glow);
+    }
+
     /* Sidebar Custom Colors & Glassmorphism */
     .bg-sidebar-navy {
-        background: linear-gradient(180deg, #0b1329 0%, #070d1e 100%);
+        background: linear-gradient(180deg, var(--color-sidebar-from) 0%, var(--color-sidebar-to) 100%);
     }
 
     .bg-canvas {
-        background-color: #f4f7fe;
+        background-color: var(--color-canvas-bg);
     }
 
     .glass-card {
-        background: rgba(255, 255, 255, 0.85);
+        background: rgba(255, 255, 255, 0.92);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
     }
 
-    .glow-blue {
-        box-shadow: 0 4px 20px -2px rgba(37, 99, 235, 0.45);
-    }
-
     .glow-green {
-        box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.35);
+        box-shadow: 0 4px 20px -2px var(--color-primary-glow);
     }
 
     .glow-red {
-        box-shadow: 0 4px 20px -2px rgba(244, 63, 94, 0.35);
+        box-shadow: 0 4px 20px -2px rgba(220, 38, 38, 0.35);
     }
 }
+

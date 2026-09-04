@@ -1,56 +1,67 @@
 <x-guest-layout>
-    <div class="min-h-screen grid lg:grid-cols-12 bg-[#f8fafc]">
+    <div class="min-h-screen grid lg:grid-cols-12 bg-slate-50">
         
-        <!-- PANEL KIRI: ~42% Width (lg:col-span-5) with FULL-HEIGHT Background School Photo -->
-        <div class="lg:col-span-5 relative bg-emerald-950 p-8 lg:p-14 flex flex-col justify-between overflow-hidden text-white min-h-[480px] lg:min-h-screen">
+        <!-- PANEL KIRI: Branding Visual & High-End School Badge (lg:col-span-5) -->
+        <div class="lg:col-span-5 relative bg-gradient-to-br from-[#064e3b] via-[#047857] to-[#022c22] p-8 lg:p-12 flex flex-col justify-between overflow-hidden text-white min-h-[480px] lg:min-h-screen shadow-2xl z-10">
             
-            <!-- Full Height Background School Building Photo -->
-            <div class="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-                <img src="{{ asset('images/escs-kupang-school.png') }}" alt="NTO National Plus Primary School"
-                     class="w-full h-full object-cover object-center opacity-40 scale-105"
-                     onerror="this.src='{{ asset('escs-kupang-school.png') }}'">
-                <!-- Overlay gradient: Emerald Forest at top for high contrast text -->
-                <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/95 via-emerald-900/90 to-teal-950/95"></div>
+            <!-- Dynamic Glowing Ambient Background Circles -->
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-teal-300/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-emerald-600/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <!-- Top Brand Badge Pill -->
+            <div class="relative z-10 flex items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-800/60 border border-emerald-400/30 text-[11px] font-bold text-emerald-200 backdrop-blur-md shadow-xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    NTO National Plus Primary School
+                </span>
             </div>
 
-            <!-- Main Branding Content Group -->
-            <div class="relative z-10 space-y-5 pt-4 lg:pt-6 my-auto">
+            <!-- Central Hero Branding Container -->
+            <div class="relative z-10 my-auto py-8 flex flex-col items-center text-center">
                 
-                <!-- Logo NTO National Plus -->
-                <div class="mb-6">
+                <!-- School Logo Emblem Box (Glass Card) -->
+                <div class="w-full max-w-xs bg-white/95 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-white/40 mb-6 transform hover:scale-105 transition duration-300">
                     <img src="{{ asset('images/logo.png') }}" alt="Logo NTO National Plus"
-                         class="h-16 w-auto object-contain drop-shadow-xl"
+                         class="h-28 w-auto mx-auto object-contain drop-shadow-md"
                          onerror="this.src='{{ asset('logo.png') }}'">
-                </div>
-
-                <!-- Judul & Subtitle -->
-                <div>
-                    <h1 class="text-3xl lg:text-4xl font-black tracking-tight leading-tight text-white drop-shadow-sm">
-                        Portal Presensi<br />Sekolah
-                    </h1>
-                    <p class="text-xs font-bold text-emerald-300 mt-2 tracking-wide uppercase">
-                        NTO National Plus Primary School
+                    
+                    <h2 class="text-base font-black text-slate-900 tracking-tight mt-3 uppercase">
+                        NTO NATIONAL PLUS
+                    </h2>
+                    <p class="text-[10px] font-black text-emerald-700 tracking-wider uppercase">
+                        PRIMARY SCHOOL
                     </p>
-                    
-                    <!-- Emerald Accent Line -->
-                    <div class="w-16 h-1 bg-emerald-400 rounded-full mt-3.5 mb-3.5"></div>
-                    
-                    <!-- Deskripsi -->
-                    <p class="text-xs text-emerald-100/90 font-normal leading-relaxed max-w-sm">
-                        Sistem presensi online untuk siswa, guru, dan seluruh civitas sekolah.
+                    <div class="w-10 h-1 bg-emerald-500 rounded-full mx-auto mt-2 mb-2"></div>
+                    <p class="text-[9px] font-bold text-slate-500 italic">
+                        "Nurtured in God • Observed in Humanity • Taught in Knowledge"
                     </p>
                 </div>
 
+                <!-- Page Header Title -->
+                <h1 class="text-3xl lg:text-4xl font-black tracking-tight leading-tight text-white drop-shadow-md">
+                    Portal Presensi<br />Sekolah
+                </h1>
+                
+                <p class="text-xs text-emerald-100/90 font-medium leading-relaxed max-w-xs mt-3">
+                    Sistem informasi presensi & akademik terpadu untuk siswa, guru, dan orang tua.
+                </p>
+
+            </div>
+
+            <!-- Footer Badge -->
+            <div class="relative z-10 text-[11px] font-semibold text-emerald-200/80 text-center lg:text-left">
+                Kupang, Nusa Tenggara Timur • Indonesia
             </div>
 
         </div>
 
-        <!-- PANEL KANAN: ~58% Width (lg:col-span-7) with Clean White Login Card -->
-        <div class="lg:col-span-7 flex flex-col justify-between items-center p-6 lg:p-12 relative min-h-screen z-10 bg-[#f8fafc]">
+        <!-- PANEL KANAN: Form Login Clean White (lg:col-span-7) -->
+        <div class="lg:col-span-7 flex flex-col justify-between items-center p-6 lg:p-12 relative min-h-screen z-10 bg-slate-50">
             
             <!-- Login Card Container -->
             <div class="w-full my-auto flex flex-col items-center">
-                <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10 transition-all duration-300">
+                <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-200/80 p-8 sm:p-10 transition-all duration-300">
                     
                     <!-- Card Header -->
                     <div class="text-center mb-8">
@@ -103,7 +114,7 @@
                                        autocomplete="current-password" placeholder="••••••••"
                                        class="w-full pl-11 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 focus:bg-white transition duration-200">
 
-                                <!-- Native Eye Toggle Button -->
+                                <!-- Password Eye Toggle Button -->
                                 <button type="button" @click="showPassword = !showPassword" id="togglePasswordBtn"
                                         class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-emerald-600 focus:outline-none transition cursor-pointer"
                                         title="Tampilkan / Sembunyikan Kata Sandi">
@@ -131,7 +142,7 @@
                         <!-- Primary Action Button -->
                         <div class="pt-2">
                             <button type="submit"
-                                    class="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transform active:scale-[0.99] transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer">
+                                    class="w-full py-3.5 px-4 btn-brand-primary font-bold rounded-2xl transform active:scale-[0.99] transition duration-200 text-sm flex items-center justify-center gap-2 cursor-pointer">
                                 <span>Masuk Sekarang</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
