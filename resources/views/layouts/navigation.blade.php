@@ -10,12 +10,12 @@
     <!-- Top Header: Logo & Brand -->
     <div class="p-6">
         <div class="flex items-center gap-3.5 mb-8">
-            <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center p-1.5 shadow-lg shadow-blue-500/10">
+            <div class="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center p-1.5 shadow-lg shadow-emerald-500/10">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
             </div>
             <div>
                 <h1 class="text-xs font-black text-white tracking-tight uppercase">Portal NTO National Plus</h1>
-                <p class="text-[9px] font-extrabold text-blue-400 tracking-wider uppercase">PRIMARY SCHOOL</p>
+                <p class="text-[9px] font-extrabold text-emerald-400 tracking-wider uppercase">PRIMARY SCHOOL</p>
             </div>
         </div>
 
