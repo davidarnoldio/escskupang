@@ -71,9 +71,14 @@ class StudentController extends Controller
             'alamat' => ['nullable', 'string'],
             'telepon' => ['nullable', 'string', 'max:20'],
             'is_abk' => ['nullable', 'boolean'],
+            'foto' => ['nullable', 'image', 'max:5048'],
         ]);
 
         $validated['is_abk'] = $request->boolean('is_abk');
+
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('students', 'public');
+        }
 
         $student = Student::create($validated);
 
@@ -150,9 +155,14 @@ class StudentController extends Controller
             'alamat' => ['nullable', 'string'],
             'telepon' => ['nullable', 'string', 'max:20'],
             'is_abk' => ['nullable', 'boolean'],
+            'foto' => ['nullable', 'image', 'max:5048'],
         ]);
 
         $validated['is_abk'] = $request->boolean('is_abk');
+
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('students', 'public');
+        }
 
         $student->update($validated);
 
