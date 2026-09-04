@@ -147,4 +147,21 @@ class HomeworkTest extends TestCase
         $this->assertEquals('Sangat bagus dan teliti!', $submission->catatan_guru);
         $this->assertNotNull($submission->graded_at);
     }
+
+    public function test_teacher_can_view_print_recap_page(): void
+    {
+        $homework = Homework::create([
+            'teacher_id' => $this->teacher->id,
+            'kelas' => 'Primary A',
+            'mata_pelajaran' => 'Matematika',
+            'judul' => 'PR Perkalian A4 Test',
+            'deskripsi' => 'Kerjakan soal 1-5',
+            'deadline' => now()->addDays(2),
+        ]);
+
+        $response = $this->actingAs($this->teacher)->get(route('homeworks.print-recap', $homework));
+        $response->assertStatus(200);
+        $response->assertSee('REKAPITULASI NILAI TUGAS / PR SISWA');
+        $response->assertSee('Ani Wijaya');
+    }
 }

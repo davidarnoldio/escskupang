@@ -1,12 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight pr-2">
                 {{ __('Penilaian & Rekap Nilai PR: ') . $homework->judul }}
             </h2>
-            <a href="{{ route('homeworks.index') }}" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
-                ← Kembali ke Daftar PR
-            </a>
+            <div class="flex items-center gap-2 shrink-0">
+                <a href="{{ route('homeworks.print-recap', $homework) }}?autoprint=1" target="_blank" class="px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-xl text-xs font-bold transition shadow-sm inline-flex items-center gap-1.5">
+                    <span>🖨️</span> Cetak Rekap Nilai A4
+                </a>
+                <a href="{{ route('homeworks.index') }}" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+                    ← Kembali ke Daftar PR
+                </a>
+            </div>
         </div>
     </x-slot>
 
@@ -74,7 +79,9 @@
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden" x-data="{ photoModal: null, gradeModal: null }">
             <div class="p-5 border-b border-slate-100 flex items-center justify-between">
                 <h3 class="text-base font-bold text-slate-900">Rekapan Nilai & Pengumpulan Siswa Kelas {{ $homework->kelas }}</h3>
-                <span class="text-xs text-slate-400 font-semibold">Tabel Komprehensif</span>
+                <a href="{{ route('homeworks.print-recap', $homework) }}?autoprint=1" target="_blank" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5">
+                    <span>🖨️</span> Cetak Rekap A4
+                </a>
             </div>
 
             <div class="overflow-x-auto">

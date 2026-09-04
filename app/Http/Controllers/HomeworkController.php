@@ -129,6 +129,44 @@ class HomeworkController extends Controller
     }
 
     /**
+     * Print A4 homework submissions and grade recap for an assignment.
+     */
+    public function printSubmissions(Homework $homework)
+    {
+        $user = Auth::user();
+        $assignedClass = $user->getAssignedClass();
+
+        if ($user->isTeacher() && $assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
+            abort(403, "Anda hanya dapat melihat dan mencetak rekap PR kelas {$assignedClass}.");
+        }
+
+        $studentsQuery = Student::where('kelas', $homework->kelas);
+        if ($homework->student_id) {
+            $studentsQuery->where('id', $homework->student_id);
+        }
+        $students = $studentsQuery->orderBy('nama')->get();
+        $submissions = HomeworkSubmission::where('homework_id', $homework->id)->with('student')->get()->keyBy('student_id');
+
+        $gradedSubmissions = $submissions->whereNotNull('nilai');
+        $scores = $gradedSubmissions->pluck('nilai');
+
+        $recap = [
+            'total_siswa' => $students->count(),
+            'sudah_kumpul' => $submissions->count(),
+            'belum_kumpul' => max(0, $students->count() - $submissions->count()),
+            'sudah_dinilai' => $gradedSubmissions->count(),
+            'belum_dinilai' => max(0, $submissions->count() - $gradedSubmissions->count()),
+            'rata_rata' => $scores->count() > 0 ? round($scores->avg(), 1) : 0,
+            'nilai_tertinggi' => $scores->count() > 0 ? $scores->max() : 0,
+            'nilai_terendah' => $scores->count() > 0 ? $scores->min() : 0,
+        ];
+
+        $teacherName = $homework->teacher ? $homework->teacher->name : ($user->name ?? 'Guru Pengajar');
+
+        return view('homeworks.print_submissions', compact('homework', 'students', 'submissions', 'recap', 'teacherName'));
+    }
+
+    /**
      * Teacher inputs grade and feedback notes for a student submission.
      */
     public function gradeSubmission(Request $request, HomeworkSubmission $submission)

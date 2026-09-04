@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/homeworks', [HomeworkController::class, 'index'])->name('homeworks.index');
     Route::post('/homeworks', [HomeworkController::class, 'store'])->name('homeworks.store');
     Route::get('/homeworks/{homework}/submissions', [HomeworkController::class, 'submissions'])->name('homeworks.submissions');
+    Route::get('/homeworks/{homework}/print-recap', [HomeworkController::class, 'printSubmissions'])->name('homeworks.print-recap');
     Route::post('/homework-submissions/{submission}/grade', [HomeworkController::class, 'gradeSubmission'])->name('homeworks.grade');
     Route::delete('/homeworks/{homework}', [HomeworkController::class, 'destroy'])->name('homeworks.destroy');
     Route::get('/parent/homeworks', [HomeworkController::class, 'parentIndex'])->name('parent.homeworks');
