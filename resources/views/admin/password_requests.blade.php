@@ -6,7 +6,7 @@
                     <span>Notifikasi & Permintaan Reset Password</span>
                 </h2>
                 <p class="text-xs font-semibold text-slate-500 mt-0.5">
-                    Kelola laporan Lupa Password dari Guru dan Orang Tua Siswa ESCS Kupang
+                    Kelola laporan Lupa Password dari Guru dan Orang Tua Siswa NTO National Plus
                 </p>
             </div>
         </div>

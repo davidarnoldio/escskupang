@@ -46,7 +46,7 @@
                             <span>👋</span>
                         </h2>
                         <p class="text-xs font-semibold text-slate-500 mt-0.5">
-                            Berikut ringkasan presensi hari ini di ESCS Kupang.
+                            Berikut ringkasan presensi hari ini di NTO National Plus.
                         </p>
                     @endisset
                 </div>

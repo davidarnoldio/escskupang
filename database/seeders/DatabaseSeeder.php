@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(['email' => 'beatrix@nto-kupang.sch.id'], ['name' => 'Junior High (Wali Kelas Junior High)', 'password' => Hash::make('beatrix123'), 'plain_password' => 'beatrix123', 'email_verified_at' => now()]);
         User::updateOrCreate(['email' => 'anjash@nto-kupang.sch.id'], ['name' => 'Senior High (Wali Kelas Senior High)', 'password' => Hash::make('anjash123'), 'plain_password' => 'anjash123', 'email_verified_at' => now()]);
 
-        // Seed Real Student Data from ESCS Kupang Spreadsheet
+        // Seed Real Student Data from NTO National Plus Spreadsheet
         if (Student::count() === 0) {
             $studentsData = [
                 ['nis' => '0003.26.0236', 'nama' => 'Sierrafim Kanaya Yuthika Malelak', 'kelas' => 'Nursery', 'jenis_kelamin' => 'L'],
@@ -183,7 +183,7 @@ class DatabaseSeeder extends Seeder
                     'student_id' => $student->id,
                     'tanggal' => now()->format('Y-m-d'),
                     'status' => $student->id % 7 === 0 ? 'sakit' : ($student->id % 5 === 0 ? 'izin' : ($student->id % 11 === 0 ? 'alpa' : 'hadir')),
-                    'keterangan' => 'Presensi Otomatis ESCS',
+                    'keterangan' => 'Presensi Otomatis NTO',
                 ]);
 
                 // Create Parent Account (nama_depan.nama_belakang@student.sch.id) for student

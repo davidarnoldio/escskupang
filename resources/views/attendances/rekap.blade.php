@@ -63,16 +63,16 @@
         </div>
 
         <!-- School Building Photo Banner Card -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl overflow-hidden shadow-lg border border-blue-500/30 text-white p-6 relative flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="bg-gradient-to-r from-emerald-700 to-teal-800 rounded-3xl overflow-hidden shadow-lg border border-emerald-500/30 text-white p-6 relative flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="space-y-2 max-w-xl z-10">
-                <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-wider text-blue-100 border border-white/20">Laporan Rekapitulasi Presensi Resmi</span>
-                <h3 class="text-xl font-black">Excellent Spirit Christian School Kupang</h3>
-                <p class="text-xs text-blue-100/90 font-medium">
+                <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-wider text-emerald-100 border border-white/20">Laporan Rekapitulasi Presensi Resmi</span>
+                <h3 class="text-xl font-black">NTO National Plus Primary School</h3>
+                <p class="text-xs text-emerald-100/90 font-medium">
                     Data presensi bulan <span class="font-bold text-white">{{ \Carbon\Carbon::parse($bulan . '-01')->locale('id')->isoFormat('MMMM Y') }}</span> tercatat secara transparan dan akurat.
                 </p>
             </div>
-            <div class="w-full md:w-72 h-32 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl shrink-0 z-10">
-                <img src="{{ asset('images/escs-kupang-school.png') }}" alt="ESCS Kupang School" class="w-full h-full object-cover object-center" onerror="this.src='{{ asset('escs-kupang-school.png') }}'">
+            <div class="w-24 h-24 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl shrink-0 z-10 bg-white p-2 flex items-center justify-center">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo NTO National Plus" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
             </div>
         </div>
 

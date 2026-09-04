@@ -89,7 +89,7 @@ class StudentPhotoAndParentAccountTest extends TestCase
         $nurseryStudent = Student::factory()->create(['kelas' => 'Nursery', 'foto' => 'uploads/students/test.jpg']);
         $otherStudent = Student::factory()->create(['kelas' => 'Senior High']);
 
-        $admin = User::factory()->create(['role' => 'admin', 'name' => 'Administrator ESCS']);
+        $admin = User::factory()->create(['role' => 'admin', 'name' => 'Administrator NTO']);
         $nurseryTeacher = User::factory()->create(['role' => 'guru', 'name' => 'Nursery (Wali Kelas Nursery)']);
         $primaryATeacher = User::factory()->create(['role' => 'guru', 'name' => 'Primary A (Wali Kelas Primary A)']);
         $ownParent = User::factory()->create(['role' => 'orang_tua', 'student_id' => $nurseryStudent->id]);

@@ -59,7 +59,7 @@ class TeacherManagementTest extends TestCase
         $teacher = User::factory()->create([
             'role' => 'guru',
             'name' => 'Guru Pengajar',
-            'email' => 'guru.pengajar@escs-kupang.sch.id',
+            'email' => 'guru.pengajar@nto-kupang.sch.id',
             'assigned_class' => 'Primary A',
         ]);
 
@@ -71,7 +71,7 @@ class TeacherManagementTest extends TestCase
         // 2. Admin reassigns teacher to Senior High
         $updateResponse = $this->actingAs($admin)->put(route('teachers.update', $teacher), [
             'name' => 'Guru Pengajar Senior High',
-            'email' => 'guru.pengajar@escs-kupang.sch.id',
+            'email' => 'guru.pengajar@nto-kupang.sch.id',
             'assigned_class' => 'Senior High',
         ]);
         $updateResponse->assertRedirect(route('teachers.index'));
@@ -91,7 +91,7 @@ class TeacherManagementTest extends TestCase
         $teacher = User::factory()->create([
             'role' => 'guru',
             'name' => 'Guru Yang Akan Dihapus',
-            'email' => 'hapus.guru@escs-kupang.sch.id',
+            'email' => 'hapus.guru@nto-kupang.sch.id',
         ]);
 
         $response = $this->actingAs($admin)->delete(route('teachers.destroy', $teacher));

@@ -11,7 +11,7 @@ Sistem Informasi Manajemen Presensi Sekolah Terpadu Berbasis Web yang dirancang 
 
 ## Daftar Isi
 
-- [Portal Absensi Sekolah Digital - NTO National Plus](#portal-absensi-sekolah-digital---escs-kupang)
+- [Portal Absensi Sekolah Digital - NTO National Plus](#portal-absensi-sekolah-digital---nto-national-plus)
   - [Daftar Isi](#daftar-isi)
   - [Deskripsi Sistem](#deskripsi-sistem)
   - [Akun Pengguna dan Hak Akses](#akun-pengguna-dan-hak-akses)

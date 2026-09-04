@@ -58,6 +58,6 @@ class SettingController extends Controller
             Setting::set('jam_pulang_abk', $request->input('jam_pulang_abk'));
         }
 
-        return redirect()->route('settings.index')->with('success', 'Pengaturan Jam Presensi Siswa Regular & ABK ESCS Kupang berhasil diperbarui!');
+        return redirect()->route('settings.index')->with('success', 'Pengaturan Jam Presensi Siswa Regular & ABK NTO National Plus berhasil diperbarui!');
     }
 }

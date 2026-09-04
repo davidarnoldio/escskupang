@@ -5,7 +5,7 @@
 @endphp
 
 <!-- Sidebar Desktop (lg:flex) -->
-<aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#0b1329] text-slate-300 z-40 flex-col justify-between border-r border-slate-800/80 shadow-2xl">
+<aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#024a35] text-slate-100 z-40 flex-col justify-between border-r border-emerald-900/60 shadow-2xl">
     
     <!-- Top Header: Logo & Brand -->
     <div class="p-6">
@@ -214,18 +214,18 @@
 </aside>
 
 <!-- Mobile Navigation Header (< lg) -->
-<div class="lg:hidden bg-[#0b1329] text-white px-4 py-3 border-b border-slate-800 flex items-center justify-between sticky top-0 z-50 shadow-md" x-data="{ mobileOpen: false }">
+<div class="lg:hidden bg-[#024a35] text-white px-4 py-3 border-b border-emerald-900 flex items-center justify-between sticky top-0 z-50 shadow-md" x-data="{ mobileOpen: false }">
     <div class="flex items-center gap-3">
         <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="h-8 w-auto" onerror="this.src='{{ asset('logo.png') }}'">
         <span class="text-xs font-black tracking-wider uppercase">NTO NATIONAL PLUS</span>
     </div>
 
-    <button @click="mobileOpen = !mobileOpen" type="button" class="p-2 text-slate-400 hover:text-white focus:outline-none">
+    <button @click="mobileOpen = !mobileOpen" type="button" class="p-2 text-emerald-200 hover:text-white focus:outline-none">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
     </button>
 
     <!-- Mobile Slideout Menu -->
-    <div x-show="mobileOpen" @click.away="mobileOpen = false" class="fixed inset-x-0 top-14 bg-[#0b1329] border-b border-slate-800 p-4 space-y-2 text-xs shadow-2xl z-50" style="display: none;">
+    <div x-show="mobileOpen" @click.away="mobileOpen = false" class="fixed inset-x-0 top-14 bg-[#024a35] border-b border-emerald-900 p-4 space-y-2 text-xs shadow-2xl z-50" style="display: none;">
         @if($user && $user->isParent())
             <a href="{{ route('parent.dashboard') }}" class="block px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold">Portal Presensi Anak</a>
             <a href="{{ route('parent.payments') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Tagihan Pembayaran</a>
