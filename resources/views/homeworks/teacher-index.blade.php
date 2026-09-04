@@ -46,13 +46,52 @@
                     </div>
 
                     <div x-show="targetType === 'student'" style="display: none;">
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pilih Siswa Spesifik</label>
-                        <select name="student_id" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
-                            <option value="">-- Pilih Siswa --</option>
-                            @foreach($studentsInClass as $st)
-                                <option value="{{ $st->id }}">{{ $st->nama }} (NIS: {{ $st->nis }})</option>
-                            @endforeach
-                        </select>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pilih Siswa Spesifik (Cari Nama / NIS)</label>
+                        
+                        <div x-data="{
+                            open: false,
+                            search: '',
+                            selectedId: '',
+                            selectedName: '',
+                            students: {{ json_encode($studentsInClass->map(fn($s) => ['id' => $s->id, 'nama' => $s->nama, 'nis' => $s->nis])) }},
+                            get filteredStudents() {
+                                if (!this.search) return this.students;
+                                return this.students.filter(s => 
+                                    s.nama.toLowerCase().includes(this.search.toLowerCase()) || 
+                                    s.nis.toLowerCase().includes(this.search.toLowerCase())
+                                );
+                            },
+                            selectStudent(s) {
+                                this.selectedId = s.id;
+                                this.selectedName = s.nama + ' (NIS: ' + s.nis + ')';
+                                this.open = false;
+                                this.search = '';
+                            }
+                        }" class="relative">
+
+                            <input type="hidden" name="student_id" :value="selectedId">
+
+                            <button type="button" @click="open = !open" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-left text-xs font-medium flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-2xs">
+                                <span x-text="selectedName || '-- Cari & Pilih Siswa --'" :class="{ 'text-slate-400': !selectedName, 'text-slate-900 font-bold': selectedName }"></span>
+                                <svg class="w-4 h-4 text-slate-400 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+
+                            <div x-show="open" @click.away="open = false" class="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 p-2.5 flex flex-col space-y-2 max-h-60" style="display: none;">
+                                <input type="text" x-model="search" placeholder="🔍 Ketik nama atau NIS siswa untuk mencari..." class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" autofocus>
+                                
+                                <div class="overflow-y-auto divide-y divide-slate-100 flex-1">
+                                    <template x-for="s in filteredStudents" :key="s.id">
+                                        <button type="button" @click="selectStudent(s)" class="w-full text-left px-3 py-2 hover:bg-emerald-50 text-xs font-semibold text-slate-700 hover:text-emerald-900 rounded-lg flex justify-between items-center transition">
+                                            <span x-text="s.nama"></span>
+                                            <span class="text-[10px] text-slate-400 font-normal" x-text="'NIS: ' + s.nis"></span>
+                                        </button>
+                                    </template>
+                                    <div x-show="filteredStudents.length === 0" class="py-4 text-center text-xs text-slate-400 italic">
+                                        Siswa tidak ditemukan...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div>
