@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-bold text-2xl text-slate-900 leading-tight">
-                Edit Data Siswa - ESCS Kupang
+                Edit Data Siswa - NTO National Plus
             </h2>
             <a href="{{ route('students.index') }}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition">
                 Kembali ke Data Siswa

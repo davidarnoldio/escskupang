@@ -1,6 +1,6 @@
-# Portal Absensi Sekolah Digital - ESCS Kupang
+# Portal Absensi Sekolah Digital - NTO National Plus
 
-Sistem Informasi Manajemen Presensi Sekolah Terpadu Berbasis Web yang dirancang menggunakan Laravel 11, Tailwind CSS, Alpine.js, Chart.js, dan Cropper.js. Sistem ini menyesuaikan standar operasional dan identitas visual Excellent Spirit Christian School (ESCS) Kupang.
+Sistem Informasi Manajemen Presensi Sekolah Terpadu Berbasis Web yang dirancang menggunakan Laravel 11, Tailwind CSS, Alpine.js, Chart.js, dan Cropper.js. Sistem ini menyesuaikan standar operasional dan identitas visual Excellent Spirit Christian School (NTO) Kupang.
 
 ![PHP Version](https://img.shields.io/badge/PHP-8.3-777BB4?style=flat&logo=php)
 ![Laravel Version](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=flat&logo=laravel)
@@ -11,7 +11,7 @@ Sistem Informasi Manajemen Presensi Sekolah Terpadu Berbasis Web yang dirancang 
 
 ## Daftar Isi
 
-- [Portal Absensi Sekolah Digital - ESCS Kupang](#portal-absensi-sekolah-digital---escs-kupang)
+- [Portal Absensi Sekolah Digital - NTO National Plus](#portal-absensi-sekolah-digital---escs-kupang)
   - [Daftar Isi](#daftar-isi)
   - [Deskripsi Sistem](#deskripsi-sistem)
   - [Akun Pengguna dan Hak Akses](#akun-pengguna-dan-hak-akses)
@@ -28,7 +28,7 @@ Sistem Informasi Manajemen Presensi Sekolah Terpadu Berbasis Web yang dirancang 
 
 ## Deskripsi Sistem
 
-Portal Absensi Sekolah ESCS Kupang merupakan solusi terpadu untuk pencatatan, pemantauan, dan pelaporan kehadiran siswa secara harian dan bulanan. Sistem dilengkapi fitur pindai QR Code, perizinan surat orang tua, pencatatan durasi keterlambatan, analisis statistik interaktif, serta rekapitulasi presensi cetak A4.
+Portal Absensi Sekolah NTO National Plus merupakan solusi terpadu untuk pencatatan, pemantauan, dan pelaporan kehadiran siswa secara harian dan bulanan. Sistem dilengkapi fitur pindai QR Code, perizinan surat orang tua, pencatatan durasi keterlambatan, analisis statistik interaktif, serta rekapitulasi presensi cetak A4.
 
 ---
 
@@ -42,7 +42,7 @@ Administrator memiliki hak akses penuh ke seluruh modul sistem, termasuk kelola 
 
 | Peran (Role) | Alamat Email (Username) | Kata Sandi (Password) | Hak Akses |
 | :--- | :--- | :--- | :--- |
-| **Administrator Utama** | `admin@escs-kupang.sch.id` | `admin123` | Akses Penuh Sistem (Kelola Guru, Reset Sandi, Pengaturan Jam, Master Siswa, Scan QR, Impersonate, Rekap A4, Export Excel) |
+| **Administrator Utama** | `admin@nto-kupang.sch.id` | `admin123` | Akses Penuh Sistem (Kelola Guru, Reset Sandi, Pengaturan Jam, Master Siswa, Scan QR, Impersonate, Rekap A4, Export Excel) |
 | **Guru Pengajar (Demo)** | `test@example.com` | `password` | Input Presensi Harian, Scan QR, Rekap & Export Excel |
 
 ---
@@ -53,15 +53,15 @@ Setiap wali kelas memiliki batasan akses data (Scoping) otomatis, sehingga hanya
 
 | Tingkat Kelas | Nama Wali Kelas | Alamat Email (Username) | Kata Sandi | Batasan Akses Data |
 | :--- | :--- | :--- | :--- | :--- |
-| **Nursery** | Vivi Nalle | `vivinalle@escs-kupang.sch.id` | `vivi123` | Khusus Kelas Nursery |
-| **Pre-K** | Asnat | `asnat@escs-kupang.sch.id` | `asnat123` | Khusus Kelas Pre-K |
-| **Kindergarten** | Ellen | `ellen@escs-kupang.sch.id` | `ellen123` | Khusus Kelas Kindergarten |
-| **Primary Preparation** | Kezia | `kezia@escs-kupang.sch.id` | `kezia123` | Khusus Kelas Primary Preparation |
-| **Primary A** | Amel | `amel@escs-kupang.sch.id` | `amel123` | Khusus Kelas Primary A |
-| **Primary B** | Wulan | `wulan@escs-kupang.sch.id` | `wulan123` | Khusus Kelas Primary B |
-| **Primary C** | Aldi | `aldi@escs-kupang.sch.id` | `aldi123` | Khusus Kelas Primary C |
-| **Junior High** | Beatrix | `beatrix@escs-kupang.sch.id` | `beatrix123` | Khusus Kelas Junior High |
-| **Senior High** | Anjash | `anjash@escs-kupang.sch.id` | `anjash123` | Khusus Kelas Senior High |
+| **Nursery** | Vivi Nalle | `vivinalle@nto-kupang.sch.id` | `vivi123` | Khusus Kelas Nursery |
+| **Pre-K** | Asnat | `asnat@nto-kupang.sch.id` | `asnat123` | Khusus Kelas Pre-K |
+| **Kindergarten** | Ellen | `ellen@nto-kupang.sch.id` | `ellen123` | Khusus Kelas Kindergarten |
+| **Primary Preparation** | Kezia | `kezia@nto-kupang.sch.id` | `kezia123` | Khusus Kelas Primary Preparation |
+| **Primary A** | Amel | `amel@nto-kupang.sch.id` | `amel123` | Khusus Kelas Primary A |
+| **Primary B** | Wulan | `wulan@nto-kupang.sch.id` | `wulan123` | Khusus Kelas Primary B |
+| **Primary C** | Aldi | `aldi@nto-kupang.sch.id` | `aldi123` | Khusus Kelas Primary C |
+| **Junior High** | Beatrix | `beatrix@nto-kupang.sch.id` | `beatrix123` | Khusus Kelas Junior High |
+| **Senior High** | Anjash | `anjash@nto-kupang.sch.id` | `anjash123` | Khusus Kelas Senior High |
 
 ---
 

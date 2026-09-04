@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="font-bold text-2xl text-slate-900 leading-tight">
-                    Scan QR Code Presensi - ESCS Kupang
+                    Scan QR Code Presensi - NTO National Plus
                 </h2>
                 <p class="text-xs text-slate-500 mt-1">Arahkan kamera ke QR Code siswa atau gunakan barcode scanner</p>
             </div>

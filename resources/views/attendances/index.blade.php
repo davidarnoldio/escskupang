@@ -3,7 +3,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h2 class="text-xl lg:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span>Presensi Siswa Harian ESCS Kupang</span>
+                    <span>Presensi Siswa Harian NTO National Plus</span>
                 </h2>
                 <p class="text-xs font-semibold text-slate-500 mt-0.5">Catat dan perbarui kehadiran siswa harian secara manual atau kelompok</p>
             </div>

@@ -142,7 +142,7 @@
         <div class="relative">
             <button @click="openUserMenu = !openUserMenu" type="button" class="w-full flex items-center justify-between p-2.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-left transition duration-200 cursor-pointer">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white flex items-center justify-center font-black text-xs shadow-md shrink-0">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-700 text-white flex items-center justify-center font-black text-xs shadow-md shrink-0">
                         {{ strtoupper(substr($user->name ?? 'User', 0, 2)) }}
                     </div>
                     <div class="overflow-hidden">
@@ -160,7 +160,7 @@
             <div x-show="openUserMenu" @click.away="openUserMenu = false" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
                  class="absolute bottom-14 left-0 w-full bg-white rounded-2xl shadow-2xl border border-slate-100 py-2 z-50 text-slate-800" style="display: none;">
                 
-                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-xs font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">
+                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition">
                     👤 Profile Saya
                 </a>
 
@@ -175,7 +175,7 @@
                     </form>
                 @elseif($user && $user->isAdmin())
                     <div class="border-t border-slate-100 my-1"></div>
-                    <div class="px-4 py-1.5 text-[10px] font-black text-blue-600 uppercase tracking-wider bg-slate-50">
+                    <div class="px-4 py-1.5 text-[10px] font-black text-emerald-600 uppercase tracking-wider bg-slate-50">
                         🔄 Switch Akun Guru (Wali Kelas)
                     </div>
                     <div class="max-h-48 overflow-y-auto divide-y divide-slate-100">
@@ -185,7 +185,7 @@
                         @foreach($allTeachersNav as $tNav)
                             <form method="POST" action="{{ route('impersonate.switch', $tNav) }}">
                                 @csrf
-                                <button type="submit" class="w-full text-left px-4 py-1.5 text-xs hover:bg-blue-50 transition flex items-center justify-between text-slate-700 hover:text-blue-900 font-medium">
+                                <button type="submit" class="w-full text-left px-4 py-1.5 text-xs hover:bg-emerald-50 transition flex items-center justify-between text-slate-700 hover:text-emerald-900 font-medium">
                                     <span class="truncate font-semibold text-[11px]">{{ $tNav->name }}</span>
                                     <span class="px-1 py-0.5 text-[9px] font-black rounded bg-slate-100 text-slate-600">
                                         {{ $tNav->getAssignedClass() ?? 'Guru' }}
@@ -227,7 +227,7 @@
     <!-- Mobile Slideout Menu -->
     <div x-show="mobileOpen" @click.away="mobileOpen = false" class="fixed inset-x-0 top-14 bg-[#0b1329] border-b border-slate-800 p-4 space-y-2 text-xs shadow-2xl z-50" style="display: none;">
         @if($user && $user->isParent())
-            <a href="{{ route('parent.dashboard') }}" class="block px-4 py-2 rounded-xl bg-blue-600 text-white font-bold">Portal Presensi Anak</a>
+            <a href="{{ route('parent.dashboard') }}" class="block px-4 py-2 rounded-xl bg-emerald-600 text-white font-bold">Portal Presensi Anak</a>
             <a href="{{ route('parent.payments') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Tagihan Pembayaran</a>
             <a href="{{ route('parent.homeworks') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Tugas Sekolah (PR)</a>
         @else

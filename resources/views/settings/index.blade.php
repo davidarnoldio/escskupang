@@ -5,7 +5,7 @@
                 <h2 class="text-xl lg:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
                     <span>Pengaturan Jam Presensi Sekolah</span>
                 </h2>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5">Atur jadwal jam masuk, batas tepat waktu, dan jam pulang siswa Regular & ABK ESCS Kupang</p>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5">Atur jadwal jam masuk, batas tepat waktu, dan jam pulang siswa Regular & ABK NTO National Plus</p>
             </div>
         </div>
     </x-slot>
