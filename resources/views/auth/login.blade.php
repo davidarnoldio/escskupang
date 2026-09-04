@@ -5,13 +5,16 @@
         <div
             class="lg:col-span-5 relative bg-[#025a3f] p-8 lg:p-10 flex flex-col justify-between overflow-hidden text-white min-h-[520px] lg:min-h-screen shadow-2xl z-10">
 
-            <!-- Subtle Watermark Tree Graphic on Lower Left -->
-            <div class="absolute -bottom-16 -left-16 w-80 h-80 opacity-15 pointer-events-none z-0">
-                <svg viewBox="0 0 200 200" fill="none" class="w-full h-full text-emerald-300">
-                    <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="4" />
-                    <path d="M100 40 Q120 70 100 120 M100 70 Q70 90 60 110 M100 90 Q130 100 140 120"
-                        stroke="currentColor" stroke-width="6" stroke-linecap="round" />
-                </svg>
+            <!-- Large Background School Tree Logo Watermark Shadow -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
+                <img src="{{ asset('images/logo.png') }}" alt="Watermark Tree Logo"
+                    class="w-[580px] h-[580px] max-w-none opacity-20 mix-blend-multiply filter contrast-125 brightness-90 transform -rotate-12 scale-110 select-none"
+                    onerror="this.src='{{ asset('logo.png') }}'">
+            </div>
+
+            <!-- Additional Corner Watermark Shadow -->
+            <div class="absolute -bottom-24 -left-24 w-96 h-96 opacity-15 pointer-events-none z-0 mix-blend-multiply transform rotate-6 select-none">
+                <img src="{{ asset('images/logo.png') }}" alt="Tree Shadow" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
             </div>
 
             <!-- Subtle Matrix Dot Grid Pattern on Upper Right -->

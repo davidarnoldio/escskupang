@@ -48,10 +48,15 @@
 @endphp
 
 <!-- Sidebar Desktop (lg:flex) -->
-<aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#024a35] text-slate-100 z-40 flex-col justify-between border-r border-emerald-900/60 shadow-2xl">
+<aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#024a35] text-slate-100 z-40 flex-col justify-between border-r border-emerald-900/60 shadow-2xl overflow-hidden relative">
+    
+    <!-- Background Tree Logo Watermark Shadow -->
+    <div class="absolute -bottom-20 -right-20 w-80 h-80 opacity-10 pointer-events-none z-0 mix-blend-multiply select-none">
+        <img src="{{ asset('images/logo.png') }}" alt="Sidebar Tree Shadow" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
+    </div>
     
     <!-- Top Header: Logo & Brand -->
-    <div class="p-6">
+    <div class="p-6 relative z-10">
         <div class="flex items-center gap-3.5 mb-8">
             <div class="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center p-1.5 shadow-lg shadow-emerald-500/10">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
@@ -199,7 +204,7 @@
     </div>
 
     <!-- Bottom User Profile Card & Switch Account Dropdown -->
-    <div class="p-4 border-t border-slate-800/80 bg-slate-950/40" x-data="{ openUserMenu: false }">
+    <div class="p-4 border-t border-slate-800/80 bg-slate-950/40 relative z-10" x-data="{ openUserMenu: false }">
         
         <!-- User Profile Card Button -->
         <div class="relative">
