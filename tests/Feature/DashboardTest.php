@@ -25,7 +25,7 @@ class DashboardTest extends TestCase
         $response = $this->actingAs($user)->get(route('dashboard'));
 
         $response->assertStatus(200);
-        $response->assertSee('Portal Presensi ESCS Kupang');
+        $response->assertSee('Portal NTO National Plus');
     }
 
     public function test_dashboard_displays_accurate_statistics_and_recent_students(): void

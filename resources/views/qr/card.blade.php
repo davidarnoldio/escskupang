@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kartu Pelajar QR - {{ $student->nama }} | ESCS Kupang</title>
+    <title>Kartu Pelajar QR - {{ $student->nama }} | NTO National Plus Primary School</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         @media print {
@@ -24,15 +24,15 @@
         </button>
     </div>
 
-    <!-- Official Student ID Card Component - ESCS Kupang -->
+    <!-- Official Student ID Card Component - NTO National Plus Primary School -->
     <div class="w-[360px] bg-white rounded-2xl shadow-2xl border border-sky-500/20 overflow-hidden relative">
         <!-- Header Gradient -->
         <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-4 text-white text-center relative overflow-hidden border-b border-sky-500/30 flex items-center justify-center gap-3">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo ESCS" class="h-12 w-auto object-contain">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="h-12 w-auto object-contain">
             <div class="text-left">
                 <p class="text-[9px] font-extrabold uppercase tracking-widest text-sky-400">KARTU TANDA PELAJAR</p>
-                <h3 class="font-extrabold text-base tracking-tight text-white leading-tight">ESCS KUPANG</h3>
-                <p class="text-[9px] text-slate-300 font-medium">Excellent Spirit Christian School</p>
+                <h3 class="font-extrabold text-base tracking-tight text-white leading-tight">NTO NATIONAL PLUS</h3>
+                <p class="text-[9px] text-slate-300 font-medium">National Plus Primary School</p>
             </div>
         </div>
 

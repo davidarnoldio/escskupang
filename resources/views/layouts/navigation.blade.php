@@ -11,11 +11,11 @@
     <div class="p-6">
         <div class="flex items-center gap-3.5 mb-8">
             <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center p-1.5 shadow-lg shadow-blue-500/10">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo ESCS" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
             </div>
             <div>
-                <h1 class="text-xs font-black text-white tracking-tight uppercase">Portal Presensi ESCS Kupang</h1>
-                <p class="text-[9px] font-extrabold text-blue-400 tracking-wider uppercase">EXCELLENT SPIRIT</p>
+                <h1 class="text-xs font-black text-white tracking-tight uppercase">Portal NTO National Plus</h1>
+                <p class="text-[9px] font-extrabold text-blue-400 tracking-wider uppercase">PRIMARY SCHOOL</p>
             </div>
         </div>
 
@@ -208,7 +208,7 @@
         </div>
 
         <div class="mt-3 text-center text-[10px] text-slate-500 font-medium">
-            &copy; {{ date('Y') }} ESCS Kupang
+            &copy; {{ date('Y') }} NTO National Plus Primary School
         </div>
     </div>
 </aside>
@@ -216,8 +216,8 @@
 <!-- Mobile Navigation Header (< lg) -->
 <div class="lg:hidden bg-[#0b1329] text-white px-4 py-3 border-b border-slate-800 flex items-center justify-between sticky top-0 z-50 shadow-md" x-data="{ mobileOpen: false }">
     <div class="flex items-center gap-3">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo ESCS" class="h-8 w-auto" onerror="this.src='{{ asset('logo.png') }}'">
-        <span class="text-xs font-black tracking-wider uppercase">ESCS KUPANG</span>
+        <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="h-8 w-auto" onerror="this.src='{{ asset('logo.png') }}'">
+        <span class="text-xs font-black tracking-wider uppercase">NTO NATIONAL PLUS</span>
     </div>
 
     <button @click="mobileOpen = !mobileOpen" type="button" class="p-2 text-slate-400 hover:text-white focus:outline-none">

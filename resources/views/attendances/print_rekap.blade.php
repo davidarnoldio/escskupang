@@ -147,10 +147,10 @@
         <tr>
             <td style="width: 200px;">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="{{ asset('images/logo.png') }}" alt="ESCS Logo" class="logo-img" onerror="this.src='{{ asset('logo.png') }}'">
+                    <img src="{{ asset('images/logo.png') }}" alt="NTO Logo" class="logo-img" onerror="this.src='{{ asset('logo.png') }}'">
                     <div>
-                        <strong style="font-size: 13px; color: #0f172a; display: block;">ESCS</strong>
-                        <span style="font-size: 10px; color: #475569;">Kota Kupang</span>
+                        <strong style="font-size: 13px; color: #0f172a; display: block;">NTO National Plus</strong>
+                        <span style="font-size: 10px; color: #475569;">Primary School</span>
                     </div>
                 </div>
             </td>

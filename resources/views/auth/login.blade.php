@@ -6,7 +6,7 @@
             
             <!-- Full Height Background School Building Photo (escs kupang school.png) -->
             <div class="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-                <img src="{{ asset('images/escs-kupang-school.png') }}" alt="ESCS Kupang School Building"
+                <img src="{{ asset('images/escs-kupang-school.png') }}" alt="NTO National Plus Primary School"
                      class="w-full h-full object-cover object-center opacity-45 scale-105"
                      onerror="this.src='{{ asset('escs-kupang-school.png') }}'">
                 <!-- Overlay gradient: bluer at top for high contrast text, showing building photo below -->
@@ -18,7 +18,7 @@
                 
                 <!-- Logo ESCS (Top Left with clean margin, no container box) -->
                 <div class="mb-6">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo ESCS Kupang"
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo NTO National Plus"
                          class="h-16 w-auto object-contain drop-shadow-xl"
                          onerror="this.src='{{ asset('logo.png') }}'">
                 </div>
@@ -29,7 +29,7 @@
                         Portal Presensi<br />Sekolah
                     </h1>
                     <p class="text-xs font-semibold text-blue-100/95 mt-2 tracking-wide">
-                        Excellent Spirit Christian School Kupang
+                        NTO National Plus Primary School
                     </p>
                     
                     <!-- Thin light blue accent line -->
