@@ -17,7 +17,7 @@ class TeacherManagementTest extends TestCase
         $teacher = User::factory()->create([
             'role' => 'guru',
             'name' => 'Wali Kelas Primary A',
-            'email' => 'primary.a@escs-kupang.sch.id',
+            'email' => 'primary.a@nto-kupang.sch.id',
             'assigned_class' => 'Primary A',
         ]);
 
@@ -25,7 +25,7 @@ class TeacherManagementTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Wali Kelas Primary A');
-        $response->assertSee('primary.a@escs-kupang.sch.id');
+        $response->assertSee('primary.a@nto-kupang.sch.id');
         $response->assertSee('Primary A');
     }
 
@@ -35,7 +35,7 @@ class TeacherManagementTest extends TestCase
 
         $response = $this->actingAs($admin)->post(route('teachers.store'), [
             'name' => 'Guru Baru Kindergarten',
-            'email' => 'guru.kindergarten@escs-kupang.sch.id',
+            'email' => 'guru.kindergarten@nto-kupang.sch.id',
             'password' => 'password123',
             'assigned_class' => 'Kindergarten',
         ]);
@@ -43,7 +43,7 @@ class TeacherManagementTest extends TestCase
         $response->assertRedirect(route('teachers.index'));
         $this->assertDatabaseHas('users', [
             'name' => 'Guru Baru Kindergarten',
-            'email' => 'guru.kindergarten@escs-kupang.sch.id',
+            'email' => 'guru.kindergarten@nto-kupang.sch.id',
             'role' => 'guru',
             'assigned_class' => 'Kindergarten',
         ]);

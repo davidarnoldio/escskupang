@@ -28,9 +28,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             <!-- Form Buat PR Baru -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4" x-data="{ targetType: 'all' }">
                 <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                     <span>Buat PR / Tugas Baru</span>
                 </h3>
 
@@ -38,12 +38,30 @@
                     @csrf
 
                     <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pilihan Target Penerima PR</label>
+                        <select name="target_type" x-model="targetType" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
+                            <option value="all">Bisa Semua (Seluruh Siswa dalam Kelas)</option>
+                            <option value="student">Bisa Pilih Per Siswa (Siswa Spesifik)</option>
+                        </select>
+                    </div>
+
+                    <div x-show="targetType === 'student'" style="display: none;">
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pilih Siswa Spesifik</label>
+                        <select name="student_id" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
+                            <option value="">-- Pilih Siswa --</option>
+                            @foreach($studentsInClass as $st)
+                                <option value="{{ $st->id }}">{{ $st->nama }} (NIS: {{ $st->nis }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Kelas Target</label>
                         @if($assignedClass)
                             <input type="text" readonly value="{{ $assignedClass }}" class="w-full rounded-xl border-slate-200 bg-slate-50 text-xs font-bold text-slate-700">
                             <input type="hidden" name="kelas" value="{{ $assignedClass }}">
                         @else
-                            <select name="kelas" required class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-blue-500 focus:border-blue-500">
+                            <select name="kelas" required class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
                                 @foreach($classes as $cls)
                                     <option value="{{ $cls }}">{{ $cls }}</option>
                                 @endforeach
@@ -53,30 +71,30 @@
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mata Pelajaran</label>
-                        <input type="text" name="mata_pelajaran" required placeholder="Contoh: Matematika / Bahasa Indonesia" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" name="mata_pelajaran" required placeholder="Contoh: Matematika / Bahasa Indonesia" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Judul PR / Tugas</label>
-                        <input type="text" name="judul" required placeholder="Contoh: Latihan Perkalian Bab 3 Halaman 45" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" name="judul" required placeholder="Contoh: Latihan Perkalian Bab 3 Halaman 45" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Batas Waktu Pengumpulan (Deadline)</label>
-                        <input type="datetime-local" name="deadline" required value="{{ date('Y-m-d\TH:i', strtotime('+2 days 23:59')) }}" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-blue-500 focus:border-blue-500">
+                        <input type="datetime-local" name="deadline" required value="{{ date('Y-m-d\TH:i', strtotime('+2 days 23:59')) }}" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Deskripsi PR & Instruksi Pengerjaan</label>
-                        <textarea name="deskripsi" rows="3" required placeholder="Kerjakan soal no 1-10 di buku tulis, lalu foto hasil pengerjaan secara jelas..." class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        <textarea name="deskripsi" rows="3" required placeholder="Kerjakan soal no 1-10 di buku tulis, lalu foto hasil pengerjaan secara jelas..." class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500"></textarea>
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">File Lampiran Guru (Opsional)</label>
-                        <input type="file" name="lampiran_guru" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <input type="file" name="lampiran_guru" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
                     </div>
 
-                    <button type="submit" class="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold text-xs shadow-md shadow-blue-500/20 hover:from-blue-700 hover:to-indigo-700 transition">
+                    <button type="submit" class="w-full py-2.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-xl font-bold text-xs shadow-md shadow-emerald-500/20 hover:from-emerald-700 hover:to-teal-800 transition">
                         Posting Pemberitahuan PR
                     </button>
                 </form>
@@ -92,13 +110,22 @@
                     @forelse($homeworks as $hw)
                         <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                             <div class="space-y-1.5 flex-1">
-                                <div class="flex items-center gap-2">
-                                    <span class="px-2.5 py-0.5 text-[10px] font-black rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-2.5 py-0.5 text-[10px] font-black rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                                         {{ $hw->kelas }}
                                     </span>
-                                    <span class="px-2.5 py-0.5 text-[10px] font-black rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                                    <span class="px-2.5 py-0.5 text-[10px] font-black rounded-full bg-rose-50 text-rose-700 border border-rose-200">
                                         {{ $hw->mata_pelajaran }}
                                     </span>
+                                    @if($hw->student)
+                                        <span class="px-2.5 py-0.5 text-[10px] font-black rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+                                            👤 Khusus: {{ $hw->student->nama }}
+                                        </span>
+                                    @else
+                                        <span class="px-2.5 py-0.5 text-[10px] font-black rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+                                            👥 Semua Siswa
+                                        </span>
+                                    @endif
                                 </div>
                                 <h4 class="text-base font-black text-slate-900">{{ $hw->judul }}</h4>
                                 <p class="text-xs text-slate-500 font-normal line-clamp-2">{{ $hw->deskripsi }}</p>
@@ -110,7 +137,7 @@
                             </div>
 
                             <div class="shrink-0 flex items-center gap-2 w-full md:w-auto">
-                                <a href="{{ route('homeworks.submissions', $hw) }}" class="flex-1 md:flex-initial px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700 rounded-xl text-xs font-bold shadow-md shadow-emerald-500/20 transition flex items-center justify-center gap-2">
+                                <a href="{{ route('homeworks.submissions', $hw) }}" class="flex-1 md:flex-initial px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white hover:from-emerald-700 hover:to-teal-800 rounded-xl text-xs font-bold shadow-md shadow-emerald-500/20 transition flex items-center justify-center gap-2">
                                     <span>📊 Rekap Nilai & Pengumpulan</span>
                                 </a>
 

@@ -22,18 +22,18 @@ class DatabaseSeeder extends Seeder
 
         // Default Demo Accounts
         User::updateOrCreate(['email' => 'test@example.com'], ['name' => 'Guru Pengajar', 'password' => Hash::make('password'), 'plain_password' => 'password', 'role' => 'guru', 'email_verified_at' => now()]);
-        User::updateOrCreate(['email' => 'admin@escs-kupang.sch.id'], ['name' => 'Administrator ESCS', 'password' => Hash::make('admin123'), 'plain_password' => 'admin123', 'role' => 'admin', 'email_verified_at' => now()]);
+        User::updateOrCreate(['email' => 'admin@nto-kupang.sch.id'], ['name' => 'Administrator NTO', 'password' => Hash::make('admin123'), 'plain_password' => 'admin123', 'role' => 'admin', 'email_verified_at' => now()]);
 
-        // Homeroom Teacher Accounts from ESCS Kupang Data
-        User::updateOrCreate(['email' => 'vivinalle@escs-kupang.sch.id'], ['name' => 'Nursery (Wali Kelas Nursery)', 'password' => Hash::make('vivi123'), 'plain_password' => 'vivi123', 'email_verified_at' => now()]);
-        User::updateOrCreate(['email' => 'asnat@escs-kupang.sch.id'], ['name' => 'Pre-K (Wali Kelas Pre-K)', 'password' => Hash::make('asnat123'), 'plain_password' => 'asnat123', 'email_verified_at' => now()]);
-        User::updateOrCreate(['email' => 'ellen@escs-kupang.sch.id'], ['name' => 'Kindergarten (Wali Kelas Kindergarten)', 'password' => Hash::make('ellen123'), 'plain_password' => 'ellen123', 'email_verified_at' => now()]);
-        User::updateOrCreate(['email' => 'kezia@escs-kupang.sch.id'], ['name' => 'Primary Preparation (Wali Kelas Primary Preparation)', 'password' => Hash::make('kezia123'), 'plain_password' => 'kezia123', 'email_verified_at' => now()]);
-        User::updateOrCreate(['email' => 'amel@escs-kupang.sch.id'], ['name' => 'Primary A (Wali Kelas Primary A)', 'password' => Hash::make('amel123'), 'plain_password' => 'amel123', 'email_verified_at' => now()]);
-        User::updateOrCreate(['email' => 'wulan@escs-kupang.sch.id'], ['name' => 'Primary B (Wali Kelas Primary B)', 'password' => Hash::make('wulan123'), 'plain_password' => 'wulan123', 'email_verified_at' => now()]);
-        User::updateOrCreate(['email' => 'aldi@escs-kupang.sch.id'], ['name' => 'Primary C (Wali Kelas Primary C)', 'password' => Hash::make('aldi123'), 'plain_password' => 'aldi123', 'email_verified_at' => now()]);
-        User::updateOrCreate(['email' => 'beatrix@escs-kupang.sch.id'], ['name' => 'Junior High (Wali Kelas Junior High)', 'password' => Hash::make('beatrix123'), 'plain_password' => 'beatrix123', 'email_verified_at' => now()]);
-        User::updateOrCreate(['email' => 'anjash@escs-kupang.sch.id'], ['name' => 'Senior High (Wali Kelas Senior High)', 'password' => Hash::make('anjash123'), 'plain_password' => 'anjash123', 'email_verified_at' => now()]);
+        // Homeroom Teacher Accounts from NTO National Plus Data
+        User::updateOrCreate(['email' => 'vivinalle@nto-kupang.sch.id'], ['name' => 'Nursery (Wali Kelas Nursery)', 'password' => Hash::make('vivi123'), 'plain_password' => 'vivi123', 'email_verified_at' => now()]);
+        User::updateOrCreate(['email' => 'asnat@nto-kupang.sch.id'], ['name' => 'Pre-K (Wali Kelas Pre-K)', 'password' => Hash::make('asnat123'), 'plain_password' => 'asnat123', 'email_verified_at' => now()]);
+        User::updateOrCreate(['email' => 'ellen@nto-kupang.sch.id'], ['name' => 'Kindergarten (Wali Kelas Kindergarten)', 'password' => Hash::make('ellen123'), 'plain_password' => 'ellen123', 'email_verified_at' => now()]);
+        User::updateOrCreate(['email' => 'kezia@nto-kupang.sch.id'], ['name' => 'Primary Preparation (Wali Kelas Primary Preparation)', 'password' => Hash::make('kezia123'), 'plain_password' => 'kezia123', 'email_verified_at' => now()]);
+        User::updateOrCreate(['email' => 'amel@nto-kupang.sch.id'], ['name' => 'Primary A (Wali Kelas Primary A)', 'password' => Hash::make('amel123'), 'plain_password' => 'amel123', 'email_verified_at' => now()]);
+        User::updateOrCreate(['email' => 'wulan@nto-kupang.sch.id'], ['name' => 'Primary B (Wali Kelas Primary B)', 'password' => Hash::make('wulan123'), 'plain_password' => 'wulan123', 'email_verified_at' => now()]);
+        User::updateOrCreate(['email' => 'aldi@nto-kupang.sch.id'], ['name' => 'Primary C (Wali Kelas Primary C)', 'password' => Hash::make('aldi123'), 'plain_password' => 'aldi123', 'email_verified_at' => now()]);
+        User::updateOrCreate(['email' => 'beatrix@nto-kupang.sch.id'], ['name' => 'Junior High (Wali Kelas Junior High)', 'password' => Hash::make('beatrix123'), 'plain_password' => 'beatrix123', 'email_verified_at' => now()]);
+        User::updateOrCreate(['email' => 'anjash@nto-kupang.sch.id'], ['name' => 'Senior High (Wali Kelas Senior High)', 'password' => Hash::make('anjash123'), 'plain_password' => 'anjash123', 'email_verified_at' => now()]);
 
         // Seed Real Student Data from ESCS Kupang Spreadsheet
         if (Student::count() === 0) {

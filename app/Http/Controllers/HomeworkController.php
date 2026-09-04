@@ -37,8 +37,9 @@ class HomeworkController extends Controller
 
         $homeworks = $query->paginate(10)->withQueryString();
         $classes = Student::OFFICIAL_CLASSES;
+        $studentsInClass = Student::when($assignedClass, fn($q) => $q->where('kelas', $assignedClass))->orderBy('nama')->get();
 
-        return view('homeworks.teacher-index', compact('homeworks', 'assignedClass', 'classes'));
+        return view('homeworks.teacher-index', compact('homeworks', 'assignedClass', 'classes', 'studentsInClass'));
     }
 
     /**
@@ -55,6 +56,8 @@ class HomeworkController extends Controller
         $defaultClass = $assignedClass ?? Student::OFFICIAL_CLASSES[0];
 
         $validated = $request->validate([
+            'target_type' => 'required|in:all,student',
+            'student_id' => 'nullable|required_if:target_type,student|exists:students,id',
             'kelas' => 'required|in:' . implode(',', Student::OFFICIAL_CLASSES),
             'mata_pelajaran' => 'required|string|max:100',
             'judul' => 'required|string|max:255',
@@ -72,8 +75,11 @@ class HomeworkController extends Controller
             $lampiranPath = $request->file('lampiran_guru')->store('pr_lampiran', 'public');
         }
 
+        $targetStudentId = $validated['target_type'] === 'student' ? $validated['student_id'] : null;
+
         Homework::create([
             'teacher_id' => $user->id,
+            'student_id' => $targetStudentId,
             'kelas' => $validated['kelas'],
             'mata_pelajaran' => $validated['mata_pelajaran'],
             'judul' => $validated['judul'],
@@ -82,7 +88,8 @@ class HomeworkController extends Controller
             'lampiran_guru' => $lampiranPath,
         ]);
 
-        return redirect()->route('homeworks.index')->with('success', 'Pemberitahuan PR baru berhasil dibuat dan dikirim ke kelas ' . $validated['kelas']);
+        $targetText = $targetStudentId ? "siswa spesifik" : "seluruh siswa kelas {$validated['kelas']}";
+        return redirect()->route('homeworks.index')->with('success', "Pemberitahuan PR baru berhasil dibuat dan dikirim ke {$targetText}.");
     }
 
     /**
@@ -97,7 +104,11 @@ class HomeworkController extends Controller
             abort(403, "Anda hanya dapat melihat dan menilai PR kelas {$assignedClass}.");
         }
 
-        $students = Student::where('kelas', $homework->kelas)->orderBy('nama')->get();
+        $studentsQuery = Student::where('kelas', $homework->kelas);
+        if ($homework->student_id) {
+            $studentsQuery->where('id', $homework->student_id);
+        }
+        $students = $studentsQuery->orderBy('nama')->get();
         $submissions = HomeworkSubmission::where('homework_id', $homework->id)->with('student')->get()->keyBy('student_id');
 
         $gradedSubmissions = $submissions->whereNotNull('nilai');
@@ -183,6 +194,9 @@ class HomeworkController extends Controller
 
         $student = $user->student;
         $homeworks = Homework::where('kelas', $student->kelas)
+            ->where(function ($q) use ($student) {
+                $q->whereNull('student_id')->orWhere('student_id', $student->id);
+            })
             ->with(['teacher', 'submissions' => function ($q) use ($student) {
                 $q->where('student_id', $student->id);
             }])

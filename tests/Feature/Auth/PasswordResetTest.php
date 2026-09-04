@@ -21,13 +21,13 @@ class PasswordResetTest extends TestCase
 
     public function test_reset_password_notification_can_be_requested_to_admin(): void
     {
-        $user = User::factory()->create(['email' => 'user.forgot@escs-kupang.sch.id']);
+        $user = User::factory()->create(['email' => 'user.forgot@nto-kupang.sch.id']);
 
         $response = $this->post('/forgot-password', ['email' => $user->email]);
 
         $response->assertSessionHas('status');
         $this->assertDatabaseHas('password_reset_requests', [
-            'email' => 'user.forgot@escs-kupang.sch.id',
+            'email' => 'user.forgot@nto-kupang.sch.id',
             'status' => 'pending',
         ]);
     }

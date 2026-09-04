@@ -16,16 +16,16 @@ class PasswordResetRequestTest extends TestCase
         $teacher = User::factory()->create([
             'role' => 'guru',
             'name' => 'Guru Lupa Sandi',
-            'email' => 'lupa.sandi@escs-kupang.sch.id',
+            'email' => 'lupa.sandi@nto-kupang.sch.id',
         ]);
 
         $response = $this->post(route('password.email'), [
-            'email' => 'lupa.sandi@escs-kupang.sch.id',
+            'email' => 'lupa.sandi@nto-kupang.sch.id',
         ]);
 
         $response->assertSessionHas('status');
         $this->assertDatabaseHas('password_reset_requests', [
-            'email' => 'lupa.sandi@escs-kupang.sch.id',
+            'email' => 'lupa.sandi@nto-kupang.sch.id',
             'status' => 'pending',
         ]);
     }

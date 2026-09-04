@@ -15,6 +15,7 @@ class Homework extends Model
 
     protected $fillable = [
         'teacher_id',
+        'student_id',
         'kelas',
         'mata_pelajaran',
         'judul',
@@ -30,6 +31,11 @@ class Homework extends Model
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    public function student(): BelongsTo
+    {
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
     public function submissions(): HasMany

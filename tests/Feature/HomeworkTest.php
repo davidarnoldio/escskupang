@@ -45,6 +45,7 @@ class HomeworkTest extends TestCase
     public function test_teacher_can_create_homework_for_assigned_class(): void
     {
         $response = $this->actingAs($this->teacher)->post(route('homeworks.store'), [
+            'target_type' => 'all',
             'kelas' => 'Primary A',
             'mata_pelajaran' => 'Matematika',
             'judul' => 'Latihan Soal Bab 1',
@@ -57,6 +58,27 @@ class HomeworkTest extends TestCase
             'kelas' => 'Primary A',
             'mata_pelajaran' => 'Matematika',
             'judul' => 'Latihan Soal Bab 1',
+            'student_id' => null,
+        ]);
+    }
+
+    public function test_teacher_can_create_homework_for_specific_student(): void
+    {
+        $response = $this->actingAs($this->teacher)->post(route('homeworks.store'), [
+            'target_type' => 'student',
+            'student_id' => $this->student->id,
+            'kelas' => 'Primary A',
+            'mata_pelajaran' => 'Bahasa Inggris',
+            'judul' => 'Tugas Remedial Grammer',
+            'deskripsi' => 'Kerjakan modul 2',
+            'deadline' => now()->addDays(3)->format('Y-m-d H:i:s'),
+        ]);
+
+        $response->assertRedirect(route('homeworks.index'));
+        $this->assertDatabaseHas('homeworks', [
+            'kelas' => 'Primary A',
+            'student_id' => $this->student->id,
+            'judul' => 'Tugas Remedial Grammer',
         ]);
     }
 
