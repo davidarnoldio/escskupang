@@ -84,7 +84,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     <span class="flex-1">Surat Izin Ortu</span>
                     @if($pendingLettersCount > 0)
-                        <span class="px-1.5 py-0.5 text-[9px] font-black bg-blue-500 text-white rounded-full">
+                        <span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-500 text-white rounded-full">
                             {{ $pendingLettersCount }}
                         </span>
                     @endif
@@ -119,14 +119,14 @@
 
                     <!-- Kelola Guru Link (Admin Only) -->
                     <a href="{{ route('teachers.index') }}"
-                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('teachers.*') ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('teachers.*') ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
                         <span>Kelola Guru</span>
                     </a>
 
                     <!-- Pengaturan Jam Link (Admin Only) -->
                     <a href="{{ route('settings.index') }}"
-                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('settings.index') ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('settings.index') ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span>Pengaturan Jam</span>
                     </a>
@@ -169,7 +169,7 @@
                     <div class="border-t border-slate-100 my-1"></div>
                     <form method="POST" action="{{ route('impersonate.leave') }}">
                         @csrf
-                        <button type="submit" class="w-full text-left px-4 py-2 text-xs font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 transition flex items-center gap-2">
+                        <button type="submit" class="w-full text-left px-4 py-2 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition flex items-center gap-2">
                             <span>⏪ Kembali ke Akun Admin</span>
                         </button>
                     </form>

@@ -3,14 +3,14 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h2 class="font-bold text-2xl text-slate-900 leading-tight flex items-center gap-2">
-                    <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     <span>Penerimaan Surat Izin / Sakit Orang Tua</span>
                 </h2>
                 <p class="text-xs text-slate-500 mt-1">Daftar surat izin dan surat dokter yang dikirimkan Orang Tua murid</p>
             </div>
             @if($assignedClass)
-                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-sky-50 text-sky-900 font-bold text-xs rounded-xl border border-sky-200">
-                    <span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-50 text-emerald-900 font-bold text-xs rounded-xl border border-emerald-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span>Wali Kelas {{ $assignedClass }}</span>
                 </span>
             @endif
@@ -50,17 +50,17 @@
                                         <div class="text-xs font-mono text-slate-400">NIS: {{ $att->student->nis ?? '-' }}</div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-50 text-sky-900 border border-sky-200">
+                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-900 border border-emerald-200">
                                             {{ $att->student->kelas ?? '-' }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
                                         @if($att->status == 'sakit')
-                                            <span class="px-2.5 py-0.5 rounded-md text-xs font-extrabold bg-blue-100 text-blue-800 border border-blue-200 uppercase">
+                                            <span class="px-2.5 py-0.5 rounded-md text-xs font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300 uppercase">
                                                 🏥 Sakit
                                             </span>
                                         @else
-                                            <span class="px-2.5 py-0.5 rounded-md text-xs font-extrabold bg-sky-50 text-sky-900 border border-sky-200 uppercase">
+                                            <span class="px-2.5 py-0.5 rounded-md text-xs font-extrabold bg-teal-50 text-teal-900 border border-teal-200 uppercase">
                                                 ✉️ Izin
                                             </span>
                                         @endif
@@ -70,7 +70,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         @if($att->surat_izin)
-                                            <button type="button" @click="showModal = true; modalImg = '{{ asset($att->surat_izin) }}'; modalTitle = 'Surat {{ ucfirst($att->status) }} - {{ $att->student->nama }}';" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-xl border border-blue-200 inline-flex items-center gap-1.5 transition cursor-pointer">
+                                            <button type="button" @click="showModal = true; modalImg = '{{ asset($att->surat_izin) }}'; modalTitle = 'Surat {{ ucfirst($att->status) }} - {{ $att->student->nama }}';" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs rounded-xl border border-emerald-200 inline-flex items-center gap-1.5 transition cursor-pointer">
                                                 📷 Pratinjau Surat
                                             </button>
                                         @else
@@ -107,10 +107,10 @@
                     <img :src="modalImg" class="max-w-full mx-auto rounded-xl shadow-lg">
                 </div>
                 <div class="flex justify-between items-center pt-2">
-                    <a :href="modalImg" target="_blank" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-xl transition inline-flex items-center gap-1">
+                    <a :href="modalImg" target="_blank" class="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs rounded-xl transition inline-flex items-center gap-1">
                         🔗 Buka File Asli
                     </a>
-                    <button type="button" @click="showModal = false" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-sky-400 font-extrabold text-xs rounded-xl transition">
+                    <button type="button" @click="showModal = false" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 font-extrabold text-xs rounded-xl transition">
                         Tutup
                     </button>
                 </div>

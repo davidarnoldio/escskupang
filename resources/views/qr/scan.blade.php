@@ -25,10 +25,10 @@
                     <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-bold text-lg text-slate-900 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
                                 Scanner Kamera Live
                             </h3>
-                            <button @click="toggleCamera()" type="button" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-sky-400 text-xs font-bold rounded-xl transition cursor-pointer">
+                            <button @click="toggleCamera()" type="button" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 text-xs font-bold rounded-xl transition cursor-pointer">
                                 <span x-text="cameraActive ? '⏹ Matikan Kamera' : '🎥 Aktifkan Kamera'"></span>
                             </button>
                         </div>
@@ -51,9 +51,9 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
                                     </div>
-                                    <input x-model="manualNis" type="text" placeholder="Masukkan / Scan NIS Manual (Contoh: 10201)..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 focus:bg-white transition" autofocus>
+                                    <input x-model="manualNis" type="text" placeholder="Masukkan / Scan NIS Manual (Contoh: 10201)..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:bg-white transition" autofocus>
                                 </div>
-                                <button type="submit" :disabled="loading" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-sky-400 font-bold rounded-xl text-sm transition cursor-pointer flex items-center gap-2">
+                                <button type="submit" :disabled="loading" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 font-bold rounded-xl text-sm transition cursor-pointer flex items-center gap-2">
                                     <span x-text="loading ? 'Proses...' : 'Proses Scan'"></span>
                                 </button>
                             </form>
@@ -93,7 +93,7 @@
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                                     <span class="text-xs text-slate-400">Kelas</span>
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-xs font-bold px-2 py-0.5 bg-slate-900 text-sky-400 rounded-md" x-text="lastResult.student.kelas"></span>
+                                        <span class="text-xs font-bold px-2 py-0.5 bg-slate-900 text-emerald-400 rounded-md" x-text="lastResult.student.kelas"></span>
                                         <template x-if="lastResult.student.is_abk">
                                             <span class="text-[10px] font-black px-1.5 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded">ABK</span>
                                         </template>

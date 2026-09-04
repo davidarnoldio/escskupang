@@ -225,7 +225,7 @@
                                         </td>
                                         <td class="py-3 px-4 text-center space-x-1">
                                             @if($p->bukti_pembayaran)
-                                                <button @click="activeProofModal = '{{ asset('storage/' . $p->bukti_pembayaran) }}'" class="px-2.5 py-1 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-[10px] font-bold border border-blue-200 transition">
+                                                <button @click="activeProofModal = '{{ asset('storage/' . $p->bukti_pembayaran) }}'" class="px-2.5 py-1 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-lg text-[10px] font-bold border border-emerald-200 transition">
                                                     🔍 Lihat Bukti
                                                 </button>
                                             @endif

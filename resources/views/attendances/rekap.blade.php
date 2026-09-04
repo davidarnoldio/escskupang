@@ -26,13 +26,13 @@
             <form method="GET" action="{{ route('attendances.rekap') }}" class="flex flex-wrap items-center gap-4">
                 <div>
                     <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Bulan & Tahun</label>
-                    <input type="month" name="bulan" value="{{ $bulan }}" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white transition cursor-pointer">
+                    <input type="month" name="bulan" value="{{ $bulan }}" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:bg-white transition cursor-pointer">
                 </div>
 
                 @if(Auth::user()->isAdmin())
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Filter Kelas</label>
-                        <select name="kelas" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white transition cursor-pointer">
+                        <select name="kelas" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:bg-white transition cursor-pointer">
                             <option value="">Semua Kelas</option>
                             @foreach($classList as $k)
                                 <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>Kelas {{ $k }}</option>
@@ -41,7 +41,7 @@
                     </div>
                 @else
                     <div class="pt-4">
-                        <span class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-800 font-extrabold text-xs rounded-full border border-blue-200">
+                        <span class="inline-flex items-center px-3 py-1.5 bg-emerald-50 text-emerald-800 font-extrabold text-xs rounded-full border border-emerald-200">
                             🏫 Kelas {{ $assignedClass }} (Wali Kelas)
                         </span>
                     </div>
@@ -96,18 +96,18 @@
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-sky-600">Total Izin (Siswa)</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-teal-600">Total Izin (Siswa)</div>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalIzin }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
-                <div class="w-10 h-10 rounded-2xl bg-sky-500/10 text-sky-600 flex items-center justify-center font-bold text-lg">ⓘ</div>
+                <div class="w-10 h-10 rounded-2xl bg-teal-500/10 text-teal-600 flex items-center justify-center font-bold text-lg">ⓘ</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-blue-600">Total Sakit (Siswa)</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-emerald-700">Total Sakit (Siswa)</div>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalSakit }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
-                <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 flex items-center justify-center font-bold text-lg">🏥</div>
+                <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold text-lg">🏥</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
@@ -138,8 +138,8 @@
                                 <th class="px-2 py-3 text-center min-w-[28px]">{{ $d }}</th>
                             @endfor
                             <th class="px-3 py-3 text-center bg-emerald-50 text-emerald-800">H</th>
-                            <th class="px-3 py-3 text-center bg-sky-50 text-sky-800">I</th>
-                            <th class="px-3 py-3 text-center bg-blue-50 text-blue-800">S</th>
+                            <th class="px-3 py-3 text-center bg-teal-50 text-teal-800">I</th>
+                            <th class="px-3 py-3 text-center bg-emerald-100/60 text-emerald-900">S</th>
                             <th class="px-3 py-3 text-center bg-rose-50 text-rose-800">A</th>
                         </tr>
                     </thead>
@@ -182,8 +182,8 @@
                                     </td>
                                 @endfor
                                 <td class="px-3 py-3 text-center font-extrabold text-emerald-700 bg-emerald-50/50">{{ $hCount }}</td>
-                                <td class="px-3 py-3 text-center font-extrabold text-sky-700 bg-sky-50/50">{{ $iCount }}</td>
-                                <td class="px-3 py-3 text-center font-extrabold text-blue-700 bg-blue-50/50">{{ $sCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-teal-700 bg-teal-50/50">{{ $iCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-emerald-800 bg-emerald-100/30">{{ $sCount }}</td>
                                 <td class="px-3 py-3 text-center font-extrabold text-rose-700 bg-rose-50/50">{{ $aCount }}</td>
                             </tr>
                         @empty

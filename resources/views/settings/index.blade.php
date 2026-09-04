@@ -27,7 +27,7 @@
                 <!-- SECTION 1: SISWA REGULAR -->
                 <div>
                     <div class="flex items-center gap-2 pb-3 mb-5 border-b border-slate-100">
-                        <span class="w-3 h-3 rounded-full bg-blue-600"></span>
+                        <span class="w-3 h-3 rounded-full bg-emerald-600"></span>
                         <h3 class="font-extrabold text-sm text-slate-900 uppercase tracking-wider">1. Jam Presensi Siswa Regular (Umum)</h3>
                     </div>
 
@@ -35,62 +35,62 @@
                         <!-- Jam Masuk -->
                         <div>
                             <label for="jam_masuk" class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">Jam Masuk</label>
-                            <input type="time" id="jam_masuk" name="jam_masuk" value="{{ old('jam_masuk', $jamMasuk) }}" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-extrabold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white transition cursor-pointer">
+                            <input type="time" id="jam_masuk" name="jam_masuk" value="{{ old('jam_masuk', $jamMasuk) }}" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-extrabold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:bg-white transition cursor-pointer">
                             <p class="text-[11px] text-slate-400 font-medium mt-1">Waktu gerbang dibuka (misal: 07:00).</p>
                         </div>
 
                         <!-- Batas Jam Tepat Waktu -->
                         <div>
                             <label for="jam_terlambat" class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">Batas Tepat Waktu</label>
-                            <input type="time" id="jam_terlambat" name="jam_terlambat" value="{{ old('jam_terlambat', $jamTerlambat) }}" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-extrabold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white transition cursor-pointer">
+                            <input type="time" id="jam_terlambat" name="jam_terlambat" value="{{ old('jam_terlambat', $jamTerlambat) }}" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-extrabold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:bg-white transition cursor-pointer">
                             <p class="text-[11px] text-slate-400 font-medium mt-1">Lewat dari ini dicatat <span class="font-bold text-rose-600">Terlambat</span>.</p>
                         </div>
 
                         <!-- Jam Pulang -->
                         <div>
                             <label for="jam_pulang" class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">Jam Pulang</label>
-                            <input type="time" id="jam_pulang" name="jam_pulang" value="{{ old('jam_pulang', $jamPulang) }}" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-extrabold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white transition cursor-pointer">
+                            <input type="time" id="jam_pulang" name="jam_pulang" value="{{ old('jam_pulang', $jamPulang) }}" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-extrabold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:bg-white transition cursor-pointer">
                             <p class="text-[11px] text-slate-400 font-medium mt-1">Waktu selesai KBM (misal: 14:00).</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- SECTION 2: SISWA ABK -->
-                <div class="p-6 bg-indigo-50/50 border border-indigo-200/80 rounded-3xl">
-                    <div class="flex items-center justify-between pb-3 mb-5 border-b border-indigo-200/60">
+                <div class="p-6 bg-emerald-50/60 border border-emerald-200/80 rounded-3xl">
+                    <div class="flex items-center justify-between pb-3 mb-5 border-b border-emerald-200/60">
                         <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-indigo-600"></span>
-                            <h3 class="font-extrabold text-sm text-indigo-950 uppercase tracking-wider">2. Jam Presensi Siswa Berkebutuhan Khusus (ABK)</h3>
+                            <span class="w-3 h-3 rounded-full bg-emerald-600"></span>
+                            <h3 class="font-extrabold text-sm text-emerald-950 uppercase tracking-wider">2. Jam Presensi Siswa Berkebutuhan Khusus (ABK)</h3>
                         </div>
-                        <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-indigo-100 text-indigo-900 border border-indigo-300">♿ Jadwal Khusus ABK</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300">♿ Jadwal Khusus ABK</span>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Jam Masuk ABK -->
                         <div>
-                            <label for="jam_masuk_abk" class="block text-xs font-extrabold text-indigo-900 uppercase tracking-wider mb-2">Jam Masuk ABK</label>
-                            <input type="time" id="jam_masuk_abk" name="jam_masuk_abk" value="{{ old('jam_masuk_abk', $jamMasukAbk) }}" required class="w-full px-4 py-2.5 bg-white border border-indigo-200 rounded-2xl text-sm font-extrabold text-indigo-950 focus:ring-2 focus:ring-indigo-600 transition cursor-pointer">
-                            <p class="text-[11px] text-indigo-700 font-medium mt-1">Waktu gerbang dibuka ABK (misal: 08:00).</p>
+                            <label for="jam_masuk_abk" class="block text-xs font-extrabold text-emerald-900 uppercase tracking-wider mb-2">Jam Masuk ABK</label>
+                            <input type="time" id="jam_masuk_abk" name="jam_masuk_abk" value="{{ old('jam_masuk_abk', $jamMasukAbk) }}" required class="w-full px-4 py-2.5 bg-white border border-emerald-200 rounded-2xl text-sm font-extrabold text-emerald-950 focus:ring-2 focus:ring-emerald-500 transition cursor-pointer">
+                            <p class="text-[11px] text-emerald-700 font-medium mt-1">Waktu gerbang dibuka ABK (misal: 08:00).</p>
                         </div>
 
                         <!-- Batas Jam Tepat Waktu ABK -->
                         <div>
-                            <label for="jam_terlambat_abk" class="block text-xs font-extrabold text-indigo-900 uppercase tracking-wider mb-2">Batas Tepat Waktu ABK</label>
-                            <input type="time" id="jam_terlambat_abk" name="jam_terlambat_abk" value="{{ old('jam_terlambat_abk', $jamTerlambatAbk) }}" required class="w-full px-4 py-2.5 bg-white border border-indigo-200 rounded-2xl text-sm font-extrabold text-indigo-950 focus:ring-2 focus:ring-indigo-600 transition cursor-pointer">
-                            <p class="text-[11px] text-indigo-700 font-medium mt-1">Toleransi keterlambatan ABK (misal: 08:30).</p>
+                            <label for="jam_terlambat_abk" class="block text-xs font-extrabold text-emerald-900 uppercase tracking-wider mb-2">Batas Tepat Waktu ABK</label>
+                            <input type="time" id="jam_terlambat_abk" name="jam_terlambat_abk" value="{{ old('jam_terlambat_abk', $jamTerlambatAbk) }}" required class="w-full px-4 py-2.5 bg-white border border-emerald-200 rounded-2xl text-sm font-extrabold text-emerald-950 focus:ring-2 focus:ring-emerald-500 transition cursor-pointer">
+                            <p class="text-[11px] text-emerald-700 font-medium mt-1">Toleransi keterlambatan ABK (misal: 08:30).</p>
                         </div>
 
                         <!-- Jam Pulang ABK -->
                         <div>
-                            <label for="jam_pulang_abk" class="block text-xs font-extrabold text-indigo-900 uppercase tracking-wider mb-2">Jam Pulang ABK</label>
-                            <input type="time" id="jam_pulang_abk" name="jam_pulang_abk" value="{{ old('jam_pulang_abk', $jamPulangAbk) }}" required class="w-full px-4 py-2.5 bg-white border border-indigo-200 rounded-2xl text-sm font-extrabold text-indigo-950 focus:ring-2 focus:ring-indigo-600 transition cursor-pointer">
-                            <p class="text-[11px] text-indigo-700 font-medium mt-1">Waktu kepulangan ABK (misal: 13:00).</p>
+                            <label for="jam_pulang_abk" class="block text-xs font-extrabold text-emerald-900 uppercase tracking-wider mb-2">Jam Pulang ABK</label>
+                            <input type="time" id="jam_pulang_abk" name="jam_pulang_abk" value="{{ old('jam_pulang_abk', $jamPulangAbk) }}" required class="w-full px-4 py-2.5 bg-white border border-emerald-200 rounded-2xl text-sm font-extrabold text-emerald-950 focus:ring-2 focus:ring-emerald-500 transition cursor-pointer">
+                            <p class="text-[11px] text-emerald-700 font-medium mt-1">Waktu kepulangan ABK (misal: 13:00).</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="pt-4 border-t border-slate-100 flex items-center justify-end">
-                    <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-blue-600/30 transition cursor-pointer flex items-center gap-2">
+                    <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-emerald-600/30 transition cursor-pointer flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         <span>Simpan Semua Pengaturan Jam</span>
                     </button>

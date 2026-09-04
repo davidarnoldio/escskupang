@@ -23,7 +23,7 @@
                     @if($student->foto)
                         <img src="{{ asset($student->foto) }}" alt="{{ $student->nama }}" class="w-32 h-32 rounded-2xl object-cover border-4 border-white shadow-md">
                     @else
-                        <div class="w-32 h-32 rounded-2xl bg-slate-900 text-sky-400 border-4 border-slate-800 flex items-center justify-center font-extrabold text-4xl shadow-md">
+                        <div class="w-32 h-32 rounded-2xl bg-slate-900 text-emerald-400 border-4 border-slate-800 flex items-center justify-center font-extrabold text-4xl shadow-md">
                             {{ strtoupper(substr($student->nama, 0, 2)) }}
                         </div>
                     @endif
@@ -39,7 +39,7 @@
                     <div>
                         <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
                             <h3 class="font-extrabold text-2xl text-slate-900">{{ $student->nama }}</h3>
-                            <span class="px-3 py-0.5 bg-sky-50 text-sky-900 border border-sky-200 font-bold text-xs rounded-full">
+                            <span class="px-3 py-0.5 bg-emerald-50 text-emerald-900 border border-emerald-200 font-bold text-xs rounded-full">
                                 Kelas {{ $student->kelas }}
                             </span>
                             @if($student->is_abk)
@@ -67,11 +67,11 @@
                     </div>
 
                     <div class="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-3">
-                        <a href="{{ route('students.qr-card', $student) }}" target="_blank" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-sky-400 font-extrabold text-xs rounded-xl transition inline-flex items-center gap-1.5 shadow-xs">
+                        <a href="{{ route('students.qr-card', $student) }}" target="_blank" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 font-extrabold text-xs rounded-xl transition inline-flex items-center gap-1.5 shadow-xs">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
                             <span>Kartu QR Pelajar</span>
                         </a>
-                        <a href="{{ route('students.edit', $student) }}" class="px-4 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-200 font-extrabold text-xs rounded-xl transition inline-flex items-center gap-1.5">
+                        <a href="{{ route('students.edit', $student) }}" class="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 font-extrabold text-xs rounded-xl transition inline-flex items-center gap-1.5">
                             <span>✏️ Edit Data</span>
                         </a>
                     </div>
@@ -104,8 +104,8 @@
                                         @php
                                             $badges = [
                                                 'hadir' => 'bg-emerald-100 text-emerald-800 border-emerald-200',
-                                                'izin' => 'bg-sky-50 text-sky-900 border-sky-200',
-                                                'sakit' => 'bg-blue-100 text-blue-800 border-blue-200',
+                                                'izin' => 'bg-teal-50 text-teal-900 border-teal-200',
+                                                'sakit' => 'bg-amber-100 text-amber-800 border-amber-200',
                                                 'alpa' => 'bg-rose-100 text-rose-800 border-rose-200',
                                                 'libur' => 'bg-purple-100 text-purple-800 border-purple-200',
                                             ];

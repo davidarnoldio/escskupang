@@ -24,10 +24,10 @@
         <!-- PR Header Details Card -->
         <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-3">
             <div class="flex flex-wrap items-center gap-2">
-                <span class="px-3 py-1 text-xs font-black rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                <span class="px-3 py-1 text-xs font-black rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                     Kelas {{ $homework->kelas }}
                 </span>
-                <span class="px-3 py-1 text-xs font-black rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                <span class="px-3 py-1 text-xs font-black rounded-full bg-teal-50 text-teal-700 border border-teal-200">
                     Mata Pelajaran: {{ $homework->mata_pelajaran }}
                 </span>
                 <span class="px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-700">
@@ -52,13 +52,13 @@
                 <p class="text-[10px] font-extrabold text-rose-500 uppercase tracking-wider">Belum Kumpul</p>
                 <p class="text-xl font-black text-rose-600 mt-1">{{ $recap['belum_kumpul'] }}</p>
             </div>
-            <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 shadow-sm text-center">
-                <p class="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider">Sudah Dinilai</p>
-                <p class="text-xl font-black text-blue-700 mt-1">{{ $recap['sudah_dinilai'] }}</p>
+            <div class="bg-teal-50/50 p-4 rounded-2xl border border-teal-100 shadow-sm text-center">
+                <p class="text-[10px] font-extrabold text-teal-600 uppercase tracking-wider">Sudah Dinilai</p>
+                <p class="text-xl font-black text-teal-700 mt-1">{{ $recap['sudah_dinilai'] }}</p>
             </div>
-            <div class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 shadow-sm text-center">
-                <p class="text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider">Rata-Rata Kelas</p>
-                <p class="text-xl font-black text-indigo-700 mt-1">{{ $recap['rata_rata'] }}</p>
+            <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 shadow-sm text-center">
+                <p class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-wider">Rata-Rata Kelas</p>
+                <p class="text-xl font-black text-emerald-700 mt-1">{{ $recap['rata_rata'] }}</p>
             </div>
             <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 shadow-sm text-center">
                 <p class="text-[10px] font-extrabold text-amber-600 uppercase tracking-wider">Nilai Max</p>
@@ -116,7 +116,7 @@
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
                                     @if($sub && $sub->foto_pr)
-                                        <button @click="photoModal = '{{ asset('storage/' . $sub->foto_pr) }}'" class="px-2.5 py-1 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-[10px] font-bold border border-blue-200 transition inline-flex items-center gap-1">
+                                        <button @click="photoModal = '{{ asset('storage/' . $sub->foto_pr) }}'" class="px-2.5 py-1 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-lg text-[10px] font-bold border border-emerald-200 transition inline-flex items-center gap-1">
                                             <span>🖼️ Lihat Foto</span>
                                         </button>
                                     @else
@@ -137,7 +137,7 @@
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
                                     @if($sub)
-                                        <button @click="gradeModal = { id: {{ $sub->id }}, name: '{{ addslashes($st->nama) }}', grade: '{{ $sub->nilai ?? '' }}', notes: '{{ addslashes($sub->catatan_guru ?? '') }}' }" class="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 rounded-xl text-xs font-bold shadow-sm transition">
+                                        <button @click="gradeModal = { id: {{ $sub->id }}, name: '{{ addslashes($st->nama) }}', grade: '{{ $sub->nilai ?? '' }}', notes: '{{ addslashes($sub->catatan_guru ?? '') }}' }" class="px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white hover:from-emerald-700 hover:to-teal-800 rounded-xl text-xs font-bold shadow-sm transition">
                                             ✏️ Input / Edit Nilai
                                         </button>
                                     @else
@@ -171,16 +171,16 @@
                         @csrf
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nilai (0 - 100)</label>
-                            <input type="number" name="nilai" min="0" max="100" required :value="gradeModal ? gradeModal.grade : ''" placeholder="Contoh: 95" class="w-full rounded-xl border-slate-200 text-sm font-bold focus:ring-blue-500 focus:border-blue-500">
+                            <input type="number" name="nilai" min="0" max="100" required :value="gradeModal ? gradeModal.grade : ''" placeholder="Contoh: 95" class="w-full rounded-xl border-slate-200 text-sm font-bold focus:ring-emerald-500 focus:border-emerald-500">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Catatan / Feedback Guru (Opsional)</label>
-                            <textarea name="catatan_guru" rows="3" :value="gradeModal ? gradeModal.notes : ''" placeholder="Contoh: Bagus sekali, tulisan rapi dan jawaban tepat!" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            <textarea name="catatan_guru" rows="3" :value="gradeModal ? gradeModal.notes : ''" placeholder="Contoh: Bagus sekali, tulisan rapi dan jawaban tepat!" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500"></textarea>
                         </div>
 
                         <div class="flex gap-2 pt-2">
-                            <button type="submit" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition shadow-md shadow-blue-500/20">
+                            <button type="submit" class="flex-1 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition shadow-md shadow-emerald-600/20">
                                 Simpan Nilai
                             </button>
                             <button type="button" @click="gradeModal = null" class="px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-200 transition">

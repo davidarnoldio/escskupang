@@ -26,14 +26,14 @@
         @endif
 
         <!-- Student Info Banner -->
-        <div class="bg-gradient-to-r from-blue-900 to-indigo-950 p-6 rounded-3xl text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="bg-gradient-to-r from-slate-900 to-emerald-950 p-6 rounded-3xl text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 border border-emerald-500/30">
             <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center font-black text-lg text-blue-300 shadow-inner">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-600/30 border border-emerald-400/30 flex items-center justify-center font-black text-lg text-emerald-300 shadow-inner">
                     {{ strtoupper(substr($student->nama, 0, 2)) }}
                 </div>
                 <div>
                     <h3 class="text-lg font-black tracking-tight">{{ $student->nama }}</h3>
-                    <p class="text-xs text-slate-300 font-medium">Kelas: <span class="font-bold text-blue-300">{{ $student->kelas }}</span> | NIS: {{ $student->nis }}</p>
+                    <p class="text-xs text-slate-300 font-medium">Kelas: <span class="font-bold text-emerald-300">{{ $student->kelas }}</span> | NIS: {{ $student->nis }}</p>
                 </div>
             </div>
 
@@ -53,7 +53,7 @@
         <!-- Homework List -->
         <div class="space-y-4" x-data="{ uploadModal: null, photoModal: null }">
             <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                 <span>Daftar Tugas & PR Kelas {{ $student->kelas }}</span>
             </h3>
 
@@ -66,7 +66,7 @@
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                         <div>
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="px-2.5 py-0.5 text-[10px] font-black rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                                <span class="px-2.5 py-0.5 text-[10px] font-black rounded-full bg-teal-50 text-teal-700 border border-teal-200">
                                     {{ $hw->mata_pelajaran }}
                                 </span>
                                 <span class="text-xs text-slate-400 font-medium">Oleh: {{ $hw->teacher->name ?? 'Guru Kelas' }}</span>
@@ -84,7 +84,7 @@
 
                     @if($hw->lampiran_guru)
                         <div class="pt-1">
-                            <a href="{{ asset('storage/' . $hw->lampiran_guru) }}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-xl text-xs font-bold border border-blue-200 hover:bg-blue-100 transition">
+                            <a href="{{ asset('storage/' . $hw->lampiran_guru) }}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-xl text-xs font-bold border border-emerald-200 hover:bg-emerald-100 transition">
                                 📎 Unduh / Lihat Lampiran Soal dari Guru
                             </a>
                         </div>
@@ -93,7 +93,7 @@
                     <!-- Submission Status & Grade Section -->
                     <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         <div>
-                            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Status Pengumpulan Anda</div>
+                            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Status Pengumpulkan Anda</div>
                             @if($sub)
                                 <div class="flex items-center gap-2">
                                     <span class="px-2.5 py-1 text-[10px] font-black rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
@@ -124,20 +124,20 @@
                                     @endif
                                 </div>
 
-                                <button @click="photoModal = '{{ asset('storage/' . $sub->foto_pr) }}'" class="px-3 py-2 bg-white text-blue-600 hover:bg-blue-50 rounded-xl text-xs font-bold border border-slate-200 shadow-sm transition">
+                                <button @click="photoModal = '{{ asset('storage/' . $sub->foto_pr) }}'" class="px-3 py-2 bg-white text-emerald-600 hover:bg-emerald-50 rounded-xl text-xs font-bold border border-slate-200 shadow-sm transition">
                                     🖼️ Lihat Foto PR
                                 </button>
                             @endif
 
-                            <button @click="uploadModal = {{ $hw->id }}" class="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 transition">
+                            <button @click="uploadModal = {{ $hw->id }}" class="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 text-white hover:from-emerald-700 hover:to-teal-800 rounded-xl text-xs font-bold shadow-md shadow-emerald-600/20 transition">
                                 {{ $sub ? '🔄 Upload Ulang Foto PR' : '📤 Upload Foto PR' }}
                             </button>
                         </div>
                     </div>
 
                     @if($sub && $sub->catatan_guru)
-                        <div class="bg-indigo-50/70 p-4 rounded-2xl border border-indigo-100 text-xs font-medium text-indigo-900 space-y-1">
-                            <div class="font-bold flex items-center gap-1.5 text-indigo-800">
+                        <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100 text-xs font-medium text-emerald-900 space-y-1">
+                            <div class="font-bold flex items-center gap-1.5 text-emerald-800">
                                 <span>💬 Feedback & Catatan dari Guru:</span>
                             </div>
                             <p class="text-slate-700 italic">"{{ $sub->catatan_guru }}"</p>
@@ -154,16 +154,16 @@
                                 @csrf
                                 <div>
                                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ambil / Pilih Foto PR (JPG/PNG max 3MB)</label>
-                                    <input type="file" name="foto_pr" required accept="image/jpeg,image/png,image/jpg,application/pdf" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    <input type="file" name="foto_pr" required accept="image/jpeg,image/png,image/jpg,application/pdf" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
                                 </div>
 
                                 <div>
                                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Catatan Tambahan Siswa (Opsional)</label>
-                                    <textarea name="catatan_siswa" rows="2" placeholder="Contoh: Sudah selesai dikerjakan halaman 45 no 1-10..." class="w-full rounded-xl border-slate-200 text-xs font-medium"></textarea>
+                                    <textarea name="catatan_siswa" rows="2" placeholder="Contoh: Sudah selesai dikerjakan halaman 45 no 1-10..." class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500"></textarea>
                                 </div>
 
                                 <div class="flex gap-2 pt-2">
-                                    <button type="submit" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition">
+                                    <button type="submit" class="flex-1 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition">
                                         Kirim Foto PR
                                     </button>
                                     <button type="button" @click="uploadModal = null" class="px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-200 transition">

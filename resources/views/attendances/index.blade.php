@@ -31,13 +31,13 @@
             <form method="GET" action="{{ route('attendances.index') }}" class="flex flex-wrap items-center gap-3">
                 <div>
                     <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Tanggal Presensi</label>
-                    <input type="date" name="tanggal" value="{{ $tanggal }}" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white transition cursor-pointer">
+                    <input type="date" name="tanggal" value="{{ $tanggal }}" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:bg-white transition cursor-pointer">
                 </div>
 
                 @if(Auth::user()->isAdmin())
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Pilih Kelas</label>
-                        <select name="kelas" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:bg-white transition cursor-pointer">
+                        <select name="kelas" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:bg-white transition cursor-pointer">
                             <option value="">Semua Kelas</option>
                             @foreach($classList as $k)
                                 <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>Kelas {{ $k }}</option>
@@ -46,7 +46,7 @@
                     </div>
                 @else
                     <div class="pt-4">
-                        <span class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-800 font-extrabold text-xs rounded-full border border-blue-200">
+                        <span class="inline-flex items-center px-3 py-1.5 bg-emerald-50 text-emerald-800 font-extrabold text-xs rounded-full border border-emerald-200">
                             🏫 Kelas {{ $assignedClass }} (Wali Kelas)
                         </span>
                     </div>
@@ -64,7 +64,7 @@
                 <button type="button" @click="setAllHadir()" class="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-2xl text-xs font-extrabold transition cursor-pointer shadow-2xs">
                     ✓ Set Semua Hadir
                 </button>
-                <button type="button" @click="setAllLibur()" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-2xl text-xs font-extrabold transition cursor-pointer shadow-2xs">
+                <button type="button" @click="setAllLibur()" class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-2xl text-xs font-extrabold transition cursor-pointer shadow-2xs">
                     🏖️ Set Semua Libur
                 </button>
             </div>
@@ -80,7 +80,7 @@
                     <h3 class="font-black text-slate-900 text-xs uppercase tracking-wider">
                         Daftar Presensi Siswa (Tanggal: {{ \Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y') }})
                     </h3>
-                    <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-blue-600/30 transition cursor-pointer flex items-center gap-1.5">
+                    <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-emerald-600/30 transition cursor-pointer flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         <span>Simpan Presensi</span>
                     </button>
@@ -147,7 +147,7 @@
                                         }
                                     }
                                 @endphp
-                                <tr class="hover:bg-blue-50/30 transition duration-150">
+                                <tr class="hover:bg-emerald-50/30 transition duration-150">
                                     <td class="px-6 py-4 font-mono font-bold text-xs text-slate-600">
                                         {{ $student->nis }}
                                     </td>
@@ -160,7 +160,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full bg-blue-50 text-blue-700 border border-blue-200/80">
+                                        <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80">
                                             Kelas {{ $student->kelas }}
                                         </span>
                                     </td>
@@ -179,13 +179,13 @@
                                             </label>
 
                                             <label class="inline-flex items-center gap-1 cursor-pointer">
-                                                <input type="radio" name="attendances[{{ $student->id }}][status]" value="izin" class="text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'izin' ? 'checked' : '' }}>
-                                                <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">Izin</span>
+                                                <input type="radio" name="attendances[{{ $student->id }}][status]" value="izin" class="text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'izin' ? 'checked' : '' }}>
+                                                <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">Izin</span>
                                             </label>
 
                                             <label class="inline-flex items-center gap-1 cursor-pointer">
-                                                <input type="radio" name="attendances[{{ $student->id }}][status]" value="sakit" class="text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'sakit' ? 'checked' : '' }}>
-                                                <span class="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Sakit</span>
+                                                <input type="radio" name="attendances[{{ $student->id }}][status]" value="sakit" class="text-emerald-700 focus:ring-emerald-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'sakit' ? 'checked' : '' }}>
+                                                <span class="text-xs font-bold text-emerald-800 bg-emerald-100/60 px-2 py-0.5 rounded border border-emerald-300">Sakit</span>
                                             </label>
 
                                             <label class="inline-flex items-center gap-1 cursor-pointer">
@@ -200,7 +200,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <input type="text" name="attendances[{{ $student->id }}][keterangan]" value="{{ $att ? $att->keterangan : '' }}" placeholder="Catatan tambahan..." class="w-full px-3 py-1.5 border rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-600 transition {{ $isLateStudent ? 'bg-amber-50/70 border-amber-300 text-amber-950 font-bold' : 'bg-slate-50 border-slate-200' }}">
+                                        <input type="text" name="attendances[{{ $student->id }}][keterangan]" value="{{ $att ? $att->keterangan : '' }}" placeholder="Catatan tambahan..." class="w-full px-3 py-1.5 border rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-600 transition {{ $isLateStudent ? 'bg-amber-50/70 border-amber-300 text-amber-950 font-bold' : 'bg-slate-50 border-slate-200' }}">
                                     </td>
                                 </tr>
                             @empty
@@ -216,7 +216,7 @@
 
                 @if(count($students) > 0)
                     <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-end">
-                        <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-blue-600/30 transition cursor-pointer flex items-center gap-1.5">
+                        <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-emerald-600/30 transition cursor-pointer flex items-center gap-1.5">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             <span>Simpan Presensi Harian</span>
                         </button>

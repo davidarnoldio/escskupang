@@ -33,13 +33,13 @@
 
         <!-- Submit Button -->
         <div class="pt-2">
-            <button type="submit" class="w-full py-3 px-4 bg-slate-900 hover:bg-sky-600 text-white font-bold rounded-xl shadow-lg shadow-slate-950/20 border border-slate-800 hover:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transform active:scale-[0.99] transition duration-200 text-xs flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider">
+            <button type="submit" class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-950/20 border border-emerald-600 hover:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transform active:scale-[0.99] transition duration-200 text-xs flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider">
                 <span>📢 Kirim Notifikasi Lupa Password ke Admin</span>
             </button>
         </div>
 
         <div class="pt-3 text-center">
-            <a href="{{ route('login') }}" class="text-xs font-bold text-sky-600 hover:text-sky-700 transition">
+            <a href="{{ route('login') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition">
                 ← Kembali ke Halaman Login
             </a>
         </div>

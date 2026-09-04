@@ -59,15 +59,15 @@
                                     {{ $req->email }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full {{ $req->role == 'guru' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200' }}">
+                                    <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full {{ $req->role == 'guru' ? 'bg-teal-50 text-teal-700 border border-teal-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200' }}">
                                         {{ strtoupper($req->role) }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <form method="POST" action="{{ route('admin.reset-password', $req->user_id) }}" class="inline-flex items-center gap-2">
                                         @csrf
-                                        <input type="text" name="new_password" placeholder="Password Baru..." required class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold w-36 focus:ring-2 focus:ring-blue-600 focus:bg-white transition">
-                                        <button type="submit" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-xl text-xs shadow-md shadow-blue-600/30 transition cursor-pointer">
+                                        <input type="text" name="new_password" placeholder="Password Baru..." required class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold w-36 focus:ring-2 focus:ring-emerald-600 focus:bg-white transition">
+                                        <button type="submit" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-xs shadow-md shadow-emerald-600/30 transition cursor-pointer">
                                             🔑 Reset Sekarang
                                         </button>
                                     </form>
