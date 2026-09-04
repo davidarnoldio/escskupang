@@ -6,14 +6,16 @@
             class="lg:col-span-5 relative bg-[#025a3f] p-8 lg:p-10 flex flex-col justify-between overflow-hidden text-white min-h-[520px] lg:min-h-screen shadow-2xl z-10">
 
             <!-- Large Background School Tree Logo Watermark Shadow -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden">
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden"
+                 style="-webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 65%); mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 65%);">
                 <img src="{{ asset('images/logo.png') }}" alt="Watermark Tree Logo"
-                    class="w-[580px] h-[580px] max-w-none opacity-20 mix-blend-multiply filter contrast-125 brightness-90 transform -rotate-12 scale-110 select-none"
+                    class="w-[650px] h-[650px] max-w-none opacity-30 mix-blend-multiply filter contrast-150 brightness-90 transform -rotate-12 scale-110 select-none"
                     onerror="this.src='{{ asset('logo.png') }}'">
             </div>
 
             <!-- Additional Corner Watermark Shadow -->
-            <div class="absolute -bottom-24 -left-24 w-96 h-96 opacity-15 pointer-events-none z-0 mix-blend-multiply transform rotate-6 select-none">
+            <div class="absolute -bottom-20 -left-20 w-96 h-96 opacity-20 pointer-events-none z-0 mix-blend-multiply transform rotate-6 select-none"
+                 style="-webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%); mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%);">
                 <img src="{{ asset('images/logo.png') }}" alt="Tree Shadow" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
             </div>
 

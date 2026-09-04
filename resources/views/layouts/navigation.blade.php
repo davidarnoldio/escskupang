@@ -51,7 +51,8 @@
 <aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#024a35] text-slate-100 z-40 flex-col justify-between border-r border-emerald-900/60 shadow-2xl overflow-hidden relative">
     
     <!-- Background Tree Logo Watermark Shadow -->
-    <div class="absolute -bottom-20 -right-20 w-80 h-80 opacity-10 pointer-events-none z-0 mix-blend-multiply select-none">
+    <div class="absolute -bottom-20 -right-20 w-80 h-80 opacity-15 pointer-events-none z-0 mix-blend-multiply select-none"
+         style="-webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%); mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 75%);">
         <img src="{{ asset('images/logo.png') }}" alt="Sidebar Tree Shadow" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
     </div>
     
