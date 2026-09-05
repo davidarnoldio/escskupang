@@ -119,7 +119,7 @@
                                                     <span class="font-semibold text-slate-500">Kelas Binaan:</span>
                                                     <span
                                                         class="font-extrabold text-red-700 bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
-                                                        {{ $teacher->assigned_class ?? 'Belum Ditentukan' }}
+                                                        {{ $teacher->getAssignedClass() ?? 'Belum Ditentukan' }}
                                                     </span>
                                                 </div>
                                                 <div class="flex items-center justify-between text-[11px]">

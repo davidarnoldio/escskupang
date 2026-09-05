@@ -83,13 +83,23 @@ class TeacherController extends Controller
             'assigned_class' => ['nullable', 'string', Rule::in(Student::OFFICIAL_CLASSES)],
         ]);
 
+        $assignedClass = $validated['assigned_class'] ?? null;
+        if (!$assignedClass) {
+            foreach (Student::OFFICIAL_CLASSES as $class) {
+                if (str_contains(strtolower($validated['name']), strtolower($class))) {
+                    $assignedClass = $class;
+                    break;
+                }
+            }
+        }
+
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'plain_password' => $validated['password'],
             'role' => 'guru',
-            'assigned_class' => $validated['assigned_class'] ?? null,
+            'assigned_class' => $assignedClass,
         ]);
 
         return redirect()->route('teachers.index')->with('success', 'Akun Guru / Wali Kelas berhasil ditambahkan.');
@@ -128,10 +138,20 @@ class TeacherController extends Controller
             'assigned_class' => ['nullable', 'string', Rule::in(Student::OFFICIAL_CLASSES)],
         ]);
 
+        $assignedClass = $validated['assigned_class'] ?? null;
+        if (!$assignedClass) {
+            foreach (Student::OFFICIAL_CLASSES as $class) {
+                if (str_contains(strtolower($validated['name']), strtolower($class))) {
+                    $assignedClass = $class;
+                    break;
+                }
+            }
+        }
+
         $data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'assigned_class' => $validated['assigned_class'] ?? null,
+            'assigned_class' => $assignedClass,
         ];
 
         if (!empty($validated['password'])) {
