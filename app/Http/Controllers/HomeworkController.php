@@ -17,7 +17,7 @@ class HomeworkController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        if (!$user->isTeacher() && !$user->isAdmin()) {
+        if (!$user || !$user->isTeacher()) {
             abort(403, 'Akses khusus Guru / Wali Kelas.');
         }
 
@@ -48,7 +48,7 @@ class HomeworkController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        if (!$user->isTeacher() && !$user->isAdmin()) {
+        if (!$user || !$user->isTeacher()) {
             abort(403, 'Akses khusus Guru / Wali Kelas.');
         }
 
@@ -98,9 +98,12 @@ class HomeworkController extends Controller
     public function submissions(Homework $homework)
     {
         $user = Auth::user();
+        if (!$user || !$user->isTeacher()) {
+            abort(403, 'Akses khusus Guru / Wali Kelas.');
+        }
         $assignedClass = $user->getAssignedClass();
 
-        if ($user->isTeacher() && $assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
+        if ($assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
             abort(403, "Anda hanya dapat melihat dan menilai PR kelas {$assignedClass}.");
         }
 
@@ -134,9 +137,12 @@ class HomeworkController extends Controller
     public function printSubmissions(Homework $homework)
     {
         $user = Auth::user();
+        if (!$user || !$user->isTeacher()) {
+            abort(403, 'Akses khusus Guru / Wali Kelas.');
+        }
         $assignedClass = $user->getAssignedClass();
 
-        if ($user->isTeacher() && $assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
+        if ($assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
             abort(403, "Anda hanya dapat melihat dan mencetak rekap PR kelas {$assignedClass}.");
         }
 
@@ -172,10 +178,13 @@ class HomeworkController extends Controller
     public function gradeSubmission(Request $request, HomeworkSubmission $submission)
     {
         $user = Auth::user();
+        if (!$user || !$user->isTeacher()) {
+            abort(403, 'Akses khusus Guru / Wali Kelas.');
+        }
         $homework = $submission->homework;
         $assignedClass = $user->getAssignedClass();
 
-        if ($user->isTeacher() && $assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
+        if ($assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
             abort(403, "Anda tidak memiliki akses untuk menilai PR kelas {$homework->kelas}.");
         }
 
@@ -199,9 +208,12 @@ class HomeworkController extends Controller
     public function destroy(Homework $homework)
     {
         $user = Auth::user();
+        if (!$user || !$user->isTeacher()) {
+            abort(403, 'Akses khusus Guru / Wali Kelas.');
+        }
         $assignedClass = $user->getAssignedClass();
 
-        if ($user->isTeacher() && $assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
+        if ($assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
             abort(403, "Anda tidak memiliki akses untuk menghapus PR kelas {$homework->kelas}.");
         }
 

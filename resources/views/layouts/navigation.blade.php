@@ -5,12 +5,12 @@
     $pendingPassRequests = $user?->isAdmin() ? \App\Models\PasswordResetRequest::where('status', 'pending')->count() : 0;
     $pendingPaymentsCount = $user?->isAdmin() ? \App\Models\Payment::where('status', 'menunggu_konfirmasi')->count() : 0;
 
-    // Guru & Admin Homework Submissions Needing Grading
+    // Guru Homework Submissions Needing Grading
     $pendingHomeworkSubmissionsCount = 0;
-    if ($user && ($user->isTeacher() || $user->isAdmin())) {
+    if ($user && $user->isTeacher()) {
         $assignedClass = $user->getAssignedClass();
         $hwSubQuery = \App\Models\HomeworkSubmission::whereNull('nilai');
-        if ($user->isTeacher() && $assignedClass) {
+        if ($assignedClass) {
             $hwSubQuery->whereHas('homework', fn($q) => $q->where('kelas', $assignedClass));
         }
         $pendingHomeworkSubmissionsCount = $hwSubQuery->count();
@@ -161,17 +161,19 @@
                     @endif
                 </a>
 
-                <!-- Homework / PR Link (Guru & Admin) -->
-                <a href="{{ route('homeworks.index') }}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('homeworks.*') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    <span class="flex-1">Pekerjaan Rumah (PR)</span>
-                    @if($pendingHomeworkSubmissionsCount > 0)
-                        <span class="px-2 py-0.5 text-[9px] font-black bg-amber-500 text-white rounded-full animate-pulse shadow-sm shadow-amber-500/50" title="{{ $pendingHomeworkSubmissionsCount }} PR perlu dinilai">
-                            {{ $pendingHomeworkSubmissionsCount }}
-                        </span>
-                    @endif
-                </a>
+                @if($user && $user->isTeacher())
+                    <!-- Homework / PR Link (Guru Only) -->
+                    <a href="{{ route('homeworks.index') }}"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('homeworks.*') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        <span class="flex-1">Pekerjaan Rumah (PR)</span>
+                        @if($pendingHomeworkSubmissionsCount > 0)
+                            <span class="px-2 py-0.5 text-[9px] font-black bg-amber-500 text-white rounded-full animate-pulse shadow-sm shadow-amber-500/50" title="{{ $pendingHomeworkSubmissionsCount }} PR perlu dinilai">
+                                {{ $pendingHomeworkSubmissionsCount }}
+                            </span>
+                        @endif
+                    </a>
+                @endif
 
                 @if($user && $user->isAdmin())
                     <!-- Pembayaran SPP Link (Admin Only) -->
@@ -339,14 +341,16 @@
                     </span>
                 @endif
             </a>
-            <a href="{{ route('homeworks.index') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
-                <span>Pekerjaan Rumah (PR)</span>
-                @if($pendingHomeworkSubmissionsCount > 0)
-                    <span class="px-2 py-0.5 text-[9px] font-black bg-amber-500 text-white rounded-full">
-                        {{ $pendingHomeworkSubmissionsCount }}
-                    </span>
-                @endif
-            </a>
+            @if($user && $user->isTeacher())
+                <a href="{{ route('homeworks.index') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
+                    <span>Pekerjaan Rumah (PR)</span>
+                    @if($pendingHomeworkSubmissionsCount > 0)
+                        <span class="px-2 py-0.5 text-[9px] font-black bg-amber-500 text-white rounded-full">
+                            {{ $pendingHomeworkSubmissionsCount }}
+                        </span>
+                    @endif
+                </a>
+            @endif
             @if($user && $user->isAdmin())
                 <a href="{{ route('payments.index') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
                     <span>Pembayaran SPP</span>
