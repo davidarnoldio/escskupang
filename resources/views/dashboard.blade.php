@@ -12,13 +12,13 @@
                         <div class="text-3xl font-black text-slate-900 mt-1">{{ $totalSiswa }}</div>
                         <div class="text-xs font-semibold text-slate-500 mt-1">Siswa terdaftar</div>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center text-xl font-bold shadow-xs">
+                    <div class="w-12 h-12 rounded-2xl bg-red-600/10 text-red-600 flex items-center justify-center text-xl font-bold shadow-xs">
                         👥
                     </div>
                 </div>
                 <!-- Sparkline SVG Curve -->
                 <div class="mt-4 pt-2">
-                    <svg class="w-full h-8 text-emerald-500 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
+                    <svg class="w-full h-8 text-red-500 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
                         <path d="M0 20 Q 25 5, 50 15 T 100 8" stroke-width="3" stroke-linecap="round"/>
                     </svg>
                 </div>
@@ -31,17 +31,17 @@
             <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-between hover:shadow-md transition duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Hadir Hari Ini</div>
+                        <div class="text-[10px] font-black uppercase tracking-wider text-red-600">Hadir Hari Ini</div>
                         <div class="text-3xl font-black text-slate-900 mt-1">{{ $hadirHariIni }}</div>
-                        <div class="text-xs font-semibold text-emerald-600 mt-1">{{ $hadirPercentage }}% dari total siswa</div>
+                        <div class="text-xs font-semibold text-red-600 mt-1">{{ $hadirPercentage }}% dari total siswa</div>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-xl font-bold shadow-xs">
+                    <div class="w-12 h-12 rounded-2xl bg-red-600/10 text-red-600 flex items-center justify-center text-xl font-bold shadow-xs">
                         ✓
                     </div>
                 </div>
                 <!-- Sparkline SVG Curve -->
                 <div class="mt-4 pt-2">
-                    <svg class="w-full h-8 text-emerald-500 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
+                    <svg class="w-full h-8 text-red-500 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
                         <path d="M0 18 Q 25 22, 50 8 T 100 12" stroke-width="3" stroke-linecap="round"/>
                     </svg>
                 </div>
@@ -51,17 +51,17 @@
             <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-between hover:shadow-md transition duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="text-[10px] font-black uppercase tracking-wider text-teal-600">Izin & Sakit</div>
+                        <div class="text-[10px] font-black uppercase tracking-wider text-red-700">Izin & Sakit</div>
                         <div class="text-3xl font-black text-slate-900 mt-1">{{ $izinSakitHariIni }}</div>
                         <div class="text-xs font-semibold text-slate-500 mt-1">Keterangan resmi</div>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-teal-500/10 text-teal-600 flex items-center justify-center text-xl font-bold shadow-xs">
+                    <div class="w-12 h-12 rounded-2xl bg-red-600/10 text-red-700 flex items-center justify-center text-xl font-bold shadow-xs">
                         ⓘ
                     </div>
                 </div>
                 <!-- Sparkline SVG Curve -->
                 <div class="mt-4 pt-2">
-                    <svg class="w-full h-8 text-teal-500 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
+                    <svg class="w-full h-8 text-red-600 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
                         <path d="M0 12 Q 25 18, 50 10 T 100 20" stroke-width="3" stroke-linecap="round"/>
                     </svg>
                 </div>
@@ -101,7 +101,7 @@
                         </h3>
                         <p class="text-xs text-slate-500 mt-0.5 font-medium">Grafik perbandingan status presensi harian siswa</p>
                     </div>
-                    <span class="px-3 py-1 text-[11px] font-bold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                    <span class="px-3 py-1 text-[11px] font-bold rounded-full bg-red-50 text-red-700 border border-red-200/80">
                         7 Hari Terakhir
                     </span>
                 </div>
@@ -121,8 +121,8 @@
                 </div>
                 <!-- Mini Legend Summary -->
                 <div class="grid grid-cols-2 gap-2 text-xs font-semibold pt-3 border-t border-slate-100">
-                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span class="text-slate-600">Hadir:</span> <strong class="text-slate-900">{{ $hadirHariIni }}</strong></div>
-                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span><span class="text-slate-600">Izin:</span> <strong class="text-slate-900">{{ $izinHariIni }}</strong></div>
+                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span><span class="text-slate-600">Hadir:</span> <strong class="text-slate-900">{{ $hadirHariIni }}</strong></div>
+                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span><span class="text-slate-600">Izin:</span> <strong class="text-slate-900">{{ $izinHariIni }}</strong></div>
                     <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span class="text-slate-600">Sakit:</span> <strong class="text-slate-900">{{ $sakitHariIni }}</strong></div>
                     <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span class="text-slate-600">Alpa:</span> <strong class="text-slate-900">{{ $alpaHariIni }}</strong></div>
                 </div>
@@ -142,7 +142,7 @@
 
                 <div class="space-y-3.5 mt-6">
                     <!-- Tile 1: Scan QR Code Presensi -->
-                    <a href="{{ route('qr.scan') }}" class="block p-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-600/30 hover:shadow-xl hover:scale-[1.01] transition duration-200">
+                    <a href="{{ route('qr.scan') }}" class="block p-4 rounded-2xl bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 hover:shadow-xl hover:scale-[1.01] transition duration-200">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3.5">
                                 <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl">
@@ -150,7 +150,7 @@
                                 </div>
                                 <div>
                                     <div class="text-sm font-extrabold">Scan QR Code Presensi</div>
-                                    <div class="text-xs text-emerald-100/90 font-medium mt-0.5">Scan QR untuk presensi cepat</div>
+                                    <div class="text-xs text-red-100/90 font-medium mt-0.5">Scan QR untuk presensi cepat</div>
                                 </div>
                             </div>
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
@@ -158,50 +158,50 @@
                     </a>
 
                     <!-- Tile 2: Input Presensi Manual -->
-                    <a href="{{ route('attendances.index') }}" class="block p-4 rounded-2xl bg-slate-50/80 hover:bg-emerald-50/60 border border-slate-200/80 hover:border-emerald-200 transition duration-200 group">
+                    <a href="{{ route('attendances.index') }}" class="block p-4 rounded-2xl bg-slate-50/80 hover:bg-red-50/60 border border-slate-200/80 hover:border-red-200 transition duration-200 group">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3.5">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <div class="w-10 h-10 rounded-xl bg-red-600/10 text-red-600 flex items-center justify-center text-xl group-hover:scale-110 transition">
                                     ✍️
                                 </div>
                                 <div>
-                                    <div class="text-sm font-extrabold text-slate-900 group-hover:text-emerald-600 transition">Input Presensi Manual</div>
+                                    <div class="text-sm font-extrabold text-slate-900 group-hover:text-red-600 transition">Input Presensi Manual</div>
                                     <div class="text-xs text-slate-500 font-medium mt-0.5">Input presensi secara manual</div>
                                 </div>
                             </div>
-                            <svg class="w-5 h-5 text-slate-400 group-hover:text-emerald-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            <svg class="w-5 h-5 text-slate-400 group-hover:text-red-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
                     </a>
 
                     <!-- Tile 3: Tambah Siswa Baru -->
-                    <a href="{{ route('students.create') }}" class="block p-4 rounded-2xl bg-slate-50/80 hover:bg-emerald-50/60 border border-slate-200/80 hover:border-emerald-200 transition duration-200 group">
+                    <a href="{{ route('students.create') }}" class="block p-4 rounded-2xl bg-slate-50/80 hover:bg-red-50/60 border border-slate-200/80 hover:border-red-200 transition duration-200 group">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3.5">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <div class="w-10 h-10 rounded-xl bg-red-600/10 text-red-600 flex items-center justify-center text-xl group-hover:scale-110 transition">
                                     👤
                                 </div>
                                 <div>
-                                    <div class="text-sm font-extrabold text-slate-900 group-hover:text-emerald-600 transition">Tambah Siswa Baru</div>
+                                    <div class="text-sm font-extrabold text-slate-900 group-hover:text-red-600 transition">Tambah Siswa Baru</div>
                                     <div class="text-xs text-slate-500 font-medium mt-0.5">Daftarkan siswa baru ke sistem</div>
                                 </div>
                             </div>
-                            <svg class="w-5 h-5 text-slate-400 group-hover:text-emerald-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            <svg class="w-5 h-5 text-slate-400 group-hover:text-red-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
                     </a>
 
                     <!-- Tile 4: Rekap Absensi Bulanan -->
-                    <a href="{{ route('attendances.rekap') }}" class="block p-4 rounded-2xl bg-slate-50/80 hover:bg-emerald-50/60 border border-slate-200/80 hover:border-emerald-200 transition duration-200 group">
+                    <a href="{{ route('attendances.rekap') }}" class="block p-4 rounded-2xl bg-slate-50/80 hover:bg-red-50/60 border border-slate-200/80 hover:border-red-200 transition duration-200 group">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3.5">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <div class="w-10 h-10 rounded-xl bg-red-600/10 text-red-600 flex items-center justify-center text-xl group-hover:scale-110 transition">
                                     📊
                                 </div>
                                 <div>
-                                    <div class="text-sm font-extrabold text-slate-900 group-hover:text-emerald-600 transition">Rekap Absensi Bulanan</div>
+                                    <div class="text-sm font-extrabold text-slate-900 group-hover:text-red-600 transition">Rekap Absensi Bulanan</div>
                                     <div class="text-xs text-slate-500 font-medium mt-0.5">Lihat rekap absensi per bulan</div>
                                 </div>
                             </div>
-                            <svg class="w-5 h-5 text-slate-400 group-hover:text-emerald-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            <svg class="w-5 h-5 text-slate-400 group-hover:text-red-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </div>
                     </a>
                 </div>
@@ -215,7 +215,7 @@
                             <h3 class="text-base font-extrabold text-slate-900">Siswa Terbaru</h3>
                             <p class="text-xs text-slate-500 mt-0.5 font-medium">Daftar siswa yang baru terdaftar</p>
                         </div>
-                        <a href="{{ route('students.index') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition">
+                        <a href="{{ route('students.index') }}" class="text-xs font-bold text-red-600 hover:text-red-700 transition">
                             Lihat Semua Siswa →
                         </a>
                     </div>
@@ -226,7 +226,7 @@
                             <div class="py-3.5 flex items-center justify-between hover:bg-slate-50/80 px-2 rounded-2xl transition">
                                 <div class="flex items-center gap-3.5">
                                     <!-- Student Circle Avatar Badge -->
-                                    <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
+                                    <div class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
                                         {{ strtoupper(substr($student->nama, 0, 2)) }}
                                     </div>
                                     <div>
@@ -243,7 +243,7 @@
                                 </div>
                                 <!-- Class Badge Pill -->
                                 <div>
-                                    <span class="px-3 py-1 text-[11px] font-extrabold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                                    <span class="px-3 py-1 text-[11px] font-extrabold rounded-full bg-red-50 text-red-700 border border-red-200/80">
                                         Kelas {{ $student->kelas }}
                                     </span>
                                 </div>
@@ -257,7 +257,7 @@
                 </div>
 
                 <div class="mt-6 pt-4 border-t border-slate-100 text-center">
-                    <a href="{{ route('students.index') }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 transition">
+                    <a href="{{ route('students.index') }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 hover:text-red-700 transition">
                         <span>👥 Lihat Semua Siswa</span>
                     </a>
                 </div>
@@ -292,12 +292,12 @@
                             {
                                 label: 'Hadir',
                                 data: {!! json_encode($weeklyHadir) !!},
-                                borderColor: '#10b981',
+                                borderColor: '#ef4444',
                                 backgroundColor: hadirGradient,
                                 borderWidth: 3,
                                 fill: true,
                                 tension: 0.35,
-                                pointBackgroundColor: '#10b981',
+                                pointBackgroundColor: '#ef4444',
                                 pointRadius: 4,
                                 pointHoverRadius: 6
                             },
@@ -379,7 +379,7 @@
                                 {{ $alpaHariIni }},
                                 {{ $belumPresensiHariIni }}
                             ],
-                            backgroundColor: ['#10b981', '#14b8a6', '#f59e0b', '#f43f5e', '#e2e8f0'],
+                            backgroundColor: ['#ef4444', '#14b8a6', '#f59e0b', '#f43f5e', '#e2e8f0'],
                             borderWidth: 3,
                             borderColor: '#ffffff',
                             hoverOffset: 4

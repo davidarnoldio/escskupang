@@ -8,9 +8,9 @@
     <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
         @if(session('success'))
-            <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-xl shadow-sm flex items-center justify-between">
-                <div class="flex items-center gap-3 text-emerald-800 font-semibold text-sm">
-                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-xl shadow-sm flex items-center justify-between">
+                <div class="flex items-center gap-3 text-red-800 font-semibold text-sm">
+                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     <span>{{ session('success') }}</span>
                 </div>
             </div>
@@ -39,9 +39,9 @@
                 <p class="text-xs font-bold text-amber-600 uppercase tracking-wider">Menunggu Konfirmasi</p>
                 <p class="text-2xl font-black text-amber-600 mt-1">{{ number_format($stats['menunggu_konfirmasi']) }}</p>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm bg-emerald-50/30">
-                <p class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Lunas</p>
-                <p class="text-2xl font-black text-emerald-600 mt-1">{{ number_format($stats['lunas']) }}</p>
+            <div class="bg-white p-5 rounded-2xl border border-red-100 shadow-sm bg-red-50/30">
+                <p class="text-xs font-bold text-red-600 uppercase tracking-wider">Lunas</p>
+                <p class="text-2xl font-black text-red-600 mt-1">{{ number_format($stats['lunas']) }}</p>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
             <!-- Left: Create Payment Notification Form -->
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
                 <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
                     <span>Kirim Tagihan / Notifikasi Pembayaran</span>
                 </h3>
 
@@ -60,7 +60,7 @@
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Target Tagihan</label>
-                        <select name="target_type" x-model="targetType" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
+                        <select name="target_type" x-model="targetType" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-red-500 focus:border-red-500">
                             <option value="student">Satu Siswa (Spesifik)</option>
                             <option value="class">Seluruh Siswa dalam Satu Kelas</option>
                         </select>
@@ -93,17 +93,17 @@
 
                             <input type="hidden" name="student_id" :value="selectedId">
 
-                            <button type="button" @click="open = !open" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-left text-xs font-medium flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-2xs">
+                            <button type="button" @click="open = !open" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-left text-xs font-medium flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 shadow-2xs">
                                 <span x-text="selectedName || '-- Cari & Pilih Siswa --'" :class="{ 'text-slate-400': !selectedName, 'text-slate-900 font-bold': selectedName }"></span>
                                 <svg class="w-4 h-4 text-slate-400 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
 
                             <div x-show="open" @click.away="open = false" class="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 p-2.5 flex flex-col space-y-2 max-h-60" style="display: none;">
-                                <input type="text" x-model="search" placeholder="🔍 Ketik nama atau NIS siswa untuk mencari..." class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" autofocus>
+                                <input type="text" x-model="search" placeholder="🔍 Ketik nama atau NIS siswa untuk mencari..." class="w-full text-xs px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-red-500 focus:border-red-500" autofocus>
                                 
                                 <div class="overflow-y-auto divide-y divide-slate-100 flex-1">
                                     <template x-for="s in filteredStudents" :key="s.id">
-                                        <button type="button" @click="selectStudent(s)" class="w-full text-left px-3 py-2 hover:bg-emerald-50 text-xs font-semibold text-slate-700 hover:text-emerald-900 rounded-lg flex justify-between items-center transition">
+                                        <button type="button" @click="selectStudent(s)" class="w-full text-left px-3 py-2 hover:bg-red-50 text-xs font-semibold text-slate-700 hover:text-red-900 rounded-lg flex justify-between items-center transition">
                                             <span x-text="s.nama"></span>
                                             <span class="text-[10px] text-slate-400 font-normal" x-text="s.kelas + ' • NIS: ' + s.nis"></span>
                                         </button>
@@ -118,7 +118,7 @@
 
                     <div x-show="targetType === 'class'" style="display: none;">
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pilih Kelas</label>
-                        <select name="kelas" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
+                        <select name="kelas" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-red-500 focus:border-red-500">
                             <option value="">-- Pilih Kelas --</option>
                             @foreach($classes as $cls)
                                 <option value="{{ $cls }}">{{ $cls }}</option>
@@ -128,26 +128,26 @@
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Judul / Nama Pembayaran</label>
-                        <input type="text" name="judul" required placeholder="Contoh: SPP Bulan September 2026" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
+                        <input type="text" name="judul" required placeholder="Contoh: SPP Bulan September 2026" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-red-500 focus:border-red-500">
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jumlah (Rp)</label>
-                            <input type="number" name="jumlah" min="0" required placeholder="500000" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
+                            <input type="number" name="jumlah" min="0" required placeholder="500000" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-red-500 focus:border-red-500">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jatuh Tempo</label>
-                            <input type="date" name="jatuh_tempo" required value="{{ date('Y-m-d', strtotime('+7 days')) }}" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500">
+                            <input type="date" name="jatuh_tempo" required value="{{ date('Y-m-d', strtotime('+7 days')) }}" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-red-500 focus:border-red-500">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Keterangan / Instruksi Rekening (Opsional)</label>
-                        <textarea name="keterangan" rows="2" placeholder="Transfer ke BCA 123456789 a.n. NTO National Plus" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+                        <textarea name="keterangan" rows="2" placeholder="Transfer ke BCA 123456789 a.n. NTO National Plus" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-red-500 focus:border-red-500"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full py-2.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-xl font-bold text-xs shadow-md shadow-emerald-500/20 hover:from-emerald-700 hover:to-teal-800 transition">
+                    <button type="submit" class="w-full py-2.5 px-4 bg-gradient-to-r from-red-600 to-red-800 text-white rounded-xl font-bold text-xs shadow-md shadow-red-500/20 hover:from-red-700 hover:to-red-900 transition">
                         Kirim Notifikasi Tagihan
                     </button>
                 </form>
@@ -225,13 +225,13 @@
                                         </td>
                                         <td class="py-3 px-4 text-center space-x-1">
                                             @if($p->bukti_pembayaran)
-                                                <button @click="activeProofModal = '{{ asset('storage/' . $p->bukti_pembayaran) }}'" class="px-2.5 py-1 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-lg text-[10px] font-bold border border-emerald-200 transition">
+                                                <button @click="activeProofModal = '{{ asset('storage/' . $p->bukti_pembayaran) }}'" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-[10px] font-bold border border-red-200 transition">
                                                     🔍 Lihat Bukti
                                                 </button>
                                             @endif
 
                                             @if($p->status === 'menunggu_konfirmasi')
-                                                <button @click="activeVerifyModal = {{ $p->id }}" class="px-2.5 py-1 bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg text-[10px] font-bold transition shadow-sm">
+                                                <button @click="activeVerifyModal = {{ $p->id }}" class="px-2.5 py-1 bg-red-600 text-white hover:bg-red-700 rounded-lg text-[10px] font-bold transition shadow-sm">
                                                     Verifikasi
                                                 </button>
                                             @endif
@@ -266,7 +266,7 @@
                                                 </div>
 
                                                 <div class="flex gap-2 pt-2">
-                                                    <button type="submit" name="action" value="setujui" class="flex-1 py-2 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition">
+                                                    <button type="submit" name="action" value="setujui" class="flex-1 py-2 bg-red-600 text-white rounded-xl text-xs font-bold hover:bg-red-700 transition">
                                                         ✅ Setujui (Lunas)
                                                     </button>
                                                     <button type="submit" name="action" value="tolak" class="flex-1 py-2 bg-rose-600 text-white rounded-xl text-xs font-bold hover:bg-rose-700 transition">

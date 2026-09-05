@@ -5,7 +5,7 @@
                 {{ __('Penilaian & Rekap Nilai PR: ') . $homework->judul }}
             </h2>
             <div class="flex items-center gap-2 shrink-0">
-                <a href="{{ route('homeworks.print-recap', $homework) }}?autoprint=1" target="_blank" class="px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-xl text-xs font-bold transition shadow-sm inline-flex items-center gap-1.5">
+                <a href="{{ route('homeworks.print-recap', $homework) }}?autoprint=1" target="_blank" class="px-3.5 py-1.5 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 text-white rounded-xl text-xs font-bold transition shadow-sm inline-flex items-center gap-1.5">
                     <span>🖨️</span> Cetak Rekap Nilai A4
                 </a>
                 <a href="{{ route('homeworks.index') }}" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
@@ -18,9 +18,9 @@
     <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
         @if(session('success'))
-            <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-xl shadow-sm flex items-center justify-between">
-                <div class="flex items-center gap-3 text-emerald-800 font-semibold text-sm">
-                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-xl shadow-sm flex items-center justify-between">
+                <div class="flex items-center gap-3 text-red-800 font-semibold text-sm">
+                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     <span>{{ session('success') }}</span>
                 </div>
             </div>
@@ -29,10 +29,10 @@
         <!-- PR Header Details Card -->
         <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-3">
             <div class="flex flex-wrap items-center gap-2">
-                <span class="px-3 py-1 text-xs font-black rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <span class="px-3 py-1 text-xs font-black rounded-full bg-red-100 text-red-800 border border-red-200">
                     Kelas {{ $homework->kelas }}
                 </span>
-                <span class="px-3 py-1 text-xs font-black rounded-full bg-teal-50 text-teal-700 border border-teal-200">
+                <span class="px-3 py-1 text-xs font-black rounded-full bg-teal-50 text-red-800 border border-teal-200">
                     Mata Pelajaran: {{ $homework->mata_pelajaran }}
                 </span>
                 <span class="px-3 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-700">
@@ -49,21 +49,21 @@
                 <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Total Siswa</p>
                 <p class="text-xl font-black text-slate-900 mt-1">{{ $recap['total_siswa'] }}</p>
             </div>
-            <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 shadow-sm text-center">
-                <p class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-wider">Sudah Kumpul</p>
-                <p class="text-xl font-black text-emerald-700 mt-1">{{ $recap['sudah_kumpul'] }}</p>
+            <div class="bg-red-50/50 p-4 rounded-2xl border border-red-100 shadow-sm text-center">
+                <p class="text-[10px] font-extrabold text-red-600 uppercase tracking-wider">Sudah Kumpul</p>
+                <p class="text-xl font-black text-red-700 mt-1">{{ $recap['sudah_kumpul'] }}</p>
             </div>
             <div class="bg-rose-50/50 p-4 rounded-2xl border border-rose-100 shadow-sm text-center">
                 <p class="text-[10px] font-extrabold text-rose-500 uppercase tracking-wider">Belum Kumpul</p>
                 <p class="text-xl font-black text-rose-600 mt-1">{{ $recap['belum_kumpul'] }}</p>
             </div>
             <div class="bg-teal-50/50 p-4 rounded-2xl border border-teal-100 shadow-sm text-center">
-                <p class="text-[10px] font-extrabold text-teal-600 uppercase tracking-wider">Sudah Dinilai</p>
-                <p class="text-xl font-black text-teal-700 mt-1">{{ $recap['sudah_dinilai'] }}</p>
+                <p class="text-[10px] font-extrabold text-red-700 uppercase tracking-wider">Sudah Dinilai</p>
+                <p class="text-xl font-black text-red-800 mt-1">{{ $recap['sudah_dinilai'] }}</p>
             </div>
-            <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 shadow-sm text-center">
-                <p class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-wider">Rata-Rata Kelas</p>
-                <p class="text-xl font-black text-emerald-700 mt-1">{{ $recap['rata_rata'] }}</p>
+            <div class="bg-red-50/50 p-4 rounded-2xl border border-red-100 shadow-sm text-center">
+                <p class="text-[10px] font-extrabold text-red-600 uppercase tracking-wider">Rata-Rata Kelas</p>
+                <p class="text-xl font-black text-red-700 mt-1">{{ $recap['rata_rata'] }}</p>
             </div>
             <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 shadow-sm text-center">
                 <p class="text-[10px] font-extrabold text-amber-600 uppercase tracking-wider">Nilai Max</p>
@@ -79,7 +79,7 @@
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden" x-data="{ photoModal: null, gradeModal: null }">
             <div class="p-5 border-b border-slate-100 flex items-center justify-between">
                 <h3 class="text-base font-bold text-slate-900">Rekapan Nilai & Pengumpulan Siswa Kelas {{ $homework->kelas }}</h3>
-                <a href="{{ route('homeworks.print-recap', $homework) }}?autoprint=1" target="_blank" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5">
+                <a href="{{ route('homeworks.print-recap', $homework) }}?autoprint=1" target="_blank" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5">
                     <span>🖨️</span> Cetak Rekap A4
                 </a>
             </div>
@@ -109,7 +109,7 @@
                                 </td>
                                 <td class="py-3.5 px-4">
                                     @if($sub)
-                                        <span class="px-2.5 py-1 text-[10px] font-black rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                        <span class="px-2.5 py-1 text-[10px] font-black rounded-full bg-red-100 text-red-800 border border-red-300">
                                             ✅ Sudah Kumpul
                                         </span>
                                     @else
@@ -123,7 +123,7 @@
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
                                     @if($sub && $sub->foto_pr)
-                                        <button @click="photoModal = '{{ asset('storage/' . $sub->foto_pr) }}'" class="px-2.5 py-1 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-lg text-[10px] font-bold border border-emerald-200 transition inline-flex items-center gap-1">
+                                        <button @click="photoModal = '{{ asset('storage/' . $sub->foto_pr) }}'" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-[10px] font-bold border border-red-200 transition inline-flex items-center gap-1">
                                             <span>🖼️ Lihat Foto</span>
                                         </button>
                                     @else
@@ -144,7 +144,7 @@
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
                                     @if($sub)
-                                        <button @click="gradeModal = { id: {{ $sub->id }}, name: '{{ addslashes($st->nama) }}', grade: '{{ $sub->nilai ?? '' }}', notes: '{{ addslashes($sub->catatan_guru ?? '') }}' }" class="px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white hover:from-emerald-700 hover:to-teal-800 rounded-xl text-xs font-bold shadow-sm transition">
+                                        <button @click="gradeModal = { id: {{ $sub->id }}, name: '{{ addslashes($st->nama) }}', grade: '{{ $sub->nilai ?? '' }}', notes: '{{ addslashes($sub->catatan_guru ?? '') }}' }" class="px-3 py-1.5 bg-gradient-to-r from-red-600 to-red-800 text-white hover:from-red-700 hover:to-red-900 rounded-xl text-xs font-bold shadow-sm transition">
                                             ✏️ Input / Edit Nilai
                                         </button>
                                     @else
@@ -178,16 +178,16 @@
                         @csrf
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nilai (0 - 100)</label>
-                            <input type="number" name="nilai" min="0" max="100" required :value="gradeModal ? gradeModal.grade : ''" placeholder="Contoh: 95" class="w-full rounded-xl border-slate-200 text-sm font-bold focus:ring-emerald-500 focus:border-emerald-500">
+                            <input type="number" name="nilai" min="0" max="100" required :value="gradeModal ? gradeModal.grade : ''" placeholder="Contoh: 95" class="w-full rounded-xl border-slate-200 text-sm font-bold focus:ring-red-500 focus:border-red-500">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Catatan / Feedback Guru (Opsional)</label>
-                            <textarea name="catatan_guru" rows="3" :value="gradeModal ? gradeModal.notes : ''" placeholder="Contoh: Bagus sekali, tulisan rapi dan jawaban tepat!" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+                            <textarea name="catatan_guru" rows="3" :value="gradeModal ? gradeModal.notes : ''" placeholder="Contoh: Bagus sekali, tulisan rapi dan jawaban tepat!" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-red-500 focus:border-red-500"></textarea>
                         </div>
 
                         <div class="flex gap-2 pt-2">
-                            <button type="submit" class="flex-1 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition shadow-md shadow-emerald-600/20">
+                            <button type="submit" class="flex-1 py-2.5 bg-red-600 text-white rounded-xl text-xs font-bold hover:bg-red-700 transition shadow-md shadow-red-600/20">
                                 Simpan Nilai
                             </button>
                             <button type="button" @click="gradeModal = null" class="px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-200 transition">

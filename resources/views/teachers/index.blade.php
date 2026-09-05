@@ -11,7 +11,7 @@
             </div>
             <div>
                 <a href="{{ route('teachers.create') }}"
-                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-2xl shadow-lg shadow-emerald-600/30 transition duration-200 cursor-pointer">
+                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs rounded-2xl shadow-lg shadow-red-600/30 transition duration-200 cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
@@ -26,9 +26,9 @@
         <!-- Flash Message Alert -->
         @if (session('success'))
             <div
-                class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-extrabold rounded-2xl shadow-2xs flex items-center justify-between">
+                class="p-4 bg-red-50 border border-red-200 text-red-900 text-xs font-extrabold rounded-2xl shadow-2xs flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
                     <span>{{ session('success') }}</span>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                 <div class="relative w-full md:w-80">
                     <input type="text" name="search" value="{{ $search ?? '' }}"
                         placeholder="Cari nama atau email guru..."
-                        class="w-full pl-9 pr-3.5 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 border-slate-200 focus:ring-2 focus:ring-emerald-600 focus:bg-white transition">
+                        class="w-full pl-9 pr-3.5 py-2.5 text-xs font-semibold rounded-2xl bg-slate-50 border-slate-200 focus:ring-2 focus:ring-red-600 focus:bg-white transition">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -57,7 +57,7 @@
                 @endif
             </form>
             <div class="text-xs font-extrabold text-slate-500">
-                Total Guru: <span class="text-emerald-600 font-black text-sm">{{ $teachers->count() }}</span> Akun
+                Total Guru: <span class="text-red-600 font-black text-sm">{{ $teachers->count() }}</span> Akun
                 Terdaftar
             </div>
         </div>
@@ -77,7 +77,7 @@
                     <!-- Class Header Bar -->
                     <div class="px-6 py-4 bg-slate-50/60 border-b border-slate-100 flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="w-3 h-3 rounded-full bg-emerald-600 shadow-xs"></div>
+                            <div class="w-3 h-3 rounded-full bg-red-600 shadow-xs"></div>
                             <h3 class="font-extrabold text-slate-900 text-sm">
                                 {{ $class === 'Unassigned' ? 'Guru Tanpa Penugasan Kelas' : 'Wali Kelas: ' . $class }}
                             </h3>
@@ -97,12 +97,12 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                                 @foreach($classTeachers as $teacher)
                                     <div
-                                        class="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 space-y-4 hover:border-emerald-300 hover:bg-emerald-50/30 transition duration-200 relative flex flex-col justify-between">
+                                        class="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 space-y-4 hover:border-red-300 hover:bg-red-50/30 transition duration-200 relative flex flex-col justify-between">
                                         <div>
                                             <div class="flex items-start justify-between gap-3">
                                                 <div class="flex items-center gap-3">
                                                     <div
-                                                        class="w-10 h-10 rounded-full bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+                                                        class="w-10 h-10 rounded-full bg-red-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
                                                         {{ strtoupper(substr($teacher->name, 0, 2)) }}
                                                     </div>
                                                     <div>
@@ -118,7 +118,7 @@
                                                 <div class="flex items-center justify-between text-[11px]">
                                                     <span class="font-semibold text-slate-500">Kelas Binaan:</span>
                                                     <span
-                                                        class="font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                                        class="font-extrabold text-red-700 bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
                                                         {{ $teacher->assigned_class ?? 'Belum Ditentukan' }}
                                                     </span>
                                                 </div>
@@ -138,7 +138,7 @@
                                                 class="inline-block flex-1">
                                                 @csrf
                                                 <button type="submit"
-                                                    class="w-full py-1.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-xs transition cursor-pointer shadow-xs flex items-center justify-center gap-1">
+                                                    class="w-full py-1.5 px-3 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-xl text-xs transition cursor-pointer shadow-xs flex items-center justify-center gap-1">
                                                     <span>⚡ Switch Akun</span>
                                                 </button>
                                             </form>

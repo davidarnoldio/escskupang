@@ -5,7 +5,7 @@
                 <h2 class="font-extrabold text-2xl text-slate-900 tracking-tight flex items-center gap-2.5">
                     <span>➕ Tambah Akun Guru / Wali Kelas Baru</span>
                 </h2>
-                <p class="text-xs font-semibold text-emerald-600 mt-1">
+                <p class="text-xs font-semibold text-red-600 mt-1">
                     Buat akun login baru dan tentukan tingkat kelas binaan guru
                 </p>
             </div>
@@ -24,14 +24,14 @@
                     <!-- Nama Lengkap Guru -->
                     <div>
                         <label for="name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nama Lengkap Guru</label>
-                        <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus placeholder="Contoh: Maria Skolastika, S.Pd" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus placeholder="Contoh: Maria Skolastika, S.Pd" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
                         <x-input-error :messages="$errors->get('name')" class="mt-1 text-xs" />
                     </div>
 
                     <!-- Email / Username Login -->
                     <div>
                         <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Alamat Email (Username Login)</label>
-                        <input id="email" type="email" name="email" value="{{ old('email') }}" required placeholder="nama.guru@nto-kupang.sch.id" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" required placeholder="nama.guru@nto-kupang.sch.id" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
                         <x-input-error :messages="$errors->get('email')" class="mt-1 text-xs" />
                     </div>
 
@@ -39,7 +39,7 @@
                     <div x-data="{ showPassword: false }">
                         <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Kata Sandi (Password)</label>
                         <div class="relative">
-                            <input id="password" :type="showPassword ? 'text' : 'password'" name="password" required placeholder="Minimal 6 karakter..." class="w-full px-4 py-2.5 pe-11 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <input id="password" :type="showPassword ? 'text' : 'password'" name="password" required placeholder="Minimal 6 karakter..." class="w-full px-4 py-2.5 pe-11 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
                             <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 end-0 px-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer">
                                 <template x-if="!showPassword">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -55,7 +55,7 @@
                     <!-- Tingkat Kelas Binaan (Assigned Class) -->
                     <div>
                         <label for="assigned_class" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tingkat Kelas Binaan (Wali Kelas)</label>
-                        <select id="assigned_class" name="assigned_class" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 font-medium">
+                        <select id="assigned_class" name="assigned_class" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 font-medium">
                             <option value="">-- Pilih Tingkat Kelas (Opsional) --</option>
                             @foreach($officialClasses as $classOption)
                                 <option value="{{ $classOption }}" {{ old('assigned_class') == $classOption ? 'selected' : '' }}>
@@ -74,7 +74,7 @@
                         <a href="{{ route('teachers.index') }}" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">
                             Batal
                         </a>
-                        <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer">
+                        <button type="submit" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer">
                             Simpan Akun Guru
                         </button>
                     </div>

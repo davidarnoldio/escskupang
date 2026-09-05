@@ -3,14 +3,14 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h2 class="font-bold text-2xl text-slate-900 leading-tight flex items-center gap-2">
-                    <svg class="w-7 h-7 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     <span>Portal Orang Tua Siswa</span>
                 </h2>
                 <p class="text-xs text-slate-500 mt-1">Pemantauan Presensi & Kartu Digital Siswa NTO National Plus</p>
             </div>
             @if($student)
-                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-50 text-emerald-900 font-bold text-xs rounded-xl border border-emerald-200">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-red-50 text-red-900 font-bold text-xs rounded-xl border border-red-200">
+                    <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
                     <span>Anak: {{ $student->nama }} (Kelas {{ $student->kelas }})</span>
                 </span>
             @endif
@@ -22,8 +22,8 @@
 
             <!-- Flash Alert Messages -->
             @if(session('success'))
-                <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl text-sm flex items-center gap-2 shadow-xs">
-                    <svg class="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <div class="p-4 bg-red-50 border border-red-200 text-red-800 rounded-2xl text-sm flex items-center gap-2 shadow-xs">
+                    <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
                     <span class="font-semibold">{{ session('success') }}</span>
                 </div>
             @endif
@@ -48,25 +48,25 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                     <!-- Student Profile Card with Cropper Upload -->
-                    <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 text-white p-6 rounded-3xl shadow-xl border border-emerald-500/30 relative overflow-hidden flex flex-col justify-between">
-                        <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-emerald-500/10 rounded-full blur-md"></div>
+                    <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-red-950 text-white p-6 rounded-3xl shadow-xl border border-red-500/30 relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-red-600/10 rounded-full blur-md"></div>
                         <div>
-                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">PROFIL ANAK</span>
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-red-400">PROFIL ANAK</span>
                             
                             <!-- Student Photo / Avatar -->
                             <div class="mt-3 mb-4 flex items-center gap-4">
                                 <div class="relative group">
                                     @if($student->foto)
-                                        <img src="{{ asset($student->foto) }}" alt="{{ $student->nama }}" class="w-20 h-20 rounded-2xl object-cover border-2 border-emerald-400/50 shadow-md">
+                                        <img src="{{ asset($student->foto) }}" alt="{{ $student->nama }}" class="w-20 h-20 rounded-2xl object-cover border-2 border-red-400/50 shadow-md">
                                     @else
-                                        <div class="w-20 h-20 rounded-2xl bg-slate-800 text-emerald-400 font-extrabold text-2xl flex items-center justify-center border-2 border-emerald-400/40 shadow-md">
+                                        <div class="w-20 h-20 rounded-2xl bg-slate-800 text-red-400 font-extrabold text-2xl flex items-center justify-center border-2 border-red-400/40 shadow-md">
                                             {{ strtoupper(substr($student->nama, 0, 2)) }}
                                         </div>
                                     @endif
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-extrabold text-white leading-tight">{{ $student->nama }}</h3>
-                                    <p class="text-xs font-mono text-emerald-300 font-bold mt-0.5">NIS: {{ $student->nis }}</p>
+                                    <p class="text-xs font-mono text-red-300 font-bold mt-0.5">NIS: {{ $student->nis }}</p>
                                     <span class="inline-block mt-1 px-2.5 py-0.5 bg-white/10 text-white rounded-full text-[11px] font-semibold border border-white/10">
                                         Kelas {{ $student->kelas }} ({{ $student->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }})
                                     </span>
@@ -90,8 +90,8 @@
                                 @else
                                     @php
                                         $statusClasses = [
-                                            'hadir' => 'bg-emerald-500 text-white shadow-emerald-500/20',
-                                            'izin' => 'bg-teal-500 text-white shadow-teal-500/20',
+                                            'hadir' => 'bg-red-600 text-white shadow-red-500/20',
+                                            'izin' => 'bg-red-600 text-white shadow-red-600/20',
                                             'sakit' => 'bg-amber-500 text-white shadow-amber-500/20',
                                             'alpa' => 'bg-rose-500 text-white shadow-rose-500/20',
                                         ];
@@ -104,7 +104,7 @@
                                     </p>
                                     @if($todayAttendance->surat_izin)
                                         <div class="mt-2 text-xs">
-                                            <a href="{{ asset($todayAttendance->surat_izin) }}" target="_blank" class="text-emerald-600 font-bold hover:underline inline-flex items-center gap-1">
+                                            <a href="{{ asset($todayAttendance->surat_izin) }}" target="_blank" class="text-red-600 font-bold hover:underline inline-flex items-center gap-1">
                                                 📷 Lihat Surat Izin / Dokter
                                             </a>
                                         </div>
@@ -115,7 +115,7 @@
 
                         <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                             <span>Tingkat Kehadiran Bulanan:</span>
-                            <span class="font-bold text-emerald-600 text-sm">{{ $persentase }}%</span>
+                            <span class="font-bold text-red-600 text-sm">{{ $persentase }}%</span>
                         </div>
                     </div>
 
@@ -130,7 +130,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('students.qr-card', $student) }}" target="_blank" class="w-full mt-3 py-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                        <a href="{{ route('students.qr-card', $student) }}" target="_blank" class="w-full mt-3 py-2 bg-slate-900 hover:bg-slate-800 text-red-400 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                             <span>Cetak Kartu Tanda Pelajar</span>
                         </a>
@@ -142,7 +142,7 @@
                 <div class="bg-white rounded-3xl shadow-xs border border-slate-200/80 p-6">
                     <div class="border-b border-slate-100 pb-3 mb-4">
                         <h3 class="font-bold text-base text-slate-900 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                             <span>Kirim Foto Surat Izin / Sakit ke Wali Kelas</span>
                         </h3>
                         <p class="text-xs text-slate-500">Unggah foto surat permohonan izin atau surat keterangan dokter untuk dikonfirmasi oleh Wali Kelas ({{ $student->kelas }}).</p>
@@ -152,12 +152,12 @@
                         @csrf
                         <div>
                             <label for="letter_tanggal" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tanggal Presensi</label>
-                            <input type="date" id="letter_tanggal" name="tanggal" value="{{ now()->format('Y-m-d') }}" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:bg-white transition cursor-pointer">
+                            <input type="date" id="letter_tanggal" name="tanggal" value="{{ now()->format('Y-m-d') }}" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition cursor-pointer">
                         </div>
 
                         <div>
                             <label for="letter_status" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Jenis Keterangan</label>
-                            <select id="letter_status" name="status" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:bg-white transition cursor-pointer">
+                            <select id="letter_status" name="status" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition cursor-pointer">
                                 <option value="izin">Izin (Acara Keluarga / Urusan)</option>
                                 <option value="sakit">Sakit (Surat Dokter / Sakit)</option>
                             </select>
@@ -165,11 +165,11 @@
 
                         <div>
                             <label for="surat_izin" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">File Foto Surat (JPG/PNG)</label>
-                            <input type="file" id="surat_izin" name="surat_izin" accept="image/*" required class="block w-full text-[11px] text-slate-500 file:me-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                            <input type="file" id="surat_izin" name="surat_izin" accept="image/*" required class="block w-full text-[11px] text-slate-500 file:me-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer">
                         </div>
 
                         <div>
-                            <button type="submit" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer flex items-center justify-center gap-1.5">
+                            <button type="submit" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer flex items-center justify-center gap-1.5">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                                 <span>Kirim ke Wali Kelas</span>
                             </button>
@@ -181,22 +181,22 @@
                 <div class="bg-white rounded-3xl shadow-xs border border-slate-200/80 p-6">
                     <div class="border-b border-slate-100 pb-3 mb-4">
                         <h3 class="font-bold text-base text-slate-900 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             <span>Pengaturan Akun Orang Tua (Email & Password)</span>
                         </h3>
-                        <p class="text-xs text-slate-500">Perbarui email login (wajib berakhiran <span class="font-mono text-emerald-600 font-bold">@student.sch.id</span>) dan kata sandi baru.</p>
+                        <p class="text-xs text-slate-500">Perbarui email login (wajib berakhiran <span class="font-mono text-red-600 font-bold">@student.sch.id</span>) dan kata sandi baru.</p>
                     </div>
 
                     <form method="POST" action="{{ route('parent.update-account') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         @csrf
                         <div>
                             <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Login (@student.sch.id)</label>
-                            <input type="email" id="email" name="email" value="{{ old('email', Auth::user()->email) }}" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                            <input type="email" id="email" name="email" value="{{ old('email', Auth::user()->email) }}" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition">
                         </div>
                         <div x-data="{ showPassword: false }">
                             <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Kata Sandi Baru (Opsional)</label>
                             <div class="relative">
-                                <input :type="showPassword ? 'text' : 'password'" id="password" name="password" placeholder="Kosongkan jika tidak diubah" class="w-full px-3 py-2 pe-10 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                                <input :type="showPassword ? 'text' : 'password'" id="password" name="password" placeholder="Kosongkan jika tidak diubah" class="w-full px-3 py-2 pe-10 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition">
                                 <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 end-0 px-2.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer">
                                     <template x-if="!showPassword">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -211,7 +211,7 @@
                             <label for="password_confirmation" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Konfirmasi Kata Sandi Baru</label>
                             <div class="flex items-center gap-2">
                                 <div class="relative flex-1">
-                                    <input :type="showConfirmPassword ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" placeholder="Ulangi kata sandi baru" class="w-full px-3 py-2 pe-10 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                                    <input :type="showConfirmPassword ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" placeholder="Ulangi kata sandi baru" class="w-full px-3 py-2 pe-10 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition">
                                     <button type="button" @click="showConfirmPassword = !showConfirmPassword" class="absolute inset-y-0 end-0 px-2.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer">
                                         <template x-if="!showConfirmPassword">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
@@ -221,7 +221,7 @@
                                         </template>
                                     </button>
                                 </div>
-                                <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition cursor-pointer shrink-0">
+                                <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl transition cursor-pointer shrink-0">
                                     Simpan
                                 </button>
                             </div>
@@ -239,7 +239,7 @@
                                 </h3>
                                 <p class="text-xs text-slate-500 mt-0.5 font-medium">Grafik riwayat kehadiran {{ $student->nama }} per hari</p>
                             </div>
-                            <span class="px-3 py-1 text-[11px] font-bold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                            <span class="px-3 py-1 text-[11px] font-bold rounded-full bg-red-50 text-red-700 border border-red-200/80">
                                 7 Hari Terakhir
                             </span>
                         </div>
@@ -259,8 +259,8 @@
                         </div>
                         <!-- Mini Legend Summary -->
                         <div class="grid grid-cols-2 gap-2 text-xs font-semibold pt-3 border-t border-slate-100">
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span class="text-slate-600">Hadir:</span> <strong class="text-slate-900">{{ $totalHadir }}</strong></div>
-                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span><span class="text-slate-600">Izin:</span> <strong class="text-slate-900">{{ $totalIzin }}</strong></div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span><span class="text-slate-600">Hadir:</span> <strong class="text-slate-900">{{ $totalHadir }}</strong></div>
+                            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span><span class="text-slate-600">Izin:</span> <strong class="text-slate-900">{{ $totalIzin }}</strong></div>
                             <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span class="text-slate-600">Sakit:</span> <strong class="text-slate-900">{{ $totalSakit }}</strong></div>
                             <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span class="text-slate-600">Alpa:</span> <strong class="text-slate-900">{{ $totalAlpa }}</strong></div>
                         </div>
@@ -276,7 +276,7 @@
                             <p class="text-xs text-slate-500 mt-0.5">Daftar kehadiran anak di sekolah</p>
                         </div>
                         <form method="GET" action="{{ route('parent.dashboard') }}" class="flex items-center gap-2">
-                            <select name="month" onchange="this.form.submit()" class="py-1.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
+                            <select name="month" onchange="this.form.submit()" class="py-1.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-500">
                                 @for($m=1; $m<=12; $m++)
                                     <option value="{{ sprintf('%02d', $m) }}" {{ $month == sprintf('%02d', $m) ? 'selected' : '' }}>
                                         Bulan {{ date('F', mktime(0,0,0,$m,1)) }}
@@ -305,7 +305,7 @@
                                         <td class="px-6 py-4">
                                             @php
                                                 $badges = [
-                                                    'hadir' => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                                                    'hadir' => 'bg-red-100 text-red-800 border-red-200',
                                                     'izin' => 'bg-teal-50 text-teal-900 border-teal-200',
                                                     'sakit' => 'bg-amber-100 text-amber-800 border-amber-200',
                                                     'alpa' => 'bg-rose-100 text-rose-800 border-rose-200',
@@ -321,7 +321,7 @@
                                         </td>
                                         <td class="px-6 py-4 text-center">
                                             @if($att->surat_izin)
-                                                <a href="{{ asset($att->surat_izin) }}" target="_blank" class="px-3 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-xs rounded-lg border border-emerald-200 inline-flex items-center gap-1 transition">
+                                                <a href="{{ asset($att->surat_izin) }}" target="_blank" class="px-3 py-1 bg-red-50 text-red-700 hover:bg-red-100 font-bold text-xs rounded-lg border border-red-200 inline-flex items-center gap-1 transition">
                                                     📷 Lihat Surat
                                                 </a>
                                             @else
@@ -367,12 +367,12 @@
                             {
                                 label: 'Hadir',
                                 data: {!! json_encode($weeklyHadir ?? []) !!},
-                                borderColor: '#10b981',
+                                borderColor: '#ef4444',
                                 backgroundColor: hadirGrad,
                                 borderWidth: 3,
                                 fill: true,
                                 tension: 0.3,
-                                pointBackgroundColor: '#10b981',
+                                pointBackgroundColor: '#ef4444',
                                 pointRadius: 4
                             },
                             {
@@ -437,7 +437,7 @@
                         labels: ['Hadir', 'Izin', 'Sakit', 'Alpa'],
                         datasets: [{
                             data: [{{ $totalHadir ?? 0 }}, {{ $totalIzin ?? 0 }}, {{ $totalSakit ?? 0 }}, {{ $totalAlpa ?? 0 }}],
-                            backgroundColor: ['#10b981', '#14b8a6', '#f59e0b', '#f43f5e'],
+                            backgroundColor: ['#ef4444', '#14b8a6', '#f59e0b', '#f43f5e'],
                             borderWidth: 3,
                             borderColor: '#ffffff'
                         }]

@@ -3,23 +3,23 @@
 @tailwind utilities;
 
 :root {
-    /* Brand Theme Design Tokens - NTO National Plus Primary School */
-    --color-primary: #10b981;          /* Emerald 500 */
-    --color-primary-hover: #059669;    /* Emerald 600 */
-    --color-primary-dark: #047857;     /* Emerald 700 */
-    --color-primary-darker: #064e3b;   /* Emerald 900 */
-    --color-primary-light: #ecfdf5;    /* Emerald 50 */
-    --color-primary-border: #a7f3d0;   /* Emerald 200 */
-    --color-primary-glow: rgba(16, 185, 129, 0.35);
+    /* Brand Theme Design Tokens - NTO National Plus Primary School (Red & White Theme) */
+    --color-primary: #dc2626;          /* Crimson Red 600 */
+    --color-primary-hover: #b91c1c;    /* Crimson Red 700 */
+    --color-primary-dark: #991b1b;     /* Crimson Red 800 */
+    --color-primary-darker: #7f1d1d;   /* Crimson Red 900 */
+    --color-primary-light: #fef2f2;    /* Crimson Red 50 */
+    --color-primary-border: #fecaca;   /* Crimson Red 200 */
+    --color-primary-glow: rgba(220, 38, 38, 0.35);
 
     --color-accent: #dc2626;           /* Crimson Red 600 */
     --color-accent-hover: #b91c1c;     /* Crimson Red 700 */
     --color-accent-light: #fef2f2;     /* Crimson Red 50 */
     --color-accent-border: #fecaca;    /* Crimson Red 200 */
 
-    --color-canvas-bg: #dfc88b;
-    --color-sidebar-from: #064e3b;
-    --color-sidebar-to: #022c22;
+    --color-canvas-bg: #ffffff;
+    --color-sidebar-from: #7f1d1d;
+    --color-sidebar-to: #450a0a;
 }
 
 @layer utilities {

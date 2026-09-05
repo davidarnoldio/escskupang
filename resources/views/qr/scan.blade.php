@@ -25,10 +25,10 @@
                     <div class="bg-white p-6 rounded-2xl shadow-xs border border-slate-200/80">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-bold text-lg text-slate-900 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
                                 Scanner Kamera Live
                             </h3>
-                            <button @click="toggleCamera()" type="button" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 text-xs font-bold rounded-xl transition cursor-pointer">
+                            <button @click="toggleCamera()" type="button" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-red-400 text-xs font-bold rounded-xl transition cursor-pointer">
                                 <span x-text="cameraActive ? '⏹ Matikan Kamera' : '🎥 Aktifkan Kamera'"></span>
                             </button>
                         </div>
@@ -51,9 +51,9 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
                                     </div>
-                                    <input x-model="manualNis" type="text" placeholder="Masukkan / Scan NIS Manual (Contoh: 10201)..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:bg-white transition" autofocus>
+                                    <input x-model="manualNis" type="text" placeholder="Masukkan / Scan NIS Manual (Contoh: 10201)..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-red-500 focus:bg-white transition" autofocus>
                                 </div>
-                                <button type="submit" :disabled="loading" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 font-bold rounded-xl text-sm transition cursor-pointer flex items-center gap-2">
+                                <button type="submit" :disabled="loading" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-red-400 font-bold rounded-xl text-sm transition cursor-pointer flex items-center gap-2">
                                     <span x-text="loading ? 'Proses...' : 'Proses Scan'"></span>
                                 </button>
                             </form>
@@ -65,15 +65,15 @@
                 <div class="space-y-6">
                     <!-- Scan Result Feedback Alert -->
                     <div x-show="lastResult" x-transition class="bg-white p-6 rounded-2xl shadow-xs border"
-                         :class="!lastResult?.success ? 'border-rose-200 bg-rose-50/40' : (lastResult?.attendance?.is_late ? 'border-amber-300 bg-amber-50/70' : 'border-emerald-200 bg-emerald-50/40')">
+                         :class="!lastResult?.success ? 'border-rose-200 bg-rose-50/40' : (lastResult?.attendance?.is_late ? 'border-amber-300 bg-amber-50/70' : 'border-red-200 bg-red-50/40')">
                         <div class="flex items-center gap-3 mb-3">
                             <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold shrink-0"
-                                 :class="!lastResult?.success ? 'bg-rose-500 text-white' : (lastResult?.attendance?.is_late ? 'bg-amber-500 text-white shadow-md' : 'bg-emerald-500 text-white')">
+                                 :class="!lastResult?.success ? 'bg-rose-500 text-white' : (lastResult?.attendance?.is_late ? 'bg-amber-500 text-white shadow-md' : 'bg-red-600 text-white')">
                                 <span x-text="!lastResult?.success ? '✕' : (lastResult?.attendance?.is_late ? '⚠️' : '✓')"></span>
                             </div>
                             <div>
                                 <h4 class="font-bold text-sm"
-                                    :class="!lastResult?.success ? 'text-rose-900' : (lastResult?.attendance?.is_late ? 'text-amber-900 font-extrabold' : 'text-emerald-900')"
+                                    :class="!lastResult?.success ? 'text-rose-900' : (lastResult?.attendance?.is_late ? 'text-amber-900 font-extrabold' : 'text-red-900')"
                                     x-text="!lastResult?.success ? 'Presensi Gagal!' : (lastResult?.attendance?.is_late ? 'Presensi Berhasil (TERLAMBAT)!' : 'Presensi Berhasil (Tepat Waktu)!')"></h4>
                                 <p class="text-xs" :class="lastResult?.attendance?.is_late ? 'text-amber-950 font-medium' : 'text-slate-600'" x-text="lastResult?.message"></p>
                             </div>
@@ -81,7 +81,7 @@
 
                         <template x-if="lastResult?.success && lastResult?.student">
                             <div class="mt-4 p-4 bg-white rounded-xl border shadow-2xs space-y-2"
-                                 :class="lastResult?.attendance?.is_late ? 'border-amber-300 bg-amber-50/30' : 'border-emerald-100'">
+                                 :class="lastResult?.attendance?.is_late ? 'border-amber-300 bg-amber-50/30' : 'border-red-100'">
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                                     <span class="text-xs text-slate-400">Nama Siswa</span>
                                     <span class="font-bold text-sm text-slate-900" x-text="lastResult.student.nama"></span>
@@ -93,7 +93,7 @@
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                                     <span class="text-xs text-slate-400">Kelas</span>
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-xs font-bold px-2 py-0.5 bg-slate-900 text-emerald-400 rounded-md" x-text="lastResult.student.kelas"></span>
+                                        <span class="text-xs font-bold px-2 py-0.5 bg-slate-900 text-red-400 rounded-md" x-text="lastResult.student.kelas"></span>
                                         <template x-if="lastResult.student.is_abk">
                                             <span class="text-[10px] font-black px-1.5 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded">ABK</span>
                                         </template>
@@ -102,13 +102,13 @@
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                                     <span class="text-xs text-slate-400">Status Presensi</span>
                                     <span class="text-xs font-black px-2.5 py-0.5 rounded-md"
-                                          :class="lastResult.attendance?.is_late ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-emerald-100 text-emerald-800 border border-emerald-300'"
+                                          :class="lastResult.attendance?.is_late ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-red-100 text-red-800 border border-red-300'"
                                           x-text="lastResult.attendance?.status_text || 'HADIR'"></span>
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs text-slate-400">Waktu Scan (WITA)</span>
                                     <div class="flex items-center gap-2">
-                                        <span class="font-mono text-xs font-bold" :class="lastResult.attendance?.is_late ? 'text-amber-700 font-extrabold' : 'text-emerald-600'" x-text="lastResult.attendance.waktu"></span>
+                                        <span class="font-mono text-xs font-bold" :class="lastResult.attendance?.is_late ? 'text-amber-700 font-extrabold' : 'text-red-600'" x-text="lastResult.attendance.waktu"></span>
                                         <template x-if="lastResult.attendance?.is_late">
                                             <span class="text-[10px] font-bold px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded border border-amber-200">
                                                 Batas: <span x-text="lastResult.attendance.jam_terlambat"></span>
@@ -145,7 +145,7 @@
                                                 ⚠️ TERLAMBAT
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-red-50 text-red-700 border border-red-100">
                                                 HADIR
                                             </span>
                                         @endif

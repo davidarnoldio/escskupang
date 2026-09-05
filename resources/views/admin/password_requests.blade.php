@@ -16,9 +16,9 @@
         
         <!-- Flash Message Alert -->
         @if (session('success'))
-            <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-extrabold rounded-2xl shadow-2xs flex items-center justify-between">
+            <div class="p-4 bg-red-50 border border-red-200 text-red-900 text-xs font-extrabold rounded-2xl shadow-2xs flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
                     <span>{{ session('success') }}</span>
                 </div>
             </div>
@@ -59,15 +59,15 @@
                                     {{ $req->email }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full {{ $req->role == 'guru' ? 'bg-teal-50 text-teal-700 border border-teal-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200' }}">
+                                    <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full {{ $req->role == 'guru' ? 'bg-teal-50 text-red-800 border border-teal-200' : 'bg-red-50 text-red-700 border border-red-200' }}">
                                         {{ strtoupper($req->role) }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <form method="POST" action="{{ route('admin.reset-password', $req->user_id) }}" class="inline-flex items-center gap-2">
                                         @csrf
-                                        <input type="text" name="new_password" placeholder="Password Baru..." required class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold w-36 focus:ring-2 focus:ring-emerald-600 focus:bg-white transition">
-                                        <button type="submit" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-xs shadow-md shadow-emerald-600/30 transition cursor-pointer">
+                                        <input type="text" name="new_password" placeholder="Password Baru..." required class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold w-36 focus:ring-2 focus:ring-red-600 focus:bg-white transition">
+                                        <button type="submit" class="px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-xl text-xs shadow-md shadow-red-600/30 transition cursor-pointer">
                                             🔑 Reset Sekarang
                                         </button>
                                     </form>
@@ -115,7 +115,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-800 font-extrabold text-xs rounded-full border border-emerald-200">
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 text-red-800 font-extrabold text-xs rounded-full border border-red-200">
                                         ✓ Selesai Dirubah
                                     </span>
                                 </td>

@@ -8,7 +8,7 @@
                 <p class="text-xs font-semibold text-slate-500 mt-0.5">Kelola data seluruh siswa terdaftar di sekolah</p>
             </div>
             @if(Auth::user() && Auth::user()->isAdmin())
-                <a href="{{ route('students.create') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-emerald-600/30 transition duration-200 cursor-pointer">
+                <a href="{{ route('students.create') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-red-600/30 transition duration-200 cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     <span>Tambah Siswa Baru</span>
                 </a>
@@ -20,9 +20,9 @@
         
         <!-- Flash Alert -->
         @if(session('success'))
-            <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-2xl text-xs font-extrabold flex items-center justify-between shadow-2xs">
+            <div class="p-4 bg-red-50 border border-red-200 text-red-900 rounded-2xl text-xs font-extrabold flex items-center justify-between shadow-2xs">
                 <div class="flex items-center gap-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
                     <span>{{ session('success') }}</span>
                 </div>
             </div>
@@ -33,7 +33,7 @@
             <div class="flex items-center justify-between">
                 <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Kategori Tingkat Kelas</span>
                 @if($assignedClass)
-                    <span class="px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 font-extrabold text-xs rounded-full">
+                    <span class="px-3 py-1 bg-red-50 text-red-800 border border-red-200 font-extrabold text-xs rounded-full">
                         Wali Kelas {{ $assignedClass }}
                     </span>
                 @endif
@@ -41,14 +41,14 @@
             <div class="flex items-center gap-2 overflow-x-auto pb-1">
                 @if(!$assignedClass)
                     <a href="{{ route('students.index', ['search' => request('search')]) }}" 
-                       class="px-4 py-2 rounded-2xl text-xs font-bold transition duration-200 shrink-0 {{ !request('kelas') ? 'bg-emerald-600 text-white font-black shadow-md shadow-emerald-600/30' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
+                       class="px-4 py-2 rounded-2xl text-xs font-bold transition duration-200 shrink-0 {{ !request('kelas') ? 'bg-red-600 text-white font-black shadow-md shadow-red-600/30' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
                         Semua Kelas
                     </a>
                 @endif
                 @foreach($classList as $c)
                     @if(!$assignedClass || $assignedClass == $c)
                         <a href="{{ route('students.index', ['kelas' => $c, 'search' => request('search')]) }}" 
-                           class="px-4 py-2 rounded-2xl text-xs font-bold transition duration-200 shrink-0 {{ request('kelas') == $c || $assignedClass == $c ? 'bg-emerald-600 text-white font-black shadow-md shadow-emerald-600/30' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
+                           class="px-4 py-2 rounded-2xl text-xs font-bold transition duration-200 shrink-0 {{ request('kelas') == $c || $assignedClass == $c ? 'bg-red-600 text-white font-black shadow-md shadow-red-600/30' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
                             {{ $c }}
                         </a>
                     @endif
@@ -64,7 +64,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama siswa atau NIS..."
-                           class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:ring-2 focus:ring-emerald-600 focus:bg-white transition">
+                           class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:ring-2 focus:ring-red-600 focus:bg-white transition">
                 </div>
 
                 @if(request('kelas'))
@@ -98,7 +98,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse($students as $student)
-                            <tr class="hover:bg-emerald-50/40 transition duration-150">
+                            <tr class="hover:bg-red-50/40 transition duration-150">
                                 <td class="px-6 py-4 font-mono font-bold text-xs text-slate-600">
                                     {{ $student->nis }}
                                 </td>
@@ -108,7 +108,7 @@
                                         @if($student->foto)
                                             <img src="{{ asset($student->foto) }}" alt="{{ $student->nama }}" class="w-9 h-9 rounded-full object-cover border border-slate-200 shadow-2xs">
                                         @else
-                                            <div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center font-black text-xs shadow-2xs">
+                                            <div class="w-9 h-9 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xs shadow-2xs">
                                                 {{ strtoupper(substr($student->nama, 0, 2)) }}
                                             </div>
                                         @endif
@@ -124,7 +124,7 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                                    <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full bg-red-50 text-red-700 border border-red-200/80">
                                         Kelas {{ $student->kelas }}
                                     </span>
                                 </td>
@@ -132,7 +132,7 @@
                                     {{ $student->jenis_kelamin }}
                                 </td>
                                 <td class="px-6 py-4 text-right space-x-2">
-                                    <button type="button" @click="openQrModal({{ json_encode($student) }})" class="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl text-xs font-bold transition cursor-pointer">
+                                    <button type="button" @click="openQrModal({{ json_encode($student) }})" class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold transition cursor-pointer">
                                         📷 QR Code
                                     </button>
                                     @if(Auth::user() && Auth::user()->isAdmin())
@@ -181,7 +181,7 @@
                         </div>
 
                         <div class="flex items-center justify-center gap-3">
-                            <a :href="'/students/' + selectedStudent.id + '/qr-card'" target="_blank" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition shadow-md">
+                            <a :href="'/students/' + selectedStudent.id + '/qr-card'" target="_blank" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl transition shadow-md">
                                 Cetak Kartu QR
                             </a>
                             <button type="button" @click="qrModalOpen = false" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">

@@ -9,10 +9,10 @@
         }
 
         .nto-login-page {
-            --nto-green: #024a35;
-            --nto-green-dark: #013727;
-            --nto-green-light: #059669;
-            --nto-bg: #dfc88b;
+            --nto-green: #7f1d1d;
+            --nto-green-dark: #450a0a;
+            --nto-green-light: #dc2626;
+            --nto-bg: #ffffff;
 
             width: 100%;
             height: 100vh;
@@ -33,7 +33,7 @@
             min-width: 0;
             height: 100vh;
             overflow: hidden;
-            background: linear-gradient(135deg, #024a35 0%, #013b2a 50%, #002b1f 100%);
+            background: linear-gradient(135deg, #7f1d1d 0%, #6b1414 50%, #450a0a 100%);
             color: white;
             display: flex;
             flex-direction: column;
@@ -85,7 +85,7 @@
             right: -80px;
             top: -80px;
             border-radius: 50%;
-            background: rgba(16, 185, 129, .15);
+            background: rgba(239, 68, 68, .15);
             filter: blur(80px);
         }
 
@@ -126,8 +126,8 @@
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: #34d399;
-            box-shadow: 0 0 8px #34d399;
+            background: #f87171;
+            box-shadow: 0 0 8px #f87171;
         }
 
         .nto-top-badge-text {
@@ -181,23 +181,22 @@
         }
 
         .nto-logo-image {
-            max-width: 100%;
-            max-height: 100%;
+            width: 140px;
+            height: 140px;
             object-fit: contain;
-            filter: drop-shadow(0 8px 12px rgba(0, 0, 0, .12));
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, .12));
         }
 
         .nto-school-name {
-            margin-top: 10px;
             color: #0f172a;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 900;
-            letter-spacing: .04em;
-            line-height: 1.2;
+            letter-spacing: .06em;
+            margin-top: 10px;
         }
 
         .nto-school-level {
-            color: #059669;
+            color: #dc2626;
             font-size: 10px;
             font-weight: 800;
             letter-spacing: .16em;
@@ -209,7 +208,7 @@
             height: 3px;
             margin: 8px auto;
             border-radius: 999px;
-            background: #10b981;
+            background: #ef4444;
         }
 
         .nto-school-motto {
@@ -235,12 +234,12 @@
             height: 3px;
             margin: 10px auto;
             border-radius: 999px;
-            background: #34d399;
+            background: #f87171;
         }
 
         .nto-description {
             max-width: 340px;
-            color: rgba(236, 253, 245, .92);
+            color: rgba(254, 242, 242, .92);
             font-size: 12px;
             line-height: 1.5;
             font-weight: 500;
@@ -260,9 +259,9 @@
             align-items: center;
             gap: 7px;
             padding: 7px 15px;
-            border: 1px solid rgba(167, 243, 208, .3);
+            border: 1px solid rgba(254, 202, 202, .3);
             border-radius: 999px;
-            background: rgba(0, 50, 40, .45);
+            background: rgba(69, 10, 10, .45);
             backdrop-filter: blur(10px);
         }
 
@@ -270,11 +269,11 @@
             width: 14px;
             height: 14px;
             flex-shrink: 0;
-            color: #34d399;
+            color: #f87171;
         }
 
         .nto-location span {
-            color: #ecfdf5;
+            color: #fef2f2;
             font-size: 10px;
             font-weight: 600;
         }
@@ -308,7 +307,7 @@
         }
 
         .nto-divider-path {
-            fill: #dfc88b;
+            fill: #ffffff;
         }
 
 
@@ -321,7 +320,7 @@
             min-width: 0;
             height: 100vh;
             overflow: hidden;
-            background: #dfc88b;
+            background: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -395,7 +394,7 @@
         .nto-login-accent {
             width: 100%;
             height: 6px;
-            background: linear-gradient(90deg, #10b981, #08a77c, #024a35);
+            background: linear-gradient(90deg, #ef4444, #b91c1c, #7f1d1d);
         }
 
         .nto-login-inner {
@@ -412,8 +411,8 @@
             width: 56px;
             height: 56px;
             border-radius: 50%;
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -423,7 +422,7 @@
         .nto-user-icon svg {
             width: 26px;
             height: 26px;
-            color: #059669;
+            color: #dc2626;
         }
 
         .nto-login-header {
@@ -451,7 +450,7 @@
             height: 3px;
             margin: 12px auto 0;
             border-radius: 999px;
-            background: #10b981;
+            background: #ef4444;
         }
 
         /* Form */
@@ -485,7 +484,7 @@
         }
 
         .nto-forgot {
-            color: #059669;
+            color: #dc2626;
             font-size: 11px;
             font-weight: 700;
             text-decoration: none;
@@ -493,7 +492,7 @@
         }
 
         .nto-forgot:hover {
-            color: #047857;
+            color: #b91c1c;
             text-decoration: underline;
         }
 
@@ -514,7 +513,7 @@
         }
 
         .nto-input-wrapper:focus-within .nto-input-icon {
-            color: #059669;
+            color: #dc2626;
         }
 
         .nto-input {
@@ -540,7 +539,7 @@
         }
 
         .nto-input:focus {
-            border-color: #10b981;
+            border-color: #ef4444;
             background: white;
             box-shadow: 0 0 0 3px rgba(16, 185, 129, .12);
         }
@@ -565,7 +564,7 @@
         }
 
         .nto-eye-button:hover {
-            color: #059669;
+            color: #dc2626;
             background: rgba(16, 185, 129, .08);
         }
 
@@ -585,7 +584,7 @@
         .nto-remember input {
             width: 16px;
             height: 16px;
-            accent-color: #059669;
+            accent-color: #dc2626;
             cursor: pointer;
             border-radius: 4px;
         }
@@ -603,7 +602,7 @@
             height: 48px;
             border: 0;
             border-radius: 14px;
-            background: linear-gradient(90deg, #10b981, #059669);
+            background: linear-gradient(90deg, #ef4444, #dc2626);
             color: white;
             font-size: 14px;
             font-weight: 900;
@@ -650,7 +649,7 @@
             width: 16px;
             height: 16px;
             flex-shrink: 0;
-            color: #059669;
+            color: #dc2626;
         }
 
         .nto-security span {
@@ -676,7 +675,7 @@
         }
 
         .nto-footer strong {
-            color: #024a35;
+            color: #7f1d1d;
             font-weight: 800;
         }
 
@@ -844,7 +843,7 @@
                 <!-- Central Clock Tower/Gable -->
                 <polygon points="180,100 250,50 320,100" fill="white" />
                 <!-- Clock Circle -->
-                <circle cx="250" cy="90" r="14" fill="#024a35" />
+                <circle cx="250" cy="90" r="14" fill="#7f1d1d" />
                 <!-- Left Wing -->
                 <rect x="60" y="140" width="120" height="140" fill="white" />
                 <polygon points="60,140 120,110 180,140" fill="white" opacity="0.9" />
@@ -852,21 +851,21 @@
                 <rect x="320" y="140" width="120" height="140" fill="white" />
                 <polygon points="320,140 380,110 440,140" fill="white" opacity="0.9" />
                 <!-- Entrance Pillars -->
-                <rect x="220" y="210" width="15" height="70" fill="#024a35" />
-                <rect x="265" y="210" width="15" height="70" fill="#024a35" />
+                <rect x="220" y="210" width="15" height="70" fill="#7f1d1d" />
+                <rect x="265" y="210" width="15" height="70" fill="#7f1d1d" />
                 <rect x="210" y="200" width="80" height="10" fill="white" />
                 <!-- Windows grid -->
-                <rect x="85" y="160" width="20" height="30" rx="3" fill="#024a35" />
-                <rect x="130" y="160" width="20" height="30" rx="3" fill="#024a35" />
-                <rect x="85" y="210" width="20" height="30" rx="3" fill="#024a35" />
-                <rect x="130" y="210" width="20" height="30" rx="3" fill="#024a35" />
-                <rect x="350" y="160" width="20" height="30" rx="3" fill="#024a35" />
-                <rect x="395" y="160" width="20" height="30" rx="3" fill="#024a35" />
-                <rect x="350" y="210" width="20" height="30" rx="3" fill="#024a35" />
-                <rect x="395" y="210" width="20" height="30" rx="3" fill="#024a35" />
+                <rect x="85" y="160" width="20" height="30" rx="3" fill="#7f1d1d" />
+                <rect x="130" y="160" width="20" height="30" rx="3" fill="#7f1d1d" />
+                <rect x="85" y="210" width="20" height="30" rx="3" fill="#7f1d1d" />
+                <rect x="130" y="210" width="20" height="30" rx="3" fill="#7f1d1d" />
+                <rect x="350" y="160" width="20" height="30" rx="3" fill="#7f1d1d" />
+                <rect x="395" y="160" width="20" height="30" rx="3" fill="#7f1d1d" />
+                <rect x="350" y="210" width="20" height="30" rx="3" fill="#7f1d1d" />
+                <rect x="395" y="210" width="20" height="30" rx="3" fill="#7f1d1d" />
                 <!-- Flagpole -->
                 <line x1="250" y1="50" x2="250" y2="15" stroke="white" stroke-width="3" />
-                <polygon points="250,15 275,23 250,31" fill="#ecfdf5" />
+                <polygon points="250,15 275,23 250,31" fill="#fef2f2" />
             </svg>
 
             {{-- Curved Divider --}}

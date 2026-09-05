@@ -8,7 +8,7 @@
                 <p class="text-xs font-semibold text-slate-500 mt-0.5">Laporan rekapitulasi presensi bulanan & grafik statistik indikator</p>
             </div>
             <div class="flex items-center gap-3">
-                <a href="{{ route('attendances.index') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-emerald-600/30 transition duration-200 cursor-pointer">
+                <a href="{{ route('attendances.index') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-red-600/30 transition duration-200 cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                     <span>Input Presensi Harian</span>
                 </a>
@@ -26,13 +26,13 @@
             <form method="GET" action="{{ route('attendances.rekap') }}" class="flex flex-wrap items-center gap-4">
                 <div>
                     <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Bulan & Tahun</label>
-                    <input type="month" name="bulan" value="{{ $bulan }}" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:bg-white transition cursor-pointer">
+                    <input type="month" name="bulan" value="{{ $bulan }}" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-600 focus:bg-white transition cursor-pointer">
                 </div>
 
                 @if(Auth::user()->isAdmin())
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Filter Kelas</label>
-                        <select name="kelas" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:bg-white transition cursor-pointer">
+                        <select name="kelas" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-600 focus:bg-white transition cursor-pointer">
                             <option value="">Semua Kelas</option>
                             @foreach($classList as $k)
                                 <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>Kelas {{ $k }}</option>
@@ -41,7 +41,7 @@
                     </div>
                 @else
                     <div class="pt-4">
-                        <span class="inline-flex items-center px-3 py-1.5 bg-emerald-50 text-emerald-800 font-extrabold text-xs rounded-full border border-emerald-200">
+                        <span class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-800 font-extrabold text-xs rounded-full border border-red-200">
                             🏫 Kelas {{ $assignedClass }} (Wali Kelas)
                         </span>
                     </div>
@@ -63,11 +63,11 @@
         </div>
 
         <!-- School Building Photo Banner Card -->
-        <div class="bg-gradient-to-r from-emerald-700 to-teal-800 rounded-3xl overflow-hidden shadow-lg border border-emerald-500/30 text-white p-6 relative flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="bg-gradient-to-r from-red-700 to-red-900 rounded-3xl overflow-hidden shadow-lg border border-red-500/30 text-white p-6 relative flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="space-y-2 max-w-xl z-10">
-                <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-wider text-emerald-100 border border-white/20">Laporan Rekapitulasi Presensi Resmi</span>
+                <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-wider text-red-100 border border-white/20">Laporan Rekapitulasi Presensi Resmi</span>
                 <h3 class="text-xl font-black">NTO National Plus Primary School</h3>
-                <p class="text-xs text-emerald-100/90 font-medium">
+                <p class="text-xs text-red-100/90 font-medium">
                     Data presensi bulan <span class="font-bold text-white">{{ \Carbon\Carbon::parse($bulan . '-01')->locale('id')->isoFormat('MMMM Y') }}</span> tercatat secara transparan dan akurat.
                 </p>
             </div>
@@ -80,10 +80,10 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Total Hadir (Siswa)</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-red-600">Total Hadir (Siswa)</div>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalHadir }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
-                <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold text-lg">✓</div>
+                <div class="w-10 h-10 rounded-2xl bg-red-600/10 text-red-600 flex items-center justify-center font-bold text-lg">✓</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-amber-200 bg-amber-50/20 flex items-center justify-between">
@@ -96,18 +96,18 @@
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-teal-600">Total Izin (Siswa)</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-red-700">Total Izin (Siswa)</div>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalIzin }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
-                <div class="w-10 h-10 rounded-2xl bg-teal-500/10 text-teal-600 flex items-center justify-center font-bold text-lg">ⓘ</div>
+                <div class="w-10 h-10 rounded-2xl bg-red-600/10 text-red-700 flex items-center justify-center font-bold text-lg">ⓘ</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-emerald-700">Total Sakit (Siswa)</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-red-700">Total Sakit (Siswa)</div>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalSakit }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
-                <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold text-lg">🏥</div>
+                <div class="w-10 h-10 rounded-2xl bg-red-600/10 text-red-700 flex items-center justify-center font-bold text-lg">🏥</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
@@ -137,9 +137,9 @@
                             @for($d = 1; $d <= $daysInMonth; $d++)
                                 <th class="px-2 py-3 text-center min-w-[28px]">{{ $d }}</th>
                             @endfor
-                            <th class="px-3 py-3 text-center bg-emerald-50 text-emerald-800">H</th>
-                            <th class="px-3 py-3 text-center bg-teal-50 text-teal-800">I</th>
-                            <th class="px-3 py-3 text-center bg-emerald-100/60 text-emerald-900">S</th>
+                            <th class="px-3 py-3 text-center bg-red-50 text-red-800">H</th>
+                            <th class="px-3 py-3 text-center bg-teal-50 text-red-900">I</th>
+                            <th class="px-3 py-3 text-center bg-red-100/60 text-red-900">S</th>
                             <th class="px-3 py-3 text-center bg-rose-50 text-rose-800">A</th>
                         </tr>
                     </thead>
@@ -167,7 +167,7 @@
 
                                         $badgeBg = match(true) {
                                             $isLate => 'bg-amber-400 text-amber-950 font-black border border-amber-500 shadow-2xs',
-                                            $st === 'hadir' => 'bg-emerald-500 text-white font-bold',
+                                            $st === 'hadir' => 'bg-red-600 text-white font-bold',
                                             $st === 'izin' => 'bg-slate-100 text-slate-700 font-semibold border border-slate-200',
                                             $st === 'sakit' => 'bg-slate-100 text-slate-700 font-semibold border border-slate-200',
                                             $st === 'alpa' => 'bg-rose-500 text-white font-bold',
@@ -181,9 +181,9 @@
                                         </span>
                                     </td>
                                 @endfor
-                                <td class="px-3 py-3 text-center font-extrabold text-emerald-700 bg-emerald-50/50">{{ $hCount }}</td>
-                                <td class="px-3 py-3 text-center font-extrabold text-teal-700 bg-teal-50/50">{{ $iCount }}</td>
-                                <td class="px-3 py-3 text-center font-extrabold text-emerald-800 bg-emerald-100/30">{{ $sCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-red-700 bg-red-50/50">{{ $hCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-red-800 bg-teal-50/50">{{ $iCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-red-800 bg-red-100/30">{{ $sCount }}</td>
                                 <td class="px-3 py-3 text-center font-extrabold text-rose-700 bg-rose-50/50">{{ $aCount }}</td>
                             </tr>
                         @empty

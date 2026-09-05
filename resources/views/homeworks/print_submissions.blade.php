@@ -154,7 +154,7 @@
             <span style="color: #64748b; margin-left: 8px;">Tugas: {{ $homework->judul }} | Kelas: {{ $homework->kelas }}</span>
         </div>
         <div style="display: flex; gap: 8px;">
-            <button onclick="window.print()" style="padding: 6px 16px; background: #059669; color: #ffffff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
+            <button onclick="window.print()" style="padding: 6px 16px; background: #dc2626; color: #ffffff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
                 🖨️ Cetak Rekapan (PDF)
             </button>
             <button onclick="window.close()" style="padding: 6px 12px; background: #e2e8f0; color: #334155; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">

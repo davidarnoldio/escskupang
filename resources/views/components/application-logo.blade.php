@@ -6,6 +6,6 @@
     <!-- Brand Title -->
     <div class="flex flex-col text-left">
         <span class="font-extrabold text-sm tracking-tight text-white leading-tight">NTO NATIONAL PLUS</span>
-        <span class="text-[10px] font-bold text-emerald-400 tracking-wider uppercase leading-none">PRIMARY SCHOOL</span>
+        <span class="text-[10px] font-bold text-red-400 tracking-wider uppercase leading-none">PRIMARY SCHOOL</span>
     </div>
 </div>
