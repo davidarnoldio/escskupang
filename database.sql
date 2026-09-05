@@ -218,7 +218,6 @@ CREATE TABLE `users` (
 
 -- Dumping data for table `users`
 INSERT INTO `users` (`id`, `name`, `email`, `role`, `assigned_class`, `email_verified_at`, `password`, `plain_password`, `remember_token`, `created_at`, `updated_at`, `student_id`) VALUES
-('1', 'Guru Pengajar', 'test@example.com', 'guru', NULL, '2026-08-26 04:41:32', '$2y$12$yhRh//j3GIOTIyonDqdEFOIBjOl5D5NMjEtXebtR57fmtw3OOsh32', NULL, NULL, '2026-08-26 04:41:32', '2026-08-26 04:41:32', NULL),
 ('2', 'Administrator NTO', 'admin@nto-kupang.sch.id', 'admin', NULL, '2026-08-26 04:41:33', '$2y$12$YNmYmUL4lRfmDB/.AFl5dOxrPM7u2SPcjix1idH2PzyJ3vg8v66Gi', NULL, NULL, '2026-08-26 04:41:33', '2026-08-26 04:41:33', NULL),
 ('3', 'Nursery (Wali Kelas Nursery)', 'vivinalle@nto-kupang.sch.id', 'guru', 'Nursery', '2026-08-26 04:41:33', '$2y$12$5WRCR7Oyb2yHRz4Tg9Kb5e/fLarNQCHr8VmcagL0wrCduX8yOXE3W', 'vivi123', NULL, '2026-08-26 04:41:33', '2026-08-26 04:41:33', NULL),
 ('4', 'Pre-K (Wali Kelas Pre-K)', 'asnat@nto-kupang.sch.id', 'guru', 'Pre-K', '2026-08-26 04:41:33', '$2y$12$XZJZA0iWp6a.0E1P2/USw.f0PA0jdu7wnLeBgr3o4zVmpw0dU6/eu', 'asnat123', NULL, '2026-08-26 04:41:33', '2026-08-26 04:41:33', NULL),
