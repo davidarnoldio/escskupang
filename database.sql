@@ -33,7 +33,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 ('12', '2026_08_25_200000_alter_attendances_status_to_varchar', '1'),
 ('13', '2026_08_25_210000_add_assigned_class_to_users_table', '1'),
 ('14', '2026_08_25_220000_create_password_reset_requests_table', '1'),
-('15', '2026_08_25_221000_add_plain_password_to_users_table', '1');
+('15', '2026_08_25_221000_add_plain_password_to_users_table', '1'),
+('16', '2026_09_05_000001_create_payments_table', '1'),
+('17', '2026_09_05_000002_create_homeworks_table', '1'),
+('18', '2026_09_05_000003_create_homework_submissions_table', '1'),
+('19', '2026_09_05_000004_add_student_id_to_homeworks_table', '1');
 
 -- --------------------------------------------------------
 -- Table structure for table `students`
@@ -558,5 +562,73 @@ CREATE TABLE `password_reset_requests` (
   KEY `password_reset_requests_user_id_foreign` (`user_id`),
   CONSTRAINT `password_reset_requests_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+-- Table structure for table `payments`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `payments`;
+CREATE TABLE `payments` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `student_id` bigint(20) unsigned NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `jumlah` decimal(12,2) NOT NULL,
+  `jatuh_tempo` date NOT NULL,
+  `keterangan` text DEFAULT NULL,
+  `status` enum('belum_lunas','menunggu_konfirmasi','lunas','ditolak') NOT NULL DEFAULT 'belum_lunas',
+  `bukti_pembayaran` varchar(255) DEFAULT NULL,
+  `catatan_admin` text DEFAULT NULL,
+  `paid_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `payments_student_id_foreign` (`student_id`),
+  CONSTRAINT `payments_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+-- Table structure for table `homeworks`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `homeworks`;
+CREATE TABLE `homeworks` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `teacher_id` bigint(20) unsigned NOT NULL,
+  `student_id` bigint(20) unsigned DEFAULT NULL,
+  `kelas` varchar(255) NOT NULL,
+  `mata_pelajaran` varchar(255) NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `deskripsi` text NOT NULL,
+  `deadline` datetime NOT NULL,
+  `lampiran_guru` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `homeworks_teacher_id_foreign` (`teacher_id`),
+  KEY `homeworks_student_id_foreign` (`student_id`),
+  CONSTRAINT `homeworks_teacher_id_foreign` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `homeworks_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+-- Table structure for table `homework_submissions`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `homework_submissions`;
+CREATE TABLE `homework_submissions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `homework_id` bigint(20) unsigned NOT NULL,
+  `student_id` bigint(20) unsigned NOT NULL,
+  `foto_pr` varchar(255) NOT NULL,
+  `catatan_siswa` text DEFAULT NULL,
+  `nilai` int(11) DEFAULT NULL,
+  `catatan_guru` text DEFAULT NULL,
+  `submitted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `graded_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `homework_submissions_homework_id_foreign` (`homework_id`),
+  KEY `homework_submissions_student_id_foreign` (`student_id`),
+  CONSTRAINT `homework_submissions_homework_id_foreign` FOREIGN KEY (`homework_id`) REFERENCES `homeworks` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `homework_submissions_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
