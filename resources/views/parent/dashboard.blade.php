@@ -367,35 +367,35 @@
                             {
                                 label: 'Hadir',
                                 data: {!! json_encode($weeklyHadir ?? []) !!},
-                                borderColor: '#ef4444',
+                                borderColor: '#10b981',
                                 backgroundColor: hadirGrad,
                                 borderWidth: 3,
                                 fill: true,
                                 tension: 0.3,
-                                pointBackgroundColor: '#ef4444',
+                                pointBackgroundColor: '#10b981',
                                 pointRadius: 4
                             },
                             {
                                 label: 'Izin / Sakit',
                                 data: {!! json_encode($weeklyIzinSakit ?? []) !!},
-                                borderColor: '#0d9488',
-                                backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                                borderColor: '#475569',
+                                backgroundColor: 'rgba(71, 85, 105, 0.1)',
                                 borderWidth: 2,
                                 fill: false,
                                 tension: 0.3,
-                                pointBackgroundColor: '#0d9488',
+                                pointBackgroundColor: '#475569',
                                 pointRadius: 3
                             },
                             {
                                 label: 'Alpa',
                                 data: {!! json_encode($weeklyAlpa ?? []) !!},
-                                borderColor: '#f43f5e',
-                                backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                                borderColor: '#ef4444',
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
                                 borderWidth: 2,
                                 borderDash: [3, 3],
                                 fill: false,
                                 tension: 0.3,
-                                pointBackgroundColor: '#f43f5e',
+                                pointBackgroundColor: '#ef4444',
                                 pointRadius: 3
                             }
                         ]
@@ -437,7 +437,7 @@
                         labels: ['Hadir', 'Izin', 'Sakit', 'Alpa'],
                         datasets: [{
                             data: [{{ $totalHadir ?? 0 }}, {{ $totalIzin ?? 0 }}, {{ $totalSakit ?? 0 }}, {{ $totalAlpa ?? 0 }}],
-                            backgroundColor: ['#ef4444', '#14b8a6', '#f59e0b', '#f43f5e'],
+                            backgroundColor: ['#10b981', '#475569', '#64748b', '#ef4444'],
                             borderWidth: 3,
                             borderColor: '#ffffff'
                         }]

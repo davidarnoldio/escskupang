@@ -31,17 +31,17 @@
             <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-between hover:shadow-md transition duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="text-[10px] font-black uppercase tracking-wider text-red-600">Hadir Hari Ini</div>
+                        <div class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Hadir Hari Ini</div>
                         <div class="text-3xl font-black text-slate-900 mt-1">{{ $hadirHariIni }}</div>
-                        <div class="text-xs font-semibold text-red-600 mt-1">{{ $hadirPercentage }}% dari total siswa</div>
+                        <div class="text-xs font-semibold text-emerald-600 mt-1">{{ $hadirPercentage }}% dari total siswa</div>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-red-600/10 text-red-600 flex items-center justify-center text-xl font-bold shadow-xs">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center text-xl font-bold shadow-xs">
                         ✓
                     </div>
                 </div>
                 <!-- Sparkline SVG Curve -->
                 <div class="mt-4 pt-2">
-                    <svg class="w-full h-8 text-red-500 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
+                    <svg class="w-full h-8 text-emerald-500 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
                         <path d="M0 18 Q 25 22, 50 8 T 100 12" stroke-width="3" stroke-linecap="round"/>
                     </svg>
                 </div>
@@ -51,17 +51,17 @@
             <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-between hover:shadow-md transition duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="text-[10px] font-black uppercase tracking-wider text-red-700">Izin & Sakit</div>
+                        <div class="text-[10px] font-black uppercase tracking-wider text-slate-700">Izin & Sakit</div>
                         <div class="text-3xl font-black text-slate-900 mt-1">{{ $izinSakitHariIni }}</div>
                         <div class="text-xs font-semibold text-slate-500 mt-1">Keterangan resmi</div>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-red-600/10 text-red-700 flex items-center justify-center text-xl font-bold shadow-xs">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-700/10 text-slate-700 flex items-center justify-center text-xl font-bold shadow-xs">
                         ⓘ
                     </div>
                 </div>
                 <!-- Sparkline SVG Curve -->
                 <div class="mt-4 pt-2">
-                    <svg class="w-full h-8 text-red-600 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
+                    <svg class="w-full h-8 text-slate-600 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
                         <path d="M0 12 Q 25 18, 50 10 T 100 20" stroke-width="3" stroke-linecap="round"/>
                     </svg>
                 </div>
@@ -71,17 +71,17 @@
             <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-between hover:shadow-md transition duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <div class="text-[10px] font-black uppercase tracking-wider text-rose-600">Alpa Hari Ini</div>
+                        <div class="text-[10px] font-black uppercase tracking-wider text-red-600">Alpa Hari Ini</div>
                         <div class="text-3xl font-black text-slate-900 mt-1">{{ $alpaHariIni }}</div>
-                        <div class="text-xs font-semibold text-rose-600 mt-1">Tanpa keterangan</div>
+                        <div class="text-xs font-semibold text-red-600 mt-1">Tanpa keterangan</div>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center text-xl font-bold shadow-xs">
+                    <div class="w-12 h-12 rounded-2xl bg-red-600/10 text-red-600 flex items-center justify-center text-xl font-bold shadow-xs">
                         ✕
                     </div>
                 </div>
                 <!-- Sparkline SVG Curve -->
                 <div class="mt-4 pt-2">
-                    <svg class="w-full h-8 text-rose-500 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
+                    <svg class="w-full h-8 text-red-600 stroke-current" fill="none" viewBox="0 0 100 25" preserveAspectRatio="none">
                         <path d="M0 15 Q 25 8, 50 20 T 100 5" stroke-width="3" stroke-linecap="round"/>
                     </svg>
                 </div>
@@ -94,18 +94,17 @@
             
             <!-- Main Trend Chart (8 cols on lg) -->
             <div class="lg:col-span-8 bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                     <div>
-                        <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                            <span>📊 Tren Presensi 7 Hari Terakhir</span>
-                        </h3>
-                        <p class="text-xs text-slate-500 mt-0.5 font-medium">Grafik perbandingan status presensi harian siswa</p>
+                        <h3 class="text-base font-extrabold text-slate-900">Grafik Tren Presensi 7 Hari Terakhir</h3>
+                        <p class="text-xs text-slate-500 font-medium mt-0.5">Perbandingan jumlah siswa Hadir, Izin/Sakit, dan Alpa secara real-time</p>
                     </div>
-                    <span class="px-3 py-1 text-[11px] font-bold rounded-full bg-red-50 text-red-700 border border-red-200/80">
-                        7 Hari Terakhir
+                    <span class="px-3 py-1 bg-red-50 text-red-700 text-[11px] font-extrabold rounded-full border border-red-200 self-start sm:self-auto">
+                        📈 Real-time Analytics
                     </span>
                 </div>
-                <div class="relative h-64 sm:h-72 w-full">
+
+                <div class="h-64 sm:h-72 relative">
                     <canvas id="weeklyAttendanceChart"></canvas>
                 </div>
             </div>
@@ -113,18 +112,19 @@
             <!-- Today's Attendance Distribution Doughnut Chart (4 cols on lg) -->
             <div class="lg:col-span-4 bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-base font-extrabold text-slate-900">🍩 Distribusi Hari Ini</h3>
-                    <p class="text-xs text-slate-500 mt-0.5 font-medium">Proporsi status presensi siswa</p>
+                    <h3 class="text-base font-extrabold text-slate-900">Distribusi Presensi Hari Ini</h3>
+                    <p class="text-xs text-slate-500 font-medium mt-0.5">Proporsi status siswa hari ini</p>
                 </div>
-                <div class="relative h-52 w-full flex items-center justify-center my-2">
+
+                <div class="h-48 sm:h-52 relative my-3">
                     <canvas id="todayDistributionChart"></canvas>
                 </div>
                 <!-- Mini Legend Summary -->
                 <div class="grid grid-cols-2 gap-2 text-xs font-semibold pt-3 border-t border-slate-100">
-                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span><span class="text-slate-600">Hadir:</span> <strong class="text-slate-900">{{ $hadirHariIni }}</strong></div>
-                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span><span class="text-slate-600">Izin:</span> <strong class="text-slate-900">{{ $izinHariIni }}</strong></div>
-                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span class="text-slate-600">Sakit:</span> <strong class="text-slate-900">{{ $sakitHariIni }}</strong></div>
-                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span class="text-slate-600">Alpa:</span> <strong class="text-slate-900">{{ $alpaHariIni }}</strong></div>
+                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span class="text-slate-600">Hadir:</span> <strong class="text-slate-900">{{ $hadirHariIni }}</strong></div>
+                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-600"></span><span class="text-slate-600">Izin:</span> <strong class="text-slate-900">{{ $izinHariIni }}</strong></div>
+                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span><span class="text-slate-600">Sakit:</span> <strong class="text-slate-900">{{ $sakitHariIni }}</strong></div>
+                    <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-600"></span><span class="text-slate-600">Alpa:</span> <strong class="text-slate-900">{{ $alpaHariIni }}</strong></div>
                 </div>
             </div>
 
@@ -281,8 +281,8 @@
                 hadirGradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
 
                 const izinSakitGradient = weeklyCtx.createLinearGradient(0, 0, 0, 250);
-                izinSakitGradient.addColorStop(0, 'rgba(13, 148, 136, 0.25)');
-                izinSakitGradient.addColorStop(1, 'rgba(13, 148, 136, 0.0)');
+                izinSakitGradient.addColorStop(0, 'rgba(71, 85, 105, 0.25)');
+                izinSakitGradient.addColorStop(1, 'rgba(71, 85, 105, 0.0)');
 
                 new Chart(weeklyCtx, {
                     type: 'line',
@@ -292,37 +292,37 @@
                             {
                                 label: 'Hadir',
                                 data: {!! json_encode($weeklyHadir) !!},
-                                borderColor: '#ef4444',
+                                borderColor: '#10b981',
                                 backgroundColor: hadirGradient,
                                 borderWidth: 3,
                                 fill: true,
                                 tension: 0.35,
-                                pointBackgroundColor: '#ef4444',
+                                pointBackgroundColor: '#10b981',
                                 pointRadius: 4,
                                 pointHoverRadius: 6
                             },
                             {
                                 label: 'Izin / Sakit',
                                 data: {!! json_encode($weeklyIzinSakit) !!},
-                                borderColor: '#0d9488',
+                                borderColor: '#475569',
                                 backgroundColor: izinSakitGradient,
                                 borderWidth: 2.5,
                                 fill: true,
                                 tension: 0.35,
-                                pointBackgroundColor: '#0d9488',
+                                pointBackgroundColor: '#475569',
                                 pointRadius: 4,
                                 pointHoverRadius: 6
                             },
                             {
                                 label: 'Alpa',
                                 data: {!! json_encode($weeklyAlpa) !!},
-                                borderColor: '#f43f5e',
-                                backgroundColor: 'rgba(244, 63, 94, 0.05)',
+                                borderColor: '#ef4444',
+                                backgroundColor: 'rgba(239, 68, 68, 0.05)',
                                 borderWidth: 2,
                                 borderDash: [4, 4],
                                 fill: false,
                                 tension: 0.35,
-                                pointBackgroundColor: '#f43f5e',
+                                pointBackgroundColor: '#ef4444',
                                 pointRadius: 3,
                                 pointHoverRadius: 5
                             }
@@ -379,7 +379,7 @@
                                 {{ $alpaHariIni }},
                                 {{ $belumPresensiHariIni }}
                             ],
-                            backgroundColor: ['#ef4444', '#14b8a6', '#f59e0b', '#f43f5e', '#e2e8f0'],
+                            backgroundColor: ['#10b981', '#475569', '#64748b', '#ef4444', '#e2e8f0'],
                             borderWidth: 3,
                             borderColor: '#ffffff',
                             hoverOffset: 4

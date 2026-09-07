@@ -80,10 +80,10 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-red-600">Total Hadir (Siswa)</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Total Hadir (Siswa)</div>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalHadir }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
-                <div class="w-10 h-10 rounded-2xl bg-red-600/10 text-red-600 flex items-center justify-center font-bold text-lg">✓</div>
+                <div class="w-10 h-10 rounded-2xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center font-bold text-lg">✓</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-amber-200 bg-amber-50/20 flex items-center justify-between">
@@ -96,26 +96,26 @@
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-red-700">Total Izin (Siswa)</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-slate-700">Total Izin (Siswa)</div>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalIzin }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
-                <div class="w-10 h-10 rounded-2xl bg-red-600/10 text-red-700 flex items-center justify-center font-bold text-lg">ⓘ</div>
+                <div class="w-10 h-10 rounded-2xl bg-slate-700/10 text-slate-700 flex items-center justify-center font-bold text-lg">ⓘ</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-red-700">Total Sakit (Siswa)</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-slate-700">Total Sakit (Siswa)</div>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalSakit }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
-                <div class="w-10 h-10 rounded-2xl bg-red-600/10 text-red-700 flex items-center justify-center font-bold text-lg">🏥</div>
+                <div class="w-10 h-10 rounded-2xl bg-slate-700/10 text-slate-700 flex items-center justify-center font-bold text-lg">🏥</div>
             </div>
 
             <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] font-black uppercase tracking-wider text-rose-600">Total Alpa (Siswa)</div>
+                    <div class="text-[10px] font-black uppercase tracking-wider text-red-600">Total Alpa (Siswa)</div>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ $totalAlpa }} <span class="text-xs font-semibold text-slate-400">/ {{ $students->count() }} siswa</span></div>
                 </div>
-                <div class="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-600 flex items-center justify-center font-bold text-lg">✕</div>
+                <div class="w-10 h-10 rounded-2xl bg-red-600/10 text-red-600 flex items-center justify-center font-bold text-lg">✕</div>
             </div>
         </div>
 
@@ -167,10 +167,10 @@
 
                                         $badgeBg = match(true) {
                                             $isLate => 'bg-amber-400 text-amber-950 font-black border border-amber-500 shadow-2xs',
-                                            $st === 'hadir' => 'bg-red-600 text-white font-bold',
-                                            $st === 'izin' => 'bg-slate-100 text-slate-700 font-semibold border border-slate-200',
-                                            $st === 'sakit' => 'bg-slate-100 text-slate-700 font-semibold border border-slate-200',
-                                            $st === 'alpa' => 'bg-rose-500 text-white font-bold',
+                                            $st === 'hadir' => 'bg-emerald-600 text-white font-bold',
+                                            $st === 'izin' => 'bg-slate-700 text-white font-bold',
+                                            $st === 'sakit' => 'bg-slate-600 text-white font-bold',
+                                            $st === 'alpa' => 'bg-red-600 text-white font-bold',
                                             $st === 'libur' => 'bg-slate-200 text-slate-600 font-medium',
                                             default => 'text-slate-300',
                                         };
@@ -181,10 +181,10 @@
                                         </span>
                                     </td>
                                 @endfor
-                                <td class="px-3 py-3 text-center font-extrabold text-red-700 bg-red-50/50">{{ $hCount }}</td>
-                                <td class="px-3 py-3 text-center font-extrabold text-red-800 bg-teal-50/50">{{ $iCount }}</td>
-                                <td class="px-3 py-3 text-center font-extrabold text-red-800 bg-red-100/30">{{ $sCount }}</td>
-                                <td class="px-3 py-3 text-center font-extrabold text-rose-700 bg-rose-50/50">{{ $aCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-emerald-700 bg-emerald-50/50">{{ $hCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-slate-800 bg-slate-100/50">{{ $iCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-slate-800 bg-slate-100/50">{{ $sCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-red-700 bg-red-50/50">{{ $aCount }}</td>
                             </tr>
                         @empty
                             <tr>
