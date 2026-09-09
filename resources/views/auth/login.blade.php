@@ -538,6 +538,15 @@
             color: #94a3b8;
         }
 
+        .nto-input:-webkit-autofill,
+        .nto-input:-webkit-autofill:hover, 
+        .nto-input:-webkit-autofill:focus, 
+        .nto-input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
+            -webkit-text-fill-color: #0f172a !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
         .nto-input:focus {
             border-color: #ef4444;
             background: white;
@@ -933,7 +942,7 @@
                                             d="M3 8l7.89 5.26 a2 2 0 002.22 0L21 8 M5 19h14a2 2 0 002-2V7 a2 2 0 00-2-2H5 a2 2 0 00-2 2v10 a2 2 0 002 2z" />
                                     </svg>
                                     <input id="email" type="email" name="email" value="{{ old('email') }}" required
-                                        autofocus autocomplete="username" placeholder="admin@nto-kupang.sch.id"
+                                        autofocus autocomplete="username" placeholder="Masukkan alamat email"
                                         class="nto-input">
                                 </div>
                                 <x-input-error :messages="$errors->get('email')" class="mt-1.5 text-xs text-rose-600 font-semibold" />

@@ -31,7 +31,7 @@
                     <!-- Email / Username Login -->
                     <div>
                         <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Alamat Email (Username Login)</label>
-                        <input id="email" type="email" name="email" value="{{ old('email') }}" required placeholder="nama.guru@nto-kupang.sch.id" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" required placeholder="Masukkan alamat email guru" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
                         <x-input-error :messages="$errors->get('email')" class="mt-1 text-xs" />
                     </div>
 
