@@ -633,4 +633,3 @@ CREATE TABLE `homework_submissions` (
 
 SET FOREIGN_KEY_CHECKS = 1;
 -- Dumping data for table users
-undefined

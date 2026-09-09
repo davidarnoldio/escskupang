@@ -13,12 +13,12 @@
     // Default list of options ordered logically
     $defaultOptions = [
         'TK', 'TK A', 'TK B',
-        'Kelas 1', 'Kelas 1A', 'Kelas 1B',
-        'Kelas 2', 'Kelas 2A', 'Kelas 2B',
-        'Kelas 3', 'Kelas 3A', 'Kelas 3B',
-        'Kelas 4', 'Kelas 4A', 'Kelas 4B',
-        'Kelas 5', 'Kelas 5A', 'Kelas 5B', 'Kelas 5C', 'Kelas 5D',
-        'Kelas 6', 'Kelas 6A', 'Kelas 6B'
+        'Kelas 1',
+        'Kelas 2', 
+        'Kelas 3', 
+        'Kelas 4', 
+        'Kelas 5',
+        'Kelas 6', 
     ];
     
     // Merge provided officialClasses / DB classes with default options
