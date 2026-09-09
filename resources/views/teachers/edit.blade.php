@@ -59,28 +59,7 @@
                         @php
                             $currentClass = $teacher->getAssignedClass();
                         @endphp
-                        <input type="text" id="assigned_class" name="assigned_class" value="{{ old('assigned_class', $currentClass) }}" list="teacherClassOptions" placeholder="Pilih atau ketik kelas (misal: TK, Kelas 1, 6A, 5C, 5D)" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 font-semibold">
-                        <datalist id="teacherClassOptions">
-                            @foreach($officialClasses as $classOption)
-                                <option value="{{ $classOption }}"></option>
-                            @endforeach
-                            <option value="TK A"></option>
-                            <option value="TK B"></option>
-                            <option value="Kelas 1A"></option>
-                            <option value="Kelas 1B"></option>
-                            <option value="Kelas 2A"></option>
-                            <option value="Kelas 2B"></option>
-                            <option value="Kelas 3A"></option>
-                            <option value="Kelas 3B"></option>
-                            <option value="Kelas 4A"></option>
-                            <option value="Kelas 4B"></option>
-                            <option value="Kelas 5A"></option>
-                            <option value="Kelas 5B"></option>
-                            <option value="Kelas 5C"></option>
-                            <option value="Kelas 5D"></option>
-                            <option value="Kelas 6A"></option>
-                            <option value="Kelas 6B"></option>
-                        </datalist>
+                        <x-class-combobox name="assigned_class" id="assigned_class" :value="$currentClass" :officialClasses="$officialClasses" />
                         <p class="text-[11px] text-slate-500 font-medium mt-1">
                             🔄 <strong>Efek Pindah Kelas:</strong> Begitu kelas diubah dan disimpan, akun guru ini akan **secara otomatis dan langsung** menampilkan murid-murid di kelas baru tersebut saat guru login. Bisa pilih dari opsi atau ketik manual (contoh: 6A, 5C, 5D).
                         </p>
