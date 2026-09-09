@@ -44,7 +44,7 @@ class PaymentController extends Controller
         }
 
         $payments = $query->paginate(15)->withQueryString();
-        $classes = Student::OFFICIAL_CLASSES;
+        $classes = Student::getAllClasses();
         $students = Student::orderBy('nama')->get();
 
         $stats = [
@@ -70,7 +70,7 @@ class PaymentController extends Controller
         $validated = $request->validate([
             'target_type' => 'required|in:student,class',
             'student_id' => 'nullable|required_if:target_type,student|exists:students,id',
-            'kelas' => 'nullable|required_if:target_type,class|in:' . implode(',', Student::OFFICIAL_CLASSES),
+            'kelas' => 'nullable|required_if:target_type,class|string|max:100',
             'judul' => 'required|string|max:255',
             'jumlah' => 'required|numeric|min:0',
             'jatuh_tempo' => 'required|date',

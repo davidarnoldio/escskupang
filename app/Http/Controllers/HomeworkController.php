@@ -36,7 +36,7 @@ class HomeworkController extends Controller
         }
 
         $homeworks = $query->paginate(10)->withQueryString();
-        $classes = Student::OFFICIAL_CLASSES;
+        $classes = Student::getAllClasses();
         $studentsInClass = Student::when($assignedClass, fn($q) => $q->where('kelas', $assignedClass))->orderBy('nama')->get();
 
         return view('homeworks.teacher-index', compact('homeworks', 'assignedClass', 'classes', 'studentsInClass'));
@@ -53,12 +53,12 @@ class HomeworkController extends Controller
         }
 
         $assignedClass = $user->getAssignedClass();
-        $defaultClass = $assignedClass ?? Student::OFFICIAL_CLASSES[0];
+        $defaultClass = $assignedClass ?? (Student::getAllClasses()[0] ?? 'TK');
 
         $validated = $request->validate([
             'target_type' => 'required|in:all,student',
             'student_id' => 'nullable|required_if:target_type,student|exists:students,id',
-            'kelas' => 'required|in:' . implode(',', Student::OFFICIAL_CLASSES),
+            'kelas' => 'required|string|max:100',
             'mata_pelajaran' => 'required|string|max:100',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',

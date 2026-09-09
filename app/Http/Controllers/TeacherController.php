@@ -37,7 +37,7 @@ class TeacherController extends Controller
 
         // Map teachers to their assigned class
         $teachersByClass = [];
-        foreach (Student::OFFICIAL_CLASSES as $class) {
+        foreach (Student::getAllClasses() as $class) {
             $teachersByClass[$class] = [];
         }
         $teachersByClass['Unassigned'] = [];
@@ -61,7 +61,7 @@ class TeacherController extends Controller
             abort(403, 'Akses khusus Administrator.');
         }
 
-        $officialClasses = Student::OFFICIAL_CLASSES;
+        $officialClasses = Student::getAllClasses();
         return view('teachers.create', compact('officialClasses'));
     }
 
@@ -80,12 +80,12 @@ class TeacherController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6'],
-            'assigned_class' => ['nullable', 'string', Rule::in(Student::OFFICIAL_CLASSES)],
+            'assigned_class' => ['nullable', 'string', 'max:100'],
         ]);
 
         $assignedClass = $validated['assigned_class'] ?? null;
         if (!$assignedClass) {
-            foreach (Student::OFFICIAL_CLASSES as $class) {
+            foreach (Student::getAllClasses() as $class) {
                 if (str_contains(strtolower($validated['name']), strtolower($class))) {
                     $assignedClass = $class;
                     break;
@@ -116,7 +116,7 @@ class TeacherController extends Controller
             abort(403, 'Akses khusus Administrator.');
         }
 
-        $officialClasses = Student::OFFICIAL_CLASSES;
+        $officialClasses = Student::getAllClasses();
         return view('teachers.edit', compact('teacher', 'officialClasses'));
     }
 
@@ -135,12 +135,12 @@ class TeacherController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($teacher->id)],
             'password' => ['nullable', 'string', 'min:6'],
-            'assigned_class' => ['nullable', 'string', Rule::in(Student::OFFICIAL_CLASSES)],
+            'assigned_class' => ['nullable', 'string', 'max:100'],
         ]);
 
         $assignedClass = $validated['assigned_class'] ?? null;
         if (!$assignedClass) {
-            foreach (Student::OFFICIAL_CLASSES as $class) {
+            foreach (Student::getAllClasses() as $class) {
                 if (str_contains(strtolower($validated['name']), strtolower($class))) {
                     $assignedClass = $class;
                     break;

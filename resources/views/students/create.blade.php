@@ -33,13 +33,30 @@
                     <!-- Kelas & Jenis Kelamin Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label for="kelas" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tingkat Kelas <span class="text-rose-500">*</span></label>
-                            <select id="kelas" name="kelas" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition cursor-pointer">
-                                <option value="" disabled {{ old('kelas') ? '' : 'selected' }}>-- Pilih Tingkat Kelas --</option>
-                                @foreach(\App\Models\Student::OFFICIAL_CLASSES as $cls)
-                                    <option value="{{ $cls }}" {{ old('kelas') == $cls ? 'selected' : '' }}>{{ $cls }}</option>
+                            <label for="kelas" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tingkat / Nama Kelas <span class="text-rose-500">*</span></label>
+                            <input type="text" id="kelas" name="kelas" value="{{ old('kelas') }}" required list="classListOptions" placeholder="Pilih atau ketik kelas (misal: TK, Kelas 1, 6A, 5C, 5D)" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition">
+                            <datalist id="classListOptions">
+                                @foreach(\App\Models\Student::getAllClasses() as $cls)
+                                    <option value="{{ $cls }}"></option>
                                 @endforeach
-                            </select>
+                                <option value="TK A"></option>
+                                <option value="TK B"></option>
+                                <option value="Kelas 1A"></option>
+                                <option value="Kelas 1B"></option>
+                                <option value="Kelas 2A"></option>
+                                <option value="Kelas 2B"></option>
+                                <option value="Kelas 3A"></option>
+                                <option value="Kelas 3B"></option>
+                                <option value="Kelas 4A"></option>
+                                <option value="Kelas 4B"></option>
+                                <option value="Kelas 5A"></option>
+                                <option value="Kelas 5B"></option>
+                                <option value="Kelas 5C"></option>
+                                <option value="Kelas 5D"></option>
+                                <option value="Kelas 6A"></option>
+                                <option value="Kelas 6B"></option>
+                            </datalist>
+                            <p class="text-[11px] text-slate-400 mt-1 font-medium">Bisa pilih dari opsi atau ketik nama sub-kelas secara manual (misal: 6A, 5C, 5D).</p>
                             <x-input-error :messages="$errors->get('kelas')" class="mt-1" />
                         </div>
 

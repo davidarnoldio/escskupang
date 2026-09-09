@@ -55,16 +55,30 @@
                     <!-- Tingkat Kelas Binaan (Assigned Class) -->
                     <div>
                         <label for="assigned_class" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tingkat Kelas Binaan (Wali Kelas)</label>
-                        <select id="assigned_class" name="assigned_class" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 font-medium">
-                            <option value="">-- Pilih Tingkat Kelas (Opsional) --</option>
+                        <input type="text" id="assigned_class" name="assigned_class" value="{{ old('assigned_class') }}" list="teacherClassOptions" placeholder="Pilih atau ketik kelas (misal: TK, Kelas 1, 6A, 5C, 5D)" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 font-semibold">
+                        <datalist id="teacherClassOptions">
                             @foreach($officialClasses as $classOption)
-                                <option value="{{ $classOption }}" {{ old('assigned_class') == $classOption ? 'selected' : '' }}>
-                                    Kelas {{ $classOption }}
-                                </option>
+                                <option value="{{ $classOption }}"></option>
                             @endforeach
-                        </select>
+                            <option value="TK A"></option>
+                            <option value="TK B"></option>
+                            <option value="Kelas 1A"></option>
+                            <option value="Kelas 1B"></option>
+                            <option value="Kelas 2A"></option>
+                            <option value="Kelas 2B"></option>
+                            <option value="Kelas 3A"></option>
+                            <option value="Kelas 3B"></option>
+                            <option value="Kelas 4A"></option>
+                            <option value="Kelas 4B"></option>
+                            <option value="Kelas 5A"></option>
+                            <option value="Kelas 5B"></option>
+                            <option value="Kelas 5C"></option>
+                            <option value="Kelas 5D"></option>
+                            <option value="Kelas 6A"></option>
+                            <option value="Kelas 6B"></option>
+                        </datalist>
                         <p class="text-[11px] text-slate-500 font-medium mt-1">
-                            💡 Guru secara otomatis akan melihat dan mengelola data siswa pada tingkat kelas yang dipilih ini saat login.
+                            💡 Guru secara otomatis akan melihat dan mengelola data siswa pada tingkat kelas yang dipilih ini saat login. Bisa pilih dari opsi atau ketik manual (contoh: 6A, 5C, 5D).
                         </p>
                         <x-input-error :messages="$errors->get('assigned_class')" class="mt-1 text-xs" />
                     </div>

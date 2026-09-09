@@ -11,16 +11,25 @@ class Student extends Model
     use HasFactory;
 
     public const OFFICIAL_CLASSES = [
-        'Nursery',
-        'Pre-K',
-        'Kindergarten',
-        'Primary Preparation',
-        'Primary A',
-        'Primary B',
-        'Primary C',
-        'Junior High',
-        'Senior High',
+        'TK',
+        'Kelas 1',
+        'Kelas 2',
+        'Kelas 3',
+        'Kelas 4',
+        'Kelas 5',
+        'Kelas 6',
     ];
+
+    /**
+     * Get all active class options combining official levels and distinct database values.
+     */
+    public static function getAllClasses(): array
+    {
+        $dbClasses = static::whereNotNull('kelas')->distinct()->pluck('kelas')->toArray();
+        $merged = array_unique(array_merge(static::OFFICIAL_CLASSES, $dbClasses));
+        natcasesort($merged);
+        return array_values($merged);
+    }
 
     protected $fillable = [
         'nis',

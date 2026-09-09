@@ -22,7 +22,7 @@ class AttendanceController extends Controller
         $tanggal = $request->input('tanggal', now()->format('Y-m-d'));
         $kelas = $assignedClass ?? $request->input('kelas');
 
-        $classList = Student::OFFICIAL_CLASSES;
+        $classList = Student::getAllClasses();
 
         $studentsQuery = Student::query()->orderBy('nama', 'asc');
 
@@ -86,7 +86,7 @@ class AttendanceController extends Controller
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $kelas = $assignedClass ?? $request->input('kelas');
 
-        $classList = Student::OFFICIAL_CLASSES;
+        $classList = Student::getAllClasses();
 
         $studentsQuery = Student::with(['attendances' => function ($q) use ($bulan) {
             $q->where('tanggal', 'like', "{$bulan}%");
