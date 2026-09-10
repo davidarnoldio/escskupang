@@ -22,4 +22,25 @@ class Attendance extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    /**
+     * Get clean resolved URL for permission letter.
+     */
+    public function getSuratIzinUrlAttribute(): ?string
+    {
+        if (!$this->surat_izin) {
+            return null;
+        }
+
+        if (str_starts_with($this->surat_izin, 'http://') || str_starts_with($this->surat_izin, 'https://')) {
+            return $this->surat_izin;
+        }
+
+        if (str_starts_with($this->surat_izin, 'uploads/')) {
+            return asset($this->surat_izin);
+        }
+
+        $clean = ltrim(str_replace(['public/', 'storage/'], '', $this->surat_izin), '/');
+        return url('storage/' . $clean);
+    }
 }

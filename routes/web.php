@@ -79,4 +79,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
 
+// Direct Storage Serving fallback (ensures static files, proof photos, and letters always load reliably)
+Route::get('/storage/{path}', function ($path) {
+    $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $path), '/');
+    $fullPath = storage_path('app/public/' . $cleanPath);
+
+    if (file_exists($fullPath) && !is_dir($fullPath)) {
+        return response()->file($fullPath);
+    }
+
+    if (file_exists(public_path('uploads/' . $cleanPath)) && !is_dir(public_path('uploads/' . $cleanPath))) {
+        return response()->file(public_path('uploads/' . $cleanPath));
+    }
+
+    abort(404);
+})->where('path', '.*')->name('storage.fallback');
+
 require __DIR__.'/auth.php';

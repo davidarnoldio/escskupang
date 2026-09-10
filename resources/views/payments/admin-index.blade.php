@@ -225,7 +225,7 @@
                                         </td>
                                         <td class="py-3 px-4 text-center space-x-1">
                                             @if($p->bukti_pembayaran)
-                                                <button @click="activeProofModal = '{{ asset('storage/' . $p->bukti_pembayaran) }}'" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-[10px] font-bold border border-red-200 transition">
+                                                <button @click="activeProofModal = '{{ $p->bukti_url }}'" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-[10px] font-bold border border-red-200 transition">
                                                     🔍 Lihat Bukti
                                                 </button>
                                             @endif
@@ -253,8 +253,14 @@
                                             <p class="text-xs text-slate-500">Siswa: <strong>{{ $p->student->nama }}</strong> - {{ $p->judul }} (Rp {{ number_format($p->jumlah, 0, ',', '.') }})</p>
                                             
                                             @if($p->bukti_pembayaran)
-                                                <div class="rounded-xl overflow-hidden border border-slate-200 max-h-48 flex justify-center bg-slate-100 p-2">
-                                                    <img src="{{ asset('storage/' . $p->bukti_pembayaran) }}" alt="Bukti Pembayaran" class="max-h-44 object-contain">
+                                                <div class="rounded-xl overflow-hidden border border-slate-200 max-h-48 flex items-center justify-center bg-slate-100 p-2">
+                                                    @if($p->isPdfBukti())
+                                                        <a href="{{ $p->bukti_url }}" target="_blank" class="text-xs font-bold text-red-600 hover:underline flex items-center gap-1.5 p-3 bg-white rounded-lg border border-slate-200 shadow-xs">
+                                                            📄 Buka / Unduh Dokumen Bukti (PDF)
+                                                        </a>
+                                                    @else
+                                                        <img src="{{ $p->bukti_url }}" alt="Bukti Pembayaran" class="max-h-44 object-contain rounded-lg">
+                                                    @endif
                                                 </div>
                                             @endif
 
@@ -292,8 +298,19 @@
                         <div class="bg-white rounded-2xl max-w-xl w-full p-4 shadow-2xl relative">
                             <button @click="activeProofModal = null" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 text-sm font-bold">✕ Close</button>
                             <h4 class="text-sm font-bold text-slate-900 mb-3">Bukti Transfer Pembayaran</h4>
-                            <div class="rounded-xl overflow-hidden border border-slate-200 max-h-[70vh] flex items-center justify-center bg-slate-950 p-2">
-                                <img :src="activeProofModal" class="max-h-[65vh] object-contain">
+                            <div class="rounded-xl overflow-hidden border border-slate-200 min-h-[160px] max-h-[70vh] flex items-center justify-center bg-slate-950 p-2">
+                                <template x-if="activeProofModal && activeProofModal.toLowerCase().includes('.pdf')">
+                                    <div class="text-center py-8 text-white space-y-3">
+                                        <div class="text-4xl">📄</div>
+                                        <p class="text-sm font-medium text-slate-300">Dokumen bukti transfer berupa file PDF.</p>
+                                        <a :href="activeProofModal" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition">
+                                            Buka / Download PDF
+                                        </a>
+                                    </div>
+                                </template>
+                                <template x-if="activeProofModal && !activeProofModal.toLowerCase().includes('.pdf')">
+                                    <img :src="activeProofModal" class="max-h-[65vh] object-contain rounded-lg" alt="Bukti Transfer">
+                                </template>
                             </div>
                         </div>
                     </div>

@@ -104,7 +104,7 @@
                                     </p>
                                     @if($todayAttendance->surat_izin)
                                         <div class="mt-2 text-xs">
-                                            <a href="{{ asset($todayAttendance->surat_izin) }}" target="_blank" class="text-red-600 font-bold hover:underline inline-flex items-center gap-1">
+                                            <a href="{{ $todayAttendance->surat_izin_url }}" target="_blank" class="text-red-600 font-bold hover:underline inline-flex items-center gap-1">
                                                 📷 Lihat Surat Izin / Dokter
                                             </a>
                                         </div>
@@ -321,7 +321,7 @@
                                         </td>
                                         <td class="px-6 py-4 text-center">
                                             @if($att->surat_izin)
-                                                <a href="{{ asset($att->surat_izin) }}" target="_blank" class="px-3 py-1 bg-red-50 text-red-700 hover:bg-red-100 font-bold text-xs rounded-lg border border-red-200 inline-flex items-center gap-1 transition">
+                                                <a href="{{ $att->surat_izin_url }}" target="_blank" class="px-3 py-1 bg-red-50 text-red-700 hover:bg-red-100 font-bold text-xs rounded-lg border border-red-200 inline-flex items-center gap-1 transition">
                                                     📷 Lihat Surat
                                                 </a>
                                             @else

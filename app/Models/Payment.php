@@ -58,4 +58,33 @@ class Payment extends Model
             default => 'Belum Lunas',
         };
     }
+
+    /**
+     * Get clean resolved URL for payment proof.
+     */
+    public function getBuktiUrlAttribute(): ?string
+    {
+        if (!$this->bukti_pembayaran) {
+            return null;
+        }
+
+        if (str_starts_with($this->bukti_pembayaran, 'http://') || str_starts_with($this->bukti_pembayaran, 'https://')) {
+            return $this->bukti_pembayaran;
+        }
+
+        $clean = ltrim(str_replace(['public/', 'storage/'], '', $this->bukti_pembayaran), '/');
+        return url('storage/' . $clean);
+    }
+
+    /**
+     * Check if payment proof is a PDF document.
+     */
+    public function isPdfBukti(): bool
+    {
+        if (!$this->bukti_pembayaran) {
+            return false;
+        }
+
+        return str_ends_with(strtolower($this->bukti_pembayaran), '.pdf');
+    }
 }

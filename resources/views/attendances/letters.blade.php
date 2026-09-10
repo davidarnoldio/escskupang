@@ -70,7 +70,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         @if($att->surat_izin)
-                                            <button type="button" @click="showModal = true; modalImg = '{{ asset($att->surat_izin) }}'; modalTitle = 'Surat {{ ucfirst($att->status) }} - {{ $att->student->nama }}';" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs rounded-xl border border-red-200 inline-flex items-center gap-1.5 transition cursor-pointer">
+                                            <button type="button" @click="showModal = true; modalImg = '{{ $att->surat_izin_url }}'; modalTitle = 'Surat {{ ucfirst($att->status) }} - {{ $att->student->nama }}';" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 font-bold text-xs rounded-xl border border-red-200 inline-flex items-center gap-1.5 transition cursor-pointer">
                                                 📷 Pratinjau Surat
                                             </button>
                                         @else

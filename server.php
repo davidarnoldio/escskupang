@@ -10,8 +10,14 @@ $uri = urldecode(
 
 // Determine target static file path
 if (str_starts_with($uri, '/storage/')) {
-    $relativePath = substr($uri, strlen('/storage/'));
+    $relativePath = ltrim(substr($uri, strlen('/storage/')), '/');
+    if (str_starts_with($relativePath, 'storage/')) {
+        $relativePath = substr($relativePath, strlen('storage/'));
+    }
     $publicFile = __DIR__ . '/storage/app/public/' . $relativePath;
+    if (!file_exists($publicFile) && file_exists(__DIR__ . '/public/uploads/' . $relativePath)) {
+        $publicFile = __DIR__ . '/public/uploads/' . $relativePath;
+    }
 } else {
     $publicFile = __DIR__ . '/public' . $uri;
 }
@@ -39,6 +45,8 @@ if ($uri !== '/' && file_exists($publicFile) && !is_dir($publicFile)) {
     if (isset($mimeTypes[$extension])) {
         header('Content-Type: ' . $mimeTypes[$extension]);
     }
+    header('Access-Control-Allow-Origin: *');
+    header('Cache-Control: public, max-age=86400');
     readfile($publicFile);
     exit;
 }

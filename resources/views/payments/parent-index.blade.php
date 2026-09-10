@@ -76,7 +76,7 @@
 
                     <div class="shrink-0 flex items-center gap-2 w-full md:w-auto">
                         @if($p->bukti_pembayaran)
-                            <button @click="proofModal = '{{ asset('storage/' . $p->bukti_pembayaran) }}'" class="flex-1 md:flex-initial px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl text-xs font-bold border border-red-200 transition">
+                            <button @click="proofModal = '{{ $p->bukti_url }}'" class="flex-1 md:flex-initial px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl text-xs font-bold border border-red-200 transition">
                                 🔍 Lihat Bukti Upload
                             </button>
                         @endif
@@ -97,7 +97,7 @@
                             <form action="{{ route('parent.upload-proof', $p) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                                 @csrf
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pilih Foto / Gambar Bukti Transfer (JPG/PNG/PDF max 2MB)</label>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pilih Foto / Gambar Bukti Transfer (JPG/PNG/PDF max 3MB)</label>
                                     <input type="file" name="bukti_pembayaran" required accept="image/jpeg,image/png,image/jpg,application/pdf" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-red-50 file:text-red-700 hover:file:bg-red-100">
                                 </div>
 
@@ -124,8 +124,19 @@
                 <div class="bg-white rounded-2xl max-w-xl w-full p-4 shadow-2xl relative">
                     <button @click="proofModal = null" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 text-sm font-bold">✕ Close</button>
                     <h4 class="text-sm font-bold text-slate-900 mb-3">Bukti Pembayaran yang Diunggah</h4>
-                    <div class="rounded-xl overflow-hidden border border-slate-200 max-h-[70vh] flex items-center justify-center bg-slate-950 p-2">
-                        <img :src="proofModal" class="max-h-[65vh] object-contain">
+                    <div class="rounded-xl overflow-hidden border border-slate-200 min-h-[160px] max-h-[70vh] flex items-center justify-center bg-slate-950 p-2">
+                        <template x-if="proofModal && proofModal.toLowerCase().includes('.pdf')">
+                            <div class="text-center py-8 text-white space-y-3">
+                                <div class="text-4xl">📄</div>
+                                <p class="text-sm font-medium text-slate-300">Dokumen bukti transfer berupa file PDF.</p>
+                                <a :href="proofModal" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition">
+                                    Buka / Download PDF
+                                </a>
+                            </div>
+                        </template>
+                        <template x-if="proofModal && !proofModal.toLowerCase().includes('.pdf')">
+                            <img :src="proofModal" class="max-h-[65vh] object-contain rounded-lg" alt="Bukti Pembayaran">
+                        </template>
                     </div>
                 </div>
             </div>
