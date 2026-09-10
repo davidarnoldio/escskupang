@@ -17,7 +17,11 @@ class AttendanceController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        $assignedClass = $user ? $user->getAssignedClass() : null;
+        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
+            abort(403, 'Akses presensi khusus Guru dan Administrator.');
+        }
+
+        $assignedClass = $user->getAssignedClass();
 
         $tanggal = $request->input('tanggal', now()->format('Y-m-d'));
         $kelas = $assignedClass ?? $request->input('kelas');
@@ -48,6 +52,12 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
+            abort(403, 'Akses simpan presensi khusus Guru dan Administrator.');
+        }
+
         $request->validate([
             'tanggal' => ['required', 'date'],
             'attendances' => ['required', 'array'],
@@ -81,7 +91,11 @@ class AttendanceController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        $assignedClass = $user ? $user->getAssignedClass() : null;
+        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
+            abort(403, 'Akses rekap presensi khusus Guru dan Administrator.');
+        }
+
+        $assignedClass = $user->getAssignedClass();
 
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $kelas = $assignedClass ?? $request->input('kelas');
@@ -229,7 +243,11 @@ class AttendanceController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        $assignedClass = $user ? $user->getAssignedClass() : null;
+        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
+            abort(403, 'Akses cetak rekap khusus Guru dan Administrator.');
+        }
+
+        $assignedClass = $user->getAssignedClass();
 
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $kelas = $assignedClass ?? $request->input('kelas');
@@ -324,7 +342,11 @@ class AttendanceController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        $assignedClass = $user ? $user->getAssignedClass() : null;
+        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
+            abort(403, 'Akses surat izin khusus Guru dan Administrator.');
+        }
+
+        $assignedClass = $user->getAssignedClass();
 
         $query = Attendance::with('student')
             ->whereNotNull('surat_izin')

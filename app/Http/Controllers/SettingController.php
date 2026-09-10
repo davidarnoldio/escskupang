@@ -12,6 +12,12 @@ class SettingController extends Controller
      */
     public function index()
     {
+        /** @var \App\Models\User|null $user */
+        $user = auth()->user();
+        if (!$user || !$user->isAdmin()) {
+            abort(403, 'Akses khusus Administrator Utama.');
+        }
+
         $jamMasuk = Setting::get('jam_masuk', '07:00');
         $jamTerlambat = Setting::get('jam_terlambat', '07:30');
         $jamPulang = Setting::get('jam_pulang', '14:00');
@@ -35,6 +41,12 @@ class SettingController extends Controller
      */
     public function update(Request $request)
     {
+        /** @var \App\Models\User|null $user */
+        $user = auth()->user();
+        if (!$user || !$user->isAdmin()) {
+            abort(403, 'Akses khusus Administrator Utama.');
+        }
+
         $request->validate([
             'jam_masuk' => ['required', 'string'],
             'jam_terlambat' => ['required', 'string'],

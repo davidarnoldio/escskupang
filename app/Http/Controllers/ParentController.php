@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ParentController extends Controller
 {
@@ -102,12 +103,14 @@ class ParentController extends Controller
      */
     public function uploadLetter(Request $request)
     {
+        /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        $student = $user->student ?? Student::first();
 
-        if (!$student) {
-            return back()->with('error', 'Siswa tidak ditemukan.');
+        if (!$user || !$user->isParent() || !$user->student) {
+            abort(403, 'Akses khusus akun Orang Tua yang terhubung dengan data siswa.');
         }
+
+        $student = $user->student;
 
         $request->validate([
             'tanggal' => ['required', 'date'],
@@ -118,13 +121,15 @@ class ParentController extends Controller
 
         $letterPath = null;
         if ($request->hasFile('surat_izin')) {
-            $file = $request->file('surat_izin');
-            $filename = 'letter_' . $student->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-            if (!file_exists(public_path('uploads/letters'))) {
-                mkdir(public_path('uploads/letters'), 0777, true);
+            $existing = Attendance::where('student_id', $student->id)
+                ->where('tanggal', $request->input('tanggal'))
+                ->first();
+
+            if ($existing && $existing->surat_izin && Storage::disk('public')->exists($existing->surat_izin)) {
+                Storage::disk('public')->delete($existing->surat_izin);
             }
-            $file->move(public_path('uploads/letters'), $filename);
-            $letterPath = 'uploads/letters/' . $filename;
+
+            $letterPath = $request->file('surat_izin')->store('letters', 'public');
         }
 
         Attendance::updateOrCreate(
@@ -147,8 +152,12 @@ class ParentController extends Controller
      */
     public function updateAccount(Request $request)
     {
-        /** @var \App\Models\User $user */
+        /** @var \App\Models\User|null $user */
         $user = Auth::user();
+
+        if (!$user || !$user->isParent()) {
+            abort(403, 'Akses khusus akun Orang Tua.');
+        }
 
         $request->validate([
             'email' => [

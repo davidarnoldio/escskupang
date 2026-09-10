@@ -189,13 +189,14 @@ class PaymentController extends Controller
      */
     public function uploadProof(Request $request, Payment $payment)
     {
+        /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        if (!$user->isParent() || $user->student_id != $payment->student_id) {
+        if (!$user || !$user->isParent() || (int) $user->student_id !== (int) $payment->student_id) {
             abort(403, 'Anda tidak memiliki akses ke tagihan ini.');
         }
 
         $request->validate([
-            'bukti_pembayaran' => 'required|image|mimes:jpeg,jpg,png,pdf|max:2048',
+            'bukti_pembayaran' => 'required|file|mimes:jpeg,jpg,png,pdf|max:3072',
         ]);
 
         if ($payment->bukti_pembayaran && Storage::disk('public')->exists($payment->bukti_pembayaran)) {

@@ -13,6 +13,12 @@ class QRController extends Controller
      */
     public function index()
     {
+        /** @var \App\Models\User|null $user */
+        $user = auth()->user();
+        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
+            abort(403, 'Akses scanner khusus Guru dan Administrator.');
+        }
+
         $today = now()->format('Y-m-d');
         $todayAttendances = Attendance::with('student')
             ->where('tanggal', $today)
@@ -28,8 +34,17 @@ class QRController extends Controller
      */
     public function process(Request $request)
     {
+        /** @var \App\Models\User|null $user */
+        $user = auth()->user();
+        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akses scanner presensi khusus Guru dan Administrator.',
+            ], 403);
+        }
+
         $request->validate([
-            'nis' => ['required', 'string'],
+            'nis' => ['required', 'string', 'max:50'],
         ]);
 
         $rawInput = trim($request->input('nis'));
@@ -47,9 +62,8 @@ class QRController extends Controller
             $rawInput = trim($matches[1]);
         }
 
-        $student = Student::where('nis', $rawInput)
-            ->orWhere('nis', 'like', "%{$rawInput}%")
-            ->first();
+        // Exact match lookup to prevent wildcard collision
+        $student = Student::where('nis', $rawInput)->first();
 
         if (!$student) {
             return response()->json([
@@ -174,6 +188,20 @@ class QRController extends Controller
      */
     public function card(Student $student)
     {
+        /** @var \App\Models\User|null $user */
+        $user = auth()->user();
+        if (!$user) {
+            abort(403);
+        }
+
+        $isAuthorized = $user->isAdmin()
+            || ($user->isParent() && $user->student_id === $student->id)
+            || ($user->isTeacher() && (!$user->getAssignedClass() || strtolower($user->getAssignedClass()) === strtolower($student->kelas)));
+
+        if (!$isAuthorized) {
+            abort(403, 'Anda tidak memiliki wewenang untuk mencetak kartu QR siswa ini.');
+        }
+
         return view('qr.card', compact('student'));
     }
 }

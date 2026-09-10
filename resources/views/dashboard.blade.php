@@ -287,11 +287,11 @@
                 new Chart(weeklyCtx, {
                     type: 'line',
                     data: {
-                        labels: {!! json_encode($weeklyDates) !!},
+                        labels: @json($weeklyDates),
                         datasets: [
                             {
                                 label: 'Hadir',
-                                data: {!! json_encode($weeklyHadir) !!},
+                                data: @json($weeklyHadir),
                                 borderColor: '#10b981',
                                 backgroundColor: hadirGradient,
                                 borderWidth: 3,
@@ -303,7 +303,7 @@
                             },
                             {
                                 label: 'Izin / Sakit',
-                                data: {!! json_encode($weeklyIzinSakit) !!},
+                                data: @json($weeklyIzinSakit),
                                 borderColor: '#475569',
                                 backgroundColor: izinSakitGradient,
                                 borderWidth: 2.5,
@@ -315,7 +315,7 @@
                             },
                             {
                                 label: 'Alpa',
-                                data: {!! json_encode($weeklyAlpa) !!},
+                                data: @json($weeklyAlpa),
                                 borderColor: '#ef4444',
                                 backgroundColor: 'rgba(239, 68, 68, 0.05)',
                                 borderWidth: 2,

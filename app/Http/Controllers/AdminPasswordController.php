@@ -46,7 +46,6 @@ class AdminPasswordController extends Controller
 
         $user->update([
             'password' => Hash::make($newPass),
-            'plain_password' => $newPass,
         ]);
 
         // Resolve any pending reset requests for this user/email

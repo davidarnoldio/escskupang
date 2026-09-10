@@ -16,6 +16,11 @@ class StudentController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
+
+        if ($user && $user->isParent()) {
+            return redirect()->route('parent.dashboard');
+        }
+
         $assignedClass = $user ? $user->getAssignedClass() : null;
 
         $search = $request->input('search');
@@ -122,6 +127,20 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        if (!$user) {
+            abort(403);
+        }
+
+        $isAuthorized = $user->isAdmin()
+            || ($user->isParent() && $user->student_id === $student->id)
+            || ($user->isTeacher() && (!$user->getAssignedClass() || strtolower($user->getAssignedClass()) === strtolower($student->kelas)));
+
+        if (!$isAuthorized) {
+            abort(403, 'Anda tidak memiliki wewenang untuk mengakses data siswa ini.');
+        }
+
         $student->load('attendances');
         return view('students.show', compact('student'));
     }
