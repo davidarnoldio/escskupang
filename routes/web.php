@@ -84,15 +84,31 @@ Route::middleware('auth')->group(function () {
 
 // Direct Storage Serving fallback (ensures static files, proof photos, and letters always load reliably)
 Route::get('/storage/{path}', function ($path) {
-    $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $path), '/');
-    $fullPath = storage_path('app/public/' . $cleanPath);
-
-    if (file_exists($fullPath) && !is_dir($fullPath)) {
-        return response()->file($fullPath);
+    // Prevent directory traversal and null-byte injection attacks
+    if (str_contains($path, '..') || str_contains($path, "\0")) {
+        abort(404);
     }
 
-    if (file_exists(public_path('uploads/' . $cleanPath)) && !is_dir(public_path('uploads/' . $cleanPath))) {
-        return response()->file(public_path('uploads/' . $cleanPath));
+    $cleanPath = ltrim(str_replace(['public/', 'storage/'], '', $path), '/');
+    if (empty($cleanPath) || str_starts_with(basename($cleanPath), '.')) {
+        abort(404);
+    }
+
+    $storagePublicBase = realpath(storage_path('app/public'));
+    $uploadsBase = realpath(public_path('uploads'));
+
+    $fullStoragePath = storage_path('app/public/' . $cleanPath);
+    $realStoragePath = realpath($fullStoragePath);
+
+    if ($realStoragePath && $storagePublicBase && str_starts_with($realStoragePath, $storagePublicBase) && is_file($realStoragePath)) {
+        return response()->file($realStoragePath);
+    }
+
+    $fullUploadsPath = public_path('uploads/' . $cleanPath);
+    $realUploadsPath = realpath($fullUploadsPath);
+
+    if ($realUploadsPath && $uploadsBase && str_starts_with($realUploadsPath, $uploadsBase) && is_file($realUploadsPath)) {
+        return response()->file($realUploadsPath);
     }
 
     abort(404);

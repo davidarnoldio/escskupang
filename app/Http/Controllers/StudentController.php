@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
@@ -180,6 +182,9 @@ class StudentController extends Controller
         $validated['is_abk'] = $request->boolean('is_abk');
 
         if ($request->hasFile('foto')) {
+            if ($student->foto && Storage::disk('public')->exists($student->foto)) {
+                Storage::disk('public')->delete($student->foto);
+            }
             $validated['foto'] = $request->file('foto')->store('students', 'public');
         }
 
@@ -196,6 +201,12 @@ class StudentController extends Controller
         if (!Auth::user() || !Auth::user()->isAdmin()) {
             return redirect()->route('students.index')->with('error', 'Hanya Admin yang berhak menghapus data siswa.');
         }
+
+        if ($student->foto && Storage::disk('public')->exists($student->foto)) {
+            Storage::disk('public')->delete($student->foto);
+        }
+
+        User::where('student_id', $student->id)->delete();
 
         $student->delete();
 
