@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
     // Attendance CRUD, Rekap & Print
     Route::get('/attendances/print-rekap', [AttendanceController::class, 'printRekap'])->name('attendances.print-rekap');
     Route::get('/attendances/letters', [AttendanceController::class, 'letters'])->name('attendances.letters');
+    Route::post('/attendances/{attendance}/verify-letter', [AttendanceController::class, 'verifyLetter'])->name('attendances.verify-letter');
+    Route::delete('/attendances/{attendance}/letter', [AttendanceController::class, 'destroyLetter'])->name('attendances.destroy-letter');
     Route::resource('attendances', AttendanceController::class);
     Route::get('/rekap-absensi', [AttendanceController::class, 'rekap'])->name('attendances.rekap');
 

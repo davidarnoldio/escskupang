@@ -6,6 +6,8 @@ use App\Models\Attendance;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class AttendanceController extends Controller
@@ -347,19 +349,144 @@ class AttendanceController extends Controller
         }
 
         $assignedClass = $user->getAssignedClass();
+        $statusFilter = $request->input('status');
+        $search = $request->input('search');
 
-        $query = Attendance::with('student')
-            ->whereNotNull('surat_izin')
-            ->orderBy('tanggal', 'desc');
+        $baseQuery = Attendance::with('student')
+            ->whereNotNull('surat_izin');
 
         if ($assignedClass) {
-            $query->whereHas('student', function ($q) use ($assignedClass) {
+            $baseQuery->whereHas('student', function ($q) use ($assignedClass) {
                 $q->where('kelas', $assignedClass);
             });
         }
 
-        $attendances = $query->paginate(15);
+        $hasSuratStatus = Schema::hasColumn('attendances', 'surat_status');
 
-        return view('attendances.letters', compact('attendances', 'assignedClass'));
+        // Stats calculation
+        $totalLetters = (clone $baseQuery)->count();
+        if ($hasSuratStatus) {
+            $stats = [
+                'total' => $totalLetters,
+                'menunggu' => (clone $baseQuery)->where(function ($q) {
+                    $q->where('surat_status', 'menunggu')->orWhereNull('surat_status');
+                })->count(),
+                'disetujui' => (clone $baseQuery)->where('surat_status', 'disetujui')->count(),
+                'ditolak' => (clone $baseQuery)->where('surat_status', 'ditolak')->count(),
+            ];
+        } else {
+            $stats = [
+                'total' => $totalLetters,
+                'menunggu' => $totalLetters,
+                'disetujui' => 0,
+                'ditolak' => 0,
+            ];
+        }
+
+        $query = clone $baseQuery;
+
+        if ($statusFilter && $hasSuratStatus) {
+            if ($statusFilter === 'menunggu') {
+                $query->where(function ($q) {
+                    $q->where('surat_status', 'menunggu')->orWhereNull('surat_status');
+                });
+            } else {
+                $query->where('surat_status', $statusFilter);
+            }
+        }
+
+        if ($search) {
+            $query->whereHas('student', function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                  ->orWhere('nis', 'like', "%{$search}%");
+            });
+        }
+
+        $attendances = $query->orderBy('tanggal', 'desc')->paginate(15)->withQueryString();
+
+        return view('attendances.letters', compact('attendances', 'assignedClass', 'stats', 'statusFilter', 'search'));
+    }
+
+    /**
+     * Homeroom Teacher verifies student permission letter (Accept/Reject).
+     * ADMIN IS FORBIDDEN from verifying/rejecting letters (read-only monitor only).
+     */
+    public function verifyLetter(Request $request, Attendance $attendance)
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        // 1. Strict Role Check: Admin cannot verify/reject letters
+        if ($user && $user->isAdmin() && !$user->isTeacher()) {
+            abort(403, 'Akses ditolak. Administrator hanya memiliki wewenang memantau data. Konfirmasi terima atau tolak surat izin merupakan wewenang khusus Guru / Wali Kelas.');
+        }
+
+        // 2. Strict Teacher Check
+        if (!$user || !$user->isTeacher()) {
+            abort(403, 'Akses khusus Guru / Wali Kelas.');
+        }
+
+        // 3. Class Authorization Check
+        $teacherClass = $user->getAssignedClass();
+        if ($teacherClass && $attendance->student && strtolower($attendance->student->kelas) !== strtolower($teacherClass)) {
+            abort(403, "Anda hanya berwenang memverifikasi surat izin siswa di kelas binaan Anda ({$teacherClass}).");
+        }
+
+        $validated = $request->validate([
+            'action' => ['required', 'in:setujui,tolak'],
+            'catatan_guru' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $studentName = $attendance->student->nama ?? 'Siswa';
+
+        if ($validated['action'] === 'setujui') {
+            $attendance->update([
+                'surat_status' => 'disetujui',
+                'catatan_guru' => $validated['catatan_guru'] ?: 'Surat permohonan izin/sakit telah diverifikasi dan disetujui oleh Wali Kelas.',
+            ]);
+
+            return redirect()->back()->with('success', "Surat permohonan izin/sakit untuk {$studentName} berhasil DISETUJUI / DITERIMA.");
+        } else {
+            // If rejected, attendance status changes to 'alpa'
+            $attendance->update([
+                'surat_status' => 'ditolak',
+                'status' => 'alpa',
+                'catatan_guru' => $validated['catatan_guru'] ?: 'Surat izin ditolak oleh Wali Kelas. Siswa dinyatakan Alpa pada tanggal tersebut.',
+            ]);
+
+            return redirect()->back()->with('success', "Surat permohonan izin/sakit untuk {$studentName} DITOLAK. Status kehadiran diubah menjadi ALPA.");
+        }
+    }
+
+    /**
+     * Delete student permission letter attachment.
+     */
+    public function destroyLetter(Attendance $attendance)
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        if (!$user) {
+            abort(403);
+        }
+
+        $isTeacher = $user->isTeacher() && (!$user->getAssignedClass() || ($attendance->student && strtolower($attendance->student->kelas) === strtolower($user->getAssignedClass())));
+        $isAdmin = $user->isAdmin();
+        $isParent = $user->isParent() && ((int)$user->student_id === (int)$attendance->student_id);
+
+        if (!$isTeacher && !$isAdmin && !$isParent) {
+            abort(403, 'Anda tidak berwenang menghapus berkas surat ini.');
+        }
+
+        if ($attendance->surat_izin && Storage::disk('public')->exists($attendance->surat_izin)) {
+            Storage::disk('public')->delete($attendance->surat_izin);
+        }
+
+        $attendance->update([
+            'surat_izin' => null,
+            'surat_status' => null,
+            'catatan_guru' => null,
+        ]);
+
+        return redirect()->back()->with('success', 'Berkas foto surat izin berhasil dihapus.');
     }
 }

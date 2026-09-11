@@ -141,6 +141,8 @@ class ParentController extends Controller
                 'status' => $request->input('status'),
                 'keterangan' => $request->input('keterangan') ?: 'Surat ' . ucfirst($request->input('status')) . ' dari Orang Tua',
                 'surat_izin' => $letterPath,
+                'surat_status' => 'menunggu',
+                'catatan_guru' => null,
             ]
         );
 
