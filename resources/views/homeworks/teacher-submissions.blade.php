@@ -94,7 +94,7 @@
                             <th class="py-3.5 px-4 text-center">Foto PR</th>
                             <th class="py-3.5 px-4 text-center">Nilai (0-100)</th>
                             <th class="py-3.5 px-4">Catatan Guru</th>
-                            <th class="py-3.5 px-4 text-center">Aksi Input Nilai</th>
+                            <th class="py-3.5 px-4 text-center">Aksi / Penilaian</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-slate-700">
@@ -144,9 +144,18 @@
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
                                     @if($sub)
-                                        <button @click="gradeModal = { id: {{ $sub->id }}, name: '{{ addslashes($st->nama) }}', grade: '{{ $sub->nilai ?? '' }}', notes: '{{ addslashes($sub->catatan_guru ?? '') }}' }" class="px-3 py-1.5 bg-gradient-to-r from-red-600 to-red-800 text-white hover:from-red-700 hover:to-red-900 rounded-xl text-xs font-bold shadow-sm transition">
-                                            ✏️ Input / Edit Nilai
-                                        </button>
+                                        <div class="flex items-center justify-center gap-1.5">
+                                            <button @click="gradeModal = { id: {{ $sub->id }}, name: '{{ addslashes($st->nama) }}', grade: '{{ $sub->nilai ?? '' }}', notes: '{{ addslashes($sub->catatan_guru ?? '') }}' }" class="px-3 py-1.5 bg-gradient-to-r from-red-600 to-red-800 text-white hover:from-red-700 hover:to-red-900 rounded-xl text-xs font-bold shadow-sm transition inline-flex items-center gap-1">
+                                                ✏️ <span>{{ $sub->nilai !== null ? 'Edit Nilai' : 'Input Nilai' }}</span>
+                                            </button>
+                                            <form id="delete-sub-form-{{ $sub->id }}" action="{{ route('homeworks.destroy-submission', $sub) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengumpulan PR siswa {{ addslashes($st->nama) }}? File foto dan nilai yang sudah ada akan dihapus.')" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" title="Hapus Pengumpulan PR Siswa (Manual)" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition border border-transparent hover:border-rose-200">
+                                                    🗑️
+                                                </button>
+                                            </form>
+                                        </div>
                                     @else
                                         <span class="text-[10px] text-slate-400 font-medium">Menunggu Kumpul</span>
                                     @endif
@@ -171,7 +180,7 @@
             <!-- Modal Input Nilai -->
             <div x-show="gradeModal" @click.away="gradeModal = null" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" style="display: none;">
                 <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-                    <h4 class="text-base font-bold text-slate-900">Input Nilai PR</h4>
+                    <h4 class="text-base font-bold text-slate-900">Input / Edit Nilai PR</h4>
                     <p class="text-xs text-slate-500">Siswa: <strong x-text="gradeModal ? gradeModal.name : ''"></strong></p>
 
                     <form :action="'/homework-submissions/' + (gradeModal ? gradeModal.id : '') + '/grade'" method="POST" class="space-y-4">
@@ -195,6 +204,13 @@
                             </button>
                         </div>
                     </form>
+
+                    <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="text-slate-400 text-[11px]">Hapus pengumpulan PR siswa ini?</span>
+                        <button type="button" @click="if (gradeModal && document.getElementById('delete-sub-form-' + gradeModal.id)) { document.getElementById('delete-sub-form-' + gradeModal.id).dispatchEvent(new Event('submit', {cancelable: true})) && document.getElementById('delete-sub-form-' + gradeModal.id).submit(); }" class="text-rose-600 hover:text-rose-700 font-bold hover:underline inline-flex items-center gap-1">
+                            🗑️ Hapus PR Siswa
+                        </button>
+                    </div>
                 </div>
             </div>
 

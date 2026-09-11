@@ -203,6 +203,34 @@ class HomeworkController extends Controller
     }
 
     /**
+     * Delete a single student's homework submission (photo file & grade).
+     */
+    public function destroySubmission(HomeworkSubmission $submission)
+    {
+        $user = Auth::user();
+        if (!$user || (!$user->isTeacher() && !$user->isAdmin())) {
+            abort(403, 'Akses khusus Guru / Wali Kelas.');
+        }
+
+        $homework = $submission->homework;
+        $assignedClass = $user->getAssignedClass();
+
+        if ($user->isTeacher() && $assignedClass && strtolower($homework->kelas) !== strtolower($assignedClass)) {
+            abort(403, "Anda tidak memiliki akses untuk menghapus pengumpulan PR kelas {$homework->kelas}.");
+        }
+
+        $studentName = $submission->student ? $submission->student->nama : 'Siswa';
+
+        if ($submission->foto_pr && Storage::disk('public')->exists($submission->foto_pr)) {
+            Storage::disk('public')->delete($submission->foto_pr);
+        }
+
+        $submission->delete();
+
+        return redirect()->back()->with('success', "Pengumpulan PR untuk siswa {$studentName} berhasil dihapus.");
+    }
+
+    /**
      * Delete homework.
      */
     public function destroy(Homework $homework)
