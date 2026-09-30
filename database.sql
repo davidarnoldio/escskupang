@@ -16,7 +16,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table `migrations`
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -39,7 +39,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 ('17', '2026_09_05_000002_create_homeworks_table', '1'),
 ('18', '2026_09_05_000003_create_homework_submissions_table', '1'),
 ('19', '2026_09_05_000004_add_student_id_to_homeworks_table', '1'),
-('20', '2026_09_10_000001_add_surat_status_and_catatan_guru_to_attendances_table', '1');
+('20', '2026_09_10_000001_add_surat_status_and_catatan_guru_to_attendances_table', '1'),
+('21', '2026_09_28_231618_normalize_surat_status_null_to_menunggu_in_attendances', '2'),
+('22', '2026_09_30_000001_add_detailed_fields_and_rename_nis_to_nisn_in_students_table', '3');
 
 -- --------------------------------------------------------
 -- Table structure for table `students`
@@ -47,10 +49,33 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 DROP TABLE IF EXISTS `students`;
 CREATE TABLE `students` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `nis` varchar(255) NOT NULL,
+  `nisn` varchar(255) NOT NULL,
+  `nik` varchar(20) DEFAULT NULL,
+  `no_kk` varchar(20) DEFAULT NULL,
   `nama` varchar(255) NOT NULL,
   `kelas` varchar(255) NOT NULL,
   `jenis_kelamin` enum('L','P') NOT NULL DEFAULT 'L',
+  `tempat_lahir` varchar(100) DEFAULT NULL,
+  `tanggal_lahir` date DEFAULT NULL,
+  `no_akta_kelahiran` varchar(100) DEFAULT NULL,
+  `agama` varchar(30) DEFAULT NULL,
+  `kewarganegaraan` varchar(20) DEFAULT 'WNI',
+  `kategori_prestasi` varchar(50) DEFAULT NULL,
+  `keterangan_prestasi` text DEFAULT NULL,
+  `tinggi_badan` smallint(5) unsigned DEFAULT NULL,
+  `berat_badan` smallint(5) unsigned DEFAULT NULL,
+  `lingkar_kepala` smallint(5) unsigned DEFAULT NULL,
+  `jumlah_saudara_kandung` tinyint(3) unsigned DEFAULT 0,
+  `nama_ayah` varchar(255) DEFAULT NULL,
+  `nik_ayah` varchar(20) DEFAULT NULL,
+  `tahun_lahir_ayah` varchar(10) DEFAULT NULL,
+  `pendidikan_ayah` varchar(50) DEFAULT NULL,
+  `penghasilan_ayah` varchar(50) DEFAULT NULL,
+  `nama_ibu` varchar(255) DEFAULT NULL,
+  `nik_ibu` varchar(20) DEFAULT NULL,
+  `tahun_lahir_ibu` varchar(10) DEFAULT NULL,
+  `pendidikan_ibu` varchar(50) DEFAULT NULL,
+  `penghasilan_ibu` varchar(50) DEFAULT NULL,
   `alamat` text DEFAULT NULL,
   `telepon` varchar(255) DEFAULT NULL,
   `foto` varchar(255) DEFAULT NULL,
@@ -58,7 +83,7 @@ CREATE TABLE `students` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `students_nis_unique` (`nis`)
+  UNIQUE KEY `students_nisn_unique` (`nisn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -99,7 +124,7 @@ CREATE TABLE `attendances` (
   `status` varchar(50) NOT NULL DEFAULT 'hadir',
   `keterangan` text DEFAULT NULL,
   `surat_izin` varchar(255) DEFAULT NULL,
-  `surat_status` varchar(50) DEFAULT 'menunggu',
+  `surat_status` varchar(50) DEFAULT NULL,
   `catatan_guru` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -203,7 +228,7 @@ CREATE TABLE `homework_submissions` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `homework_id` bigint(20) unsigned NOT NULL,
   `student_id` bigint(20) unsigned NOT NULL,
-  `foto_pr` varchar(255) NOT NULL,
+  `foto_pr` varchar(255) DEFAULT NULL,
   `catatan_siswa` text DEFAULT NULL,
   `nilai` int(11) DEFAULT NULL,
   `catatan_guru` text DEFAULT NULL,

@@ -68,8 +68,8 @@
                             <!-- Student Photo / Avatar -->
                             <div class="mt-3 mb-4 flex items-center gap-4">
                                 <div class="relative group">
-                                    @if($student->foto)
-                                        <img src="{{ asset($student->foto) }}" alt="{{ $student->nama }}"
+                                    @if($student->foto_url)
+                                        <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}"
                                             class="w-20 h-20 rounded-2xl object-cover border-2 border-red-400/50 shadow-md">
                                     @else
                                         <div
@@ -80,7 +80,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-extrabold text-white leading-tight">{{ $student->nama }}</h3>
-                                    <p class="text-xs font-mono text-red-300 font-bold mt-0.5">NIS: {{ $student->nis }}</p>
+                                    <p class="text-xs font-mono text-red-300 font-bold mt-0.5">NISN: {{ $student->nisn ?? $student->nis }}</p>
                                     <span
                                         class="inline-block mt-1 px-2.5 py-0.5 bg-white/10 text-white rounded-full text-[11px] font-semibold border border-white/10">
                                         Kelas {{ $student->kelas }}

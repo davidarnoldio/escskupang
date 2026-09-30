@@ -39,7 +39,8 @@ class StudentController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nis', 'like', "%{$search}%");
+                  ->orWhere('nisn', 'like', "%{$search}%")
+                  ->orWhere('nik', 'like', "%{$search}%");
             });
         }
 
@@ -70,15 +71,42 @@ class StudentController extends Controller
             return redirect()->route('students.index')->with('error', 'Hanya Admin yang berhak menambahkan data siswa.');
         }
 
+        if (!$request->has('nisn') && $request->has('nis')) {
+            $request->merge(['nisn' => $request->input('nis')]);
+        }
+
         $validated = $request->validate([
-            'nis' => ['required', 'string', 'max:50', 'unique:students,nis'],
-            'nama' => ['required', 'string', 'max:255'],
-            'kelas' => ['required', 'string', 'max:50'],
-            'jenis_kelamin' => ['required', Rule::in(['L', 'P'])],
-            'alamat' => ['nullable', 'string'],
-            'telepon' => ['nullable', 'string', 'max:20'],
-            'is_abk' => ['nullable', 'boolean'],
-            'foto' => ['nullable', 'image', 'max:5048'],
+            'nisn'                   => ['required', 'string', 'max:50', 'unique:students,nisn'],
+            'nama'                   => ['required', 'string', 'max:255'],
+            'nik'                    => ['nullable', 'string', 'max:20'],
+            'no_kk'                  => ['nullable', 'string', 'max:20'],
+            'kelas'                  => ['required', 'string', 'max:50'],
+            'jenis_kelamin'          => ['required', Rule::in(['L', 'P'])],
+            'tempat_lahir'           => ['nullable', 'string', 'max:100'],
+            'tanggal_lahir'          => ['nullable', 'date'],
+            'no_akta_kelahiran'      => ['nullable', 'string', 'max:100'],
+            'agama'                  => ['nullable', 'string', 'max:50'],
+            'kewarganegaraan'        => ['nullable', 'string', 'max:20'],
+            'alamat'                 => ['nullable', 'string'],
+            'telepon'                => ['nullable', 'string', 'max:20'],
+            'is_abk'                 => ['nullable', 'boolean'],
+            'kategori_prestasi'      => ['nullable', 'string', 'max:50'],
+            'keterangan_prestasi'    => ['nullable', 'string', 'max:1000'],
+            'tinggi_badan'           => ['nullable', 'integer', 'min:20', 'max:300'],
+            'berat_badan'            => ['nullable', 'integer', 'min:3', 'max:300'],
+            'lingkar_kepala'         => ['nullable', 'integer', 'min:10', 'max:150'],
+            'jumlah_saudara_kandung' => ['nullable', 'integer', 'min:0', 'max:50'],
+            'nama_ayah'              => ['nullable', 'string', 'max:255'],
+            'nik_ayah'               => ['nullable', 'string', 'max:20'],
+            'tahun_lahir_ayah'       => ['nullable', 'string', 'max:10'],
+            'pendidikan_ayah'        => ['nullable', 'string', 'max:50'],
+            'penghasilan_ayah'       => ['nullable', 'string', 'max:50'],
+            'nama_ibu'               => ['nullable', 'string', 'max:255'],
+            'nik_ibu'                => ['nullable', 'string', 'max:20'],
+            'tahun_lahir_ibu'        => ['nullable', 'string', 'max:10'],
+            'pendidikan_ibu'         => ['nullable', 'string', 'max:50'],
+            'penghasilan_ibu'        => ['nullable', 'string', 'max:50'],
+            'foto'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5048'],
         ]);
 
         $validated['is_abk'] = $request->boolean('is_abk');
@@ -105,6 +133,7 @@ class StudentController extends Controller
 
     /**
      * Generate parent email format (nama_depan.nama_belakang@student.sch.id).
+     * $studentId = 0 means a brand-new student (not yet saved); pass the real ID when updating.
      */
     public static function generateParentEmail(string $nama, int $studentId = 0): string
     {
@@ -113,10 +142,25 @@ class StudentController extends Controller
         $lastName = isset($words[count($words) - 1]) && count($words) > 1 ? strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $words[count($words) - 1])) : $firstName;
 
         $baseEmail = "{$firstName}.{$lastName}@student.sch.id";
-        $email = $baseEmail;
-        $counter = 1;
+        $email     = $baseEmail;
+        $counter   = 1;
 
-        while (\App\Models\User::where('email', $email)->where('student_id', '!=', $studentId)->exists()) {
+        while (true) {
+            $query = \App\Models\User::where('email', $email);
+
+            // Bug #6 Fix: when studentId is 0 (new), any existing record is a conflict.
+            // When studentId is valid, exclude the record belonging to the same student.
+            if ($studentId > 0) {
+                $query->where(function ($q) use ($studentId) {
+                    $q->where('student_id', '!=', $studentId)
+                      ->orWhereNull('student_id');
+                });
+            }
+
+            if (!$query->exists()) {
+                break;
+            }
+
             $counter++;
             $email = "{$firstName}.{$lastName}{$counter}@student.sch.id";
         }
@@ -168,15 +212,42 @@ class StudentController extends Controller
             return redirect()->route('students.index')->with('error', 'Hanya Admin yang berhak mengubah data siswa.');
         }
 
+        if (!$request->has('nisn') && $request->has('nis')) {
+            $request->merge(['nisn' => $request->input('nis')]);
+        }
+
         $validated = $request->validate([
-            'nis' => ['required', 'string', 'max:50', Rule::unique('students', 'nis')->ignore($student->id)],
-            'nama' => ['required', 'string', 'max:255'],
-            'kelas' => ['required', 'string', 'max:50'],
-            'jenis_kelamin' => ['required', Rule::in(['L', 'P'])],
-            'alamat' => ['nullable', 'string'],
-            'telepon' => ['nullable', 'string', 'max:20'],
-            'is_abk' => ['nullable', 'boolean'],
-            'foto' => ['nullable', 'image', 'max:5048'],
+            'nisn'                   => ['required', 'string', 'max:50', Rule::unique('students', 'nisn')->ignore($student->id)],
+            'nama'                   => ['required', 'string', 'max:255'],
+            'nik'                    => ['nullable', 'string', 'max:20'],
+            'no_kk'                  => ['nullable', 'string', 'max:20'],
+            'kelas'                  => ['required', 'string', 'max:50'],
+            'jenis_kelamin'          => ['required', Rule::in(['L', 'P'])],
+            'tempat_lahir'           => ['nullable', 'string', 'max:100'],
+            'tanggal_lahir'          => ['nullable', 'date'],
+            'no_akta_kelahiran'      => ['nullable', 'string', 'max:100'],
+            'agama'                  => ['nullable', 'string', 'max:50'],
+            'kewarganegaraan'        => ['nullable', 'string', 'max:20'],
+            'alamat'                 => ['nullable', 'string'],
+            'telepon'                => ['nullable', 'string', 'max:20'],
+            'is_abk'                 => ['nullable', 'boolean'],
+            'kategori_prestasi'      => ['nullable', 'string', 'max:50'],
+            'keterangan_prestasi'    => ['nullable', 'string', 'max:1000'],
+            'tinggi_badan'           => ['nullable', 'integer', 'min:20', 'max:300'],
+            'berat_badan'            => ['nullable', 'integer', 'min:3', 'max:300'],
+            'lingkar_kepala'         => ['nullable', 'integer', 'min:10', 'max:150'],
+            'jumlah_saudara_kandung' => ['nullable', 'integer', 'min:0', 'max:50'],
+            'nama_ayah'              => ['nullable', 'string', 'max:255'],
+            'nik_ayah'               => ['nullable', 'string', 'max:20'],
+            'tahun_lahir_ayah'       => ['nullable', 'string', 'max:10'],
+            'pendidikan_ayah'        => ['nullable', 'string', 'max:50'],
+            'penghasilan_ayah'       => ['nullable', 'string', 'max:50'],
+            'nama_ibu'               => ['nullable', 'string', 'max:255'],
+            'nik_ibu'                => ['nullable', 'string', 'max:20'],
+            'tahun_lahir_ibu'        => ['nullable', 'string', 'max:10'],
+            'pendidikan_ibu'         => ['nullable', 'string', 'max:50'],
+            'penghasilan_ibu'        => ['nullable', 'string', 'max:50'],
+            'foto'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5048'],
         ]);
 
         $validated['is_abk'] = $request->boolean('is_abk');

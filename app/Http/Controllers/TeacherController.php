@@ -169,16 +169,20 @@ class TeacherController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = auth()->user();
-        if (!$user->isAdmin() && !session()->has('impersonated_by')) {
+        $adminId = session('impersonated_by');
+        $isCurrentlyImpersonated = $adminId !== null;
+        $isDeletingSelf = (auth()->id() === $teacher->id);
+
+        // Strict check: only a real admin (not an impersonated teacher) can delete other teachers.
+        // Exception: an impersonated teacher can delete their own account (self-delete via admin UI).
+        if (!$user->isAdmin() && !($isCurrentlyImpersonated && $isDeletingSelf)) {
             abort(403, 'Akses khusus Administrator.');
         }
 
-        $isCurrentlyImpersonated = (auth()->id() === $teacher->id);
-        $adminId = session('impersonated_by');
-
         $teacher->delete();
 
-        if ($isCurrentlyImpersonated && $adminId) {
+        // If the currently-impersonated teacher deleted themselves, restore admin session
+        if ($isDeletingSelf && $isCurrentlyImpersonated) {
             session()->forget('impersonated_by');
             $adminUser = User::find($adminId);
             if ($adminUser) {

@@ -87,8 +87,8 @@
                                     <span class="font-bold text-sm text-slate-900" x-text="lastResult.student.nama"></span>
                                 </div>
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                                    <span class="text-xs text-slate-400">NIS</span>
-                                    <span class="font-mono text-xs font-bold text-slate-700" x-text="lastResult.student.nis"></span>
+                                    <span class="text-xs text-slate-400">NISN</span>
+                                    <span class="font-mono text-xs font-bold text-slate-700" x-text="lastResult.student.nisn || lastResult.student.nis"></span>
                                 </div>
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                                     <span class="text-xs text-slate-400">Kelas</span>
@@ -137,7 +137,7 @@
                                                 <span class="px-1.5 py-0.2 text-[9px] font-black rounded bg-amber-100 text-amber-900 border border-amber-300">ABK</span>
                                             @endif
                                         </p>
-                                        <p class="text-[11px] text-slate-400">{{ $att->student->kelas }} (NIS: {{ $att->student->nis }})</p>
+                                        <p class="text-[11px] text-slate-400">{{ $att->student->kelas }} (NISN: {{ $att->student->nisn ?? $att->student->nis }})</p>
                                     </div>
                                     <div class="text-right">
                                         @if($isLateHistory)

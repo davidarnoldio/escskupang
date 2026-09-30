@@ -38,7 +38,7 @@ class PaymentController extends Controller
                 $q->where('judul', 'like', "%{$search}%")
                   ->orWhereHas('student', function ($sq) use ($search) {
                       $sq->where('nama', 'like', "%{$search}%")
-                        ->orWhere('nis', 'like', "%{$search}%");
+                        ->orWhere('nisn', 'like', "%{$search}%");
                   });
             });
         }

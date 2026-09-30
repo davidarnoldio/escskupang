@@ -89,7 +89,7 @@
                 <table class="w-full text-left text-sm text-slate-700">
                     <thead class="bg-slate-50 text-slate-500 text-[11px] uppercase font-black tracking-wider border-b border-slate-100">
                         <tr>
-                            <th class="px-6 py-3.5">NIS</th>
+                            <th class="px-6 py-3.5">NISN</th>
                             <th class="px-6 py-3.5">Siswa</th>
                             <th class="px-6 py-3.5">Kelas</th>
                             <th class="px-6 py-3.5">L/P</th>
@@ -100,25 +100,25 @@
                         @forelse($students as $student)
                             <tr class="hover:bg-red-50/40 transition duration-150">
                                 <td class="px-6 py-4 font-mono font-bold text-xs text-slate-600">
-                                    {{ $student->nis }}
+                                    {{ $student->nisn ?? $student->nis }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <!-- Avatar -->
-                                        @if($student->foto)
-                                            <img src="{{ asset($student->foto) }}" alt="{{ $student->nama }}" class="w-9 h-9 rounded-full object-cover border border-slate-200 shadow-2xs">
+                                        @if($student->foto_url)
+                                            <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}" class="w-9 h-9 rounded-full object-cover border border-slate-200 shadow-2xs">
                                         @else
                                             <div class="w-9 h-9 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xs shadow-2xs">
                                                 {{ strtoupper(substr($student->nama, 0, 2)) }}
                                             </div>
                                         @endif
                                         <div>
-                                            <div class="font-bold text-slate-900 flex items-center gap-2">
+                                            <a href="{{ route('students.show', $student) }}" class="font-bold text-slate-900 hover:text-red-600 transition flex items-center gap-2">
                                                 <span>{{ $student->nama }}</span>
                                                 @if($student->is_abk)
                                                     <span class="px-1.5 py-0.5 text-[9px] font-black rounded bg-amber-100 text-amber-900 border border-amber-300">ABK</span>
                                                 @endif
-                                            </div>
+                                            </a>
                                             <div class="text-[11px] text-slate-400 font-medium">Ortu: {{ $student->user ? $student->user->name : '-' }}</div>
                                         </div>
                                     </div>
@@ -131,12 +131,15 @@
                                 <td class="px-6 py-4 text-xs font-bold text-slate-600">
                                     {{ $student->jenis_kelamin }}
                                 </td>
-                                <td class="px-6 py-4 text-right space-x-2">
-                                    <button type="button" @click="openQrModal({{ json_encode($student) }})" class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold transition cursor-pointer">
-                                        📷 QR Code
+                                <td class="px-6 py-4 text-right space-x-1.5">
+                                    <a href="{{ route('students.show', $student) }}" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+                                        👁️ Detail
+                                    </a>
+                                    <button type="button" @click="openQrModal({{ json_encode($student) }})" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold transition cursor-pointer">
+                                        📷 QR
                                     </button>
                                     @if(Auth::user() && Auth::user()->isAdmin())
-                                        <a href="{{ route('students.edit', $student) }}" class="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition">
+                                        <a href="{{ route('students.edit', $student) }}" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-xl text-xs font-bold transition">
                                             ✏️ Edit
                                         </a>
                                         <form method="POST" action="{{ route('students.destroy', $student) }}" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data siswa ini?');">
@@ -174,10 +177,10 @@
                 <template x-if="selectedStudent">
                     <div>
                         <h3 class="font-extrabold text-lg text-slate-900" x-text="selectedStudent.nama"></h3>
-                        <p class="text-xs text-slate-500 font-semibold mt-0.5" x-text="'NIS: ' + selectedStudent.nis + ' | Kelas ' + selectedStudent.kelas"></p>
+                        <p class="text-xs text-slate-500 font-semibold mt-0.5" x-text="'NISN: ' + (selectedStudent.nisn || selectedStudent.nis) + ' | Kelas ' + selectedStudent.kelas"></p>
                         
                         <div class="my-5 p-4 bg-slate-50 rounded-2xl border border-slate-200 inline-block shadow-xs">
-                            <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(selectedStudent.nis)" alt="QR Code" class="w-40 h-40 mx-auto rounded-xl">
+                            <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(selectedStudent.nisn || selectedStudent.nis)" alt="QR Code" class="w-40 h-40 mx-auto rounded-xl">
                         </div>
 
                         <div class="flex items-center justify-center gap-3">

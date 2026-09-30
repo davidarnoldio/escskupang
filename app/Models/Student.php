@@ -32,19 +32,85 @@ class Student extends Model
     }
 
     protected $fillable = [
+        'nisn',
         'nis',
         'nama',
+        'nik',
+        'no_kk',
         'kelas',
         'jenis_kelamin',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'no_akta_kelahiran',
+        'agama',
+        'kewarganegaraan',
         'alamat',
         'telepon',
         'foto',
         'is_abk',
+        'kategori_prestasi',
+        'keterangan_prestasi',
+        'tinggi_badan',
+        'berat_badan',
+        'lingkar_kepala',
+        'jumlah_saudara_kandung',
+        'nama_ayah',
+        'nik_ayah',
+        'tahun_lahir_ayah',
+        'pendidikan_ayah',
+        'penghasilan_ayah',
+        'nama_ibu',
+        'nik_ibu',
+        'tahun_lahir_ibu',
+        'pendidikan_ibu',
+        'penghasilan_ibu',
     ];
 
     protected $casts = [
         'is_abk' => 'boolean',
+        'tanggal_lahir' => 'date',
+        'tinggi_badan' => 'integer',
+        'berat_badan' => 'integer',
+        'lingkar_kepala' => 'integer',
+        'jumlah_saudara_kandung' => 'integer',
     ];
+
+    /**
+     * Backward-compatibility accessor for NIS -> NISN.
+     */
+    public function getNisAttribute(): ?string
+    {
+        return $this->attributes['nisn'] ?? $this->attributes['nis'] ?? null;
+    }
+
+    /**
+     * Backward-compatibility mutator for NIS -> NISN.
+     */
+    public function setNisAttribute(?string $value): void
+    {
+        $this->attributes['nisn'] = $value;
+    }
+
+    /**
+     * Get accessible photo URL or null.
+     * Automatically handles relative path 'students/xxx.jpg' -> '/storage/students/xxx.jpg'.
+     */
+    public function getFotoUrlAttribute(): ?string
+    {
+        if (!$this->foto) {
+            return null;
+        }
+
+        if (str_starts_with($this->foto, 'http://') || str_starts_with($this->foto, 'https://')) {
+            return $this->foto;
+        }
+
+        if (str_starts_with($this->foto, 'storage/')) {
+            return asset($this->foto);
+        }
+
+        return asset('storage/' . $this->foto);
+    }
 
     public function attendances(): HasMany
     {

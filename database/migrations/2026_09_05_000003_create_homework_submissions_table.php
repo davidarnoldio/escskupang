@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('homework_id')->constrained('homeworks')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
-            $table->string('foto_pr');
+            $table->string('foto_pr')->nullable();
             $table->text('catatan_siswa')->nullable();
             $table->integer('nilai')->nullable();
             $table->text('catatan_guru')->nullable();

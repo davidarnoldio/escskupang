@@ -310,11 +310,12 @@ class AttendanceController extends Controller
 
         $teacherName = 'Wali Kelas / Koordinator Presensi';
         if (!empty($kelas)) {
-            $waliKelasUser = \App\Models\User::where('role', 'guru')
+            // Bug #4 Fix: query both 'guru' and 'wali_kelas' roles
+            $waliKelasUser = \App\Models\User::whereIn('role', ['guru', 'wali_kelas'])
                 ->where('assigned_class', $kelas)
                 ->first();
             if (!$waliKelasUser) {
-                $waliKelasUser = \App\Models\User::where('role', 'guru')
+                $waliKelasUser = \App\Models\User::whereIn('role', ['guru', 'wali_kelas'])
                     ->where('name', 'like', "%{$kelas}%")
                     ->first();
             }
@@ -398,7 +399,7 @@ class AttendanceController extends Controller
         if ($search) {
             $query->whereHas('student', function ($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('nis', 'like', "%{$search}%");
+                  ->orWhere('nisn', 'like', "%{$search}%");
             });
         }
 
@@ -416,13 +417,17 @@ class AttendanceController extends Controller
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
-        // 1. Strict Role Check: Admin cannot verify/reject letters
-        if ($user && $user->isAdmin() && !$user->isTeacher()) {
+        // 1. Strict Role Check: Admin (non-teacher) cannot verify/reject letters
+        if (!$user) {
+            abort(403, 'Akses khusus Guru / Wali Kelas.');
+        }
+
+        if ($user->isAdmin()) {
             abort(403, 'Akses ditolak. Administrator hanya memiliki wewenang memantau data. Konfirmasi terima atau tolak surat izin merupakan wewenang khusus Guru / Wali Kelas.');
         }
 
         // 2. Strict Teacher Check
-        if (!$user || !$user->isTeacher()) {
+        if (!$user->isTeacher()) {
             abort(403, 'Akses khusus Guru / Wali Kelas.');
         }
 
@@ -442,7 +447,7 @@ class AttendanceController extends Controller
         if ($validated['action'] === 'setujui') {
             $attendance->update([
                 'surat_status' => 'disetujui',
-                'catatan_guru' => $validated['catatan_guru'] ?: 'Surat permohonan izin/sakit telah diverifikasi dan disetujui oleh Wali Kelas.',
+                'catatan_guru' => ($validated['catatan_guru'] ?? '') ?: 'Surat permohonan izin/sakit telah diverifikasi dan disetujui oleh Wali Kelas.',
             ]);
 
             return redirect()->back()->with('success', "Surat permohonan izin/sakit untuk {$studentName} berhasil DISETUJUI / DITERIMA.");
@@ -450,8 +455,8 @@ class AttendanceController extends Controller
             // If rejected, attendance status changes to 'alpa'
             $attendance->update([
                 'surat_status' => 'ditolak',
-                'status' => 'alpa',
-                'catatan_guru' => $validated['catatan_guru'] ?: 'Surat izin ditolak oleh Wali Kelas. Siswa dinyatakan Alpa pada tanggal tersebut.',
+                'status'       => 'alpa',
+                'catatan_guru' => ($validated['catatan_guru'] ?? '') ?: 'Surat izin ditolak oleh Wali Kelas. Siswa dinyatakan Alpa pada tanggal tersebut.',
             ]);
 
             return redirect()->back()->with('success', "Surat permohonan izin/sakit untuk {$studentName} DITOLAK. Status kehadiran diubah menjadi ALPA.");

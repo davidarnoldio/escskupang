@@ -44,31 +44,34 @@ class QRController extends Controller
         }
 
         $request->validate([
-            'nis' => ['required', 'string', 'max:50'],
+            'nis'  => ['nullable', 'string', 'max:50'],
+            'nisn' => ['nullable', 'string', 'max:50'],
         ]);
 
-        $rawInput = trim($request->input('nis'));
+        $rawInput = trim($request->input('nisn') ?? $request->input('nis') ?? '');
 
         // Handle JSON payload input
         if (str_starts_with($rawInput, '{') && str_ends_with($rawInput, '}')) {
             $json = json_decode($rawInput, true);
-            if (isset($json['nis'])) {
+            if (isset($json['nisn'])) {
+                $rawInput = trim($json['nisn']);
+            } elseif (isset($json['nis'])) {
                 $rawInput = trim($json['nis']);
             }
         }
 
-        // Handle prefix string e.g. "NIS: 0003.26.0236"
-        if (preg_match('/^nis[:\s]+(.*)$/i', $rawInput, $matches)) {
-            $rawInput = trim($matches[1]);
+        // Handle prefix string e.g. "NISN: 0003.26.0236" or "NIS: 0003.26.0236"
+        if (preg_match('/^(nisn|nis)[:\s]+(.*)$/i', $rawInput, $matches)) {
+            $rawInput = trim($matches[2]);
         }
 
-        // Exact match lookup to prevent wildcard collision
-        $student = Student::where('nis', $rawInput)->first();
+        // Exact match lookup on nisn
+        $student = Student::where('nisn', $rawInput)->first();
 
         if (!$student) {
             return response()->json([
                 'success' => false,
-                'message' => "Data siswa dengan NIS '{$rawInput}' tidak ditemukan!",
+                'message' => "Data siswa dengan NISN/NIS '{$rawInput}' tidak ditemukan!",
             ], 404);
         }
 
@@ -113,6 +116,7 @@ class QRController extends Controller
                 'message' => $message,
                 'student' => [
                     'id' => $student->id,
+                    'nisn' => $student->nisn,
                     'nis' => $student->nis,
                     'nama' => $student->nama,
                     'kelas' => $student->kelas,
@@ -165,6 +169,7 @@ class QRController extends Controller
             'message' => $message,
             'student' => [
                 'id' => $student->id,
+                'nisn' => $student->nisn,
                 'nis' => $student->nis,
                 'nama' => $student->nama,
                 'kelas' => $student->kelas,

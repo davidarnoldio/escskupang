@@ -39,15 +39,19 @@
         <div class="p-6 text-center space-y-4">
             <!-- Student Avatar Badge -->
             <div class="relative inline-block">
-                <div class="w-20 h-20 rounded-2xl bg-slate-900 text-red-300 border-2 border-red-400/40 flex items-center justify-center font-extrabold text-2xl shadow-md mx-auto">
-                    {{ strtoupper(substr($student->nama, 0, 2)) }}
-                </div>
+                @if($student->foto_url)
+                    <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}" class="w-20 h-20 rounded-2xl object-cover border-2 border-red-400/40 shadow-md mx-auto">
+                @else
+                    <div class="w-20 h-20 rounded-2xl bg-slate-900 text-red-300 border-2 border-red-400/40 flex items-center justify-center font-extrabold text-2xl shadow-md mx-auto">
+                        {{ strtoupper(substr($student->nama, 0, 2)) }}
+                    </div>
+                @endif
             </div>
 
             <!-- Student Info -->
             <div>
                 <h4 class="font-bold text-lg text-slate-900 leading-tight">{{ $student->nama }}</h4>
-                <p class="text-xs font-mono text-red-600 font-bold mt-0.5">NIS: {{ $student->nis }}</p>
+                <p class="text-xs font-mono text-red-600 font-bold mt-0.5">NISN: {{ $student->nisn ?? $student->nis }}</p>
                 <span class="inline-block mt-1 px-3 py-0.5 bg-slate-100 text-slate-800 rounded-full text-xs font-semibold">
                     Kelas {{ $student->kelas }} ({{ $student->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }})
                 </span>
@@ -55,11 +59,11 @@
 
             <!-- QR Code Section -->
             <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 inline-block shadow-2xs">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode($student->nis) }}" 
-                     onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + encodeURIComponent('{{ $student->nis }}');"
-                     alt="QR Code NIS {{ $student->nis }}" 
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode($student->nisn ?? $student->nis) }}" 
+                     onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + encodeURIComponent('{{ $student->nisn ?? $student->nis }}');"
+                     alt="QR Code NISN {{ $student->nisn ?? $student->nis }}" 
                      class="w-32 h-32 mx-auto rounded-lg">
-                <p class="text-[10px] font-mono text-slate-400 mt-1 font-semibold">NIS: {{ $student->nis }}</p>
+                <p class="text-[10px] font-mono text-slate-400 mt-1 font-semibold">NISN: {{ $student->nisn ?? $student->nis }}</p>
             </div>
         </div>
 
