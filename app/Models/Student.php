@@ -64,16 +64,50 @@ class Student extends Model
         'tahun_lahir_ibu',
         'pendidikan_ibu',
         'penghasilan_ibu',
+        'status',
+        'tahun_lulus',
+        'tanggal_lulus',
+        'no_ijazah',
+        'sekolah_lanjutan',
+        'catatan_kelulusan',
     ];
 
     protected $casts = [
         'is_abk' => 'boolean',
         'tanggal_lahir' => 'date',
+        'tanggal_lulus' => 'date',
         'tinggi_badan' => 'integer',
         'berat_badan' => 'integer',
         'lingkar_kepala' => 'integer',
         'jumlah_saudara_kandung' => 'integer',
     ];
+
+    /**
+     * Scope to only query active students.
+     */
+    public function scopeAktif($query)
+    {
+        return $query->where(function ($q) {
+            $q->where('status', 'aktif')->orWhereNull('status');
+        });
+    }
+
+    /**
+     * Scope to only query graduated students (alumni).
+     */
+    public function scopeAlumni($query)
+    {
+        return $query->where('status', 'lulus');
+    }
+
+    /**
+     * Check if student is an alumnus/alumna.
+     */
+    public function isAlumni(): bool
+    {
+        return $this->status === 'lulus';
+    }
+
 
     /**
      * Backward-compatibility accessor for NIS -> NISN.

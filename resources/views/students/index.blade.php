@@ -5,25 +5,62 @@
                 <h2 class="text-xl lg:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
                     <span>Data Siswa NTO National Plus</span>
                 </h2>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5">Kelola data seluruh siswa terdaftar di sekolah</p>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5">Kelola data seluruh siswa aktif terdaftar di sekolah</p>
             </div>
-            @if(Auth::user() && Auth::user()->isAdmin())
-                <a href="{{ route('students.create') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-red-600/30 transition duration-200 cursor-pointer">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    <span>Tambah Siswa Baru</span>
+            <div class="flex items-center gap-2 flex-wrap">
+                <a href="{{ route('alumni.index') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-2xl text-xs shadow-md transition duration-200 cursor-pointer">
+                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path></svg>
+                    <span>Direktori Alumni</span>
                 </a>
-            @endif
+                @if(Auth::user() && Auth::user()->isAdmin())
+                    <a href="{{ route('students.create') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-red-600/30 transition duration-200 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <span>Tambah Siswa Baru</span>
+                    </a>
+                @endif
+            </div>
         </div>
     </x-slot>
 
-    <div class="space-y-6" x-data="{ qrModalOpen: false, selectedStudent: null, openQrModal(student) { this.selectedStudent = student; this.qrModalOpen = true; } }">
+    <div class="space-y-6" x-data="{
+        qrModalOpen: false,
+        selectedStudent: null,
+        openQrModal(student) { this.selectedStudent = student; this.qrModalOpen = true; },
+        graduateModalOpen: false,
+        openGraduateModal(student) { this.selectedStudent = student; this.graduateModalOpen = true; },
+        bulkGraduateModalOpen: false,
+        selectedIds: [],
+        selectAll: false,
+        toggleSelectAll(ids) {
+            if (this.selectAll) {
+                this.selectedIds = [...ids];
+            } else {
+                this.selectedIds = [];
+            }
+        },
+        openBulkModal() {
+            if (this.selectedIds.length === 0) {
+                alert('Pilih minimal satu siswa untuk diluluskan secara massal.');
+                return;
+            }
+            this.bulkGraduateModalOpen = true;
+        }
+    }">
         
         <!-- Flash Alert -->
         @if(session('success'))
-            <div class="p-4 bg-red-50 border border-red-200 text-red-900 rounded-2xl text-xs font-extrabold flex items-center justify-between shadow-2xs">
+            <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-2xl text-xs font-extrabold flex items-center justify-between shadow-2xs">
                 <div class="flex items-center gap-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
                     <span>{{ session('success') }}</span>
+                </div>
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="p-4 bg-rose-50 border border-rose-200 text-rose-900 rounded-2xl text-xs font-extrabold flex items-center justify-between shadow-2xs">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>
+                    <span>{{ session('error') }}</span>
                 </div>
             </div>
         @endif
@@ -63,7 +100,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama siswa atau NIS..."
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama siswa, NISN, atau NIK..."
                            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:ring-2 focus:ring-red-600 focus:bg-white transition">
                 </div>
 
@@ -77,11 +114,30 @@
             </form>
         </div>
 
+        <!-- Floating Bulk Action Bar (Visible when checkboxes selected) -->
+        <div x-show="selectedIds.length > 0" x-transition.duration.200ms class="p-4 bg-slate-900 text-white rounded-3xl shadow-xl border border-slate-800 flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-full bg-red-600 text-white font-black text-xs flex items-center justify-center shadow-md shadow-red-600/50" x-text="selectedIds.length"></span>
+                <div>
+                    <h4 class="font-extrabold text-xs text-white">Siswa Terpilih</h4>
+                    <p class="text-[11px] text-slate-400 font-medium">Siap dipindahkan ke Data Alumni</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" @click="openBulkModal()" class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black rounded-xl text-xs shadow-lg transition flex items-center gap-1.5 cursor-pointer">
+                    <span>🎓 Luluskan Siswa Terpilih (Massal)</span>
+                </button>
+                <button type="button" @click="selectedIds = []; selectAll = false;" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition">
+                    Batal
+                </button>
+            </div>
+        </div>
+
         <!-- Students Data Table Container -->
         <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
             <div class="px-6 py-4 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
                 <h3 class="font-black text-slate-900 text-xs uppercase tracking-wider">
-                    Daftar Siswa Terdaftar (Total: {{ $students->total() }})
+                    Daftar Siswa Aktif (Total: {{ $students->total() }})
                 </h3>
             </div>
 
@@ -89,6 +145,11 @@
                 <table class="w-full text-left text-sm text-slate-700">
                     <thead class="bg-slate-50 text-slate-500 text-[11px] uppercase font-black tracking-wider border-b border-slate-100">
                         <tr>
+                            @if(Auth::user() && Auth::user()->isAdmin())
+                                <th class="px-4 py-3.5 text-center w-10">
+                                    <input type="checkbox" x-model="selectAll" @change="toggleSelectAll({{ json_encode($students->pluck('id')) }})" class="rounded border-slate-300 text-red-600 focus:ring-red-500 cursor-pointer">
+                                </th>
+                            @endif
                             <th class="px-6 py-3.5">NISN</th>
                             <th class="px-6 py-3.5">Siswa</th>
                             <th class="px-6 py-3.5">Kelas</th>
@@ -98,7 +159,12 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse($students as $student)
-                            <tr class="hover:bg-red-50/40 transition duration-150">
+                            <tr class="hover:bg-red-50/40 transition duration-150" :class="selectedIds.includes({{ $student->id }}) ? 'bg-red-50/60' : ''">
+                                @if(Auth::user() && Auth::user()->isAdmin())
+                                    <td class="px-4 py-4 text-center">
+                                        <input type="checkbox" value="{{ $student->id }}" x-model="selectedIds" class="rounded border-slate-300 text-red-600 focus:ring-red-500 cursor-pointer">
+                                    </td>
+                                @endif
                                 <td class="px-6 py-4 font-mono font-bold text-xs text-slate-600">
                                     {{ $student->nisn ?? $student->nis }}
                                 </td>
@@ -131,21 +197,27 @@
                                 <td class="px-6 py-4 text-xs font-bold text-slate-600">
                                     {{ $student->jenis_kelamin }}
                                 </td>
-                                <td class="px-6 py-4 text-right space-x-1.5">
+                                <td class="px-6 py-4 text-right space-x-1.5 whitespace-nowrap">
                                     <a href="{{ route('students.show', $student) }}" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
                                         👁️ Detail
                                     </a>
                                     <button type="button" @click="openQrModal({{ json_encode($student) }})" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold transition cursor-pointer">
                                         📷 QR
                                     </button>
+
                                     @if(Auth::user() && Auth::user()->isAdmin())
+                                        <button type="button" @click="openGraduateModal({{ json_encode($student) }})" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition cursor-pointer" title="Luluskan siswa dan pindahkan ke data alumni">
+                                            🎓 Luluskan
+                                        </button>
+
                                         <a href="{{ route('students.edit', $student) }}" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-xl text-xs font-bold transition">
                                             ✏️ Edit
                                         </a>
+
                                         <form method="POST" action="{{ route('students.destroy', $student) }}" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data siswa ini?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="inline-flex items-center gap-1 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition cursor-pointer">
+                                            <button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition cursor-pointer">
                                                 🗑️ Hapus
                                             </button>
                                         </form>
@@ -154,8 +226,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-8 text-center text-xs font-semibold text-slate-400 italic">
-                                    Tidak ada data siswa yang ditemukan.
+                                <td colspan="{{ Auth::user() && Auth::user()->isAdmin() ? '6' : '5' }}" class="px-6 py-8 text-center text-xs font-semibold text-slate-400 italic">
+                                    Tidak ada data siswa aktif yang ditemukan.
                                 </td>
                             </tr>
                         @endforelse
@@ -193,6 +265,131 @@
                         </div>
                     </div>
                 </template>
+            </div>
+        </div>
+
+        <!-- Modal Kelulusan 1 Siswa (Single Graduate) -->
+        <div x-show="graduateModalOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" style="display: none;">
+            <div @click.away="graduateModalOpen = false" class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-100 space-y-4">
+                <template x-if="selectedStudent">
+                    <div>
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <div>
+                                <h3 class="font-black text-base text-slate-900 flex items-center gap-2">
+                                    <span>🎓 Luluskan Siswa ke Alumni</span>
+                                </h3>
+                                <p class="text-xs text-slate-500 font-semibold" x-text="selectedStudent.nama + ' &bull; Kelas ' + selectedStudent.kelas"></p>
+                            </div>
+                            <button type="button" @click="graduateModalOpen = false" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                        </div>
+
+                        <form :action="'/students/' + selectedStudent.id + '/graduate'" method="POST" class="space-y-4 mt-4">
+                            @csrf
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Tahun Kelulusan / Angkatan *</label>
+                                    <input type="text" name="tahun_lulus" value="{{ date('Y') . '/' . (date('Y') + 1) }}" required placeholder="Contoh: 2024/2025"
+                                           class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-600">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Kelulusan</label>
+                                    <input type="date" name="tanggal_lulus" value="{{ date('Y-m-d') }}"
+                                           class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-600">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Nomor Ijazah / SKL (Opsional)</label>
+                                <input type="text" name="no_ijazah" placeholder="Contoh: DN-24/D-SD/13/0012345"
+                                       class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-600">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Sekolah Lanjutan (Opsional)</label>
+                                <input type="text" name="sekolah_lanjutan" placeholder="Contoh: SMP Kristen Petra Kupang"
+                                       class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-600">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Kelulusan</label>
+                                <textarea name="catatan_kelulusan" rows="2" placeholder="Keterangan predikat kelulusan atau catatan..."
+                                          class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-600"></textarea>
+                            </div>
+
+                            <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-[11px] text-amber-900 font-medium">
+                                ℹ️ Siswa yang diluluskan akan dipindahkan ke menu <strong>Data Alumni</strong> dan tidak akan muncul di daftar presensi harian kelas berjalan.
+                            </div>
+
+                            <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                                <button type="button" @click="graduateModalOpen = false" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+                                    Batal
+                                </button>
+                                <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-extrabold shadow-md transition">
+                                    Konfirmasi Luluskan Siswa
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Modal Kelulusan Massal (Bulk Graduate) -->
+        <div x-show="bulkGraduateModalOpen" x-transition.opacity class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" style="display: none;">
+            <div @click.away="bulkGraduateModalOpen = false" class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-100 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-black text-base text-slate-900 flex items-center gap-2">
+                            <span>🎓 Kelulusan Massal Siswa Terpilih</span>
+                        </h3>
+                        <p class="text-xs text-slate-500 font-semibold">
+                            Total <strong class="text-red-600" x-text="selectedIds.length"></strong> siswa akan dipindahkan serentak ke Data Alumni
+                        </p>
+                    </div>
+                    <button type="button" @click="bulkGraduateModalOpen = false" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                </div>
+
+                <form action="{{ route('students.bulk-graduate') }}" method="POST" class="space-y-4">
+                    @csrf
+
+                    <!-- Hidden Inputs for Selected Student IDs -->
+                    <template x-for="id in selectedIds" :key="id">
+                        <input type="hidden" name="student_ids[]" :value="id">
+                    </template>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Tahun Kelulusan / Angkatan *</label>
+                            <input type="text" name="tahun_lulus" value="{{ date('Y') . '/' . (date('Y') + 1) }}" required placeholder="Contoh: 2024/2025"
+                                   class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Kelulusan</label>
+                            <input type="date" name="tanggal_lulus" value="{{ date('Y-m-d') }}"
+                                   class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-600">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Kelulusan (Opsional)</label>
+                        <textarea name="catatan_kelulusan" rows="2" placeholder="Catatan angkatan kelulusan ini..."
+                                  class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-600"></textarea>
+                    </div>
+
+                    <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-[11px] text-amber-900 font-medium">
+                        ⚠️ Seluruh siswa terpilih akan berstatus Alumni dan dipindahkan dari daftar presensi harian. Nomor ijazah perorangan dapat dilengkapi nanti di menu Data Alumni.
+                    </div>
+
+                    <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                        <button type="button" @click="bulkGraduateModalOpen = false" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+                            Batal
+                        </button>
+                        <button type="submit" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-extrabold shadow-md transition">
+                            Luluskan Siswa Sekarang
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 

@@ -18,13 +18,14 @@ Sistem Informasi Manajemen Sekolah dan Presensi Terpadu Berbasis Web yang diranc
   - [3. Portal Orang Tua Siswa](#3-portal-orang-tua-siswa)
 - [Modul & Fitur Utama](#-modul--fitur-utama)
   - [1. Modul Biodata Lengkap Siswa & Profil Dapodik (NISN)](#1-modul-biodata-lengkap-siswa--profil-dapodik-nisn)
-  - [2. Modul Pekerjaan Rumah (PR) & Penilaian Siswa](#2-modul-pekerjaan-rumah-pr--penilaian-siswa)
-  - [3. Modul Tagihan & Pembayaran Keuangan (SPP)](#3-modul-tagihan--pembayaran-keuangan-spp)
-  - [4. Modul Surat Izin Orang Tua & Verifikasi Wali Kelas](#4-modul-surat-izin-orang-tua--verifikasi-wali-kelas)
-  - [5. Modul Presensi Harian & QR Code Scanner](#5-modul-presensi-harian--qr-code-scanner)
-  - [6. Panel Manajemen Guru & Switch Account (Impersonate)](#6-panel-manajemen-guru--switch-account-impersonate)
-  - [7. Manajemen Password & Reset Mandiri](#7-manajemen-password--reset-mandiri)
-  - [8. Keamanan & Proteksi Data (Security Hardening)](#8-keamanan--proteksi-data-security-hardening)
+  - [2. Modul Alumni & Rekapitulasi Kelulusan Siswa (PDF / SKL)](#2-modul-alumni--rekapitulasi-kelulusan-siswa-pdf--skl)
+  - [3. Modul Pekerjaan Rumah (PR) & Penilaian Siswa](#3-modul-pekerjaan-rumah-pr--penilaian-siswa)
+  - [4. Modul Tagihan & Pembayaran Keuangan (SPP)](#4-modul-tagihan--pembayaran-keuangan-spp)
+  - [5. Modul Surat Izin Orang Tua & Verifikasi Wali Kelas](#5-modul-surat-izin-orang-tua--verifikasi-wali-kelas)
+  - [6. Modul Presensi Harian & QR Code Scanner](#6-modul-presensi-harian--qr-code-scanner)
+  - [7. Panel Manajemen Guru & Switch Account (Impersonate)](#7-panel-manajemen-guru--switch-account-impersonate)
+  - [8. Manajemen Password & Reset Mandiri](#8-manajemen-password--reset-mandiri)
+  - [9. Keamanan & Proteksi Data (Security Hardening)](#9-keamanan--proteksi-data-security-hardening)
 - [Panduan Instalasi & Pengoperasian](#-panduan-instalasi--pengoperasian)
 - [Pengujian Sistem (TDD / Testing)](#-pengujian-sistem-tdd--testing)
 - [Lisensi](#-lisensi)
@@ -33,7 +34,7 @@ Sistem Informasi Manajemen Sekolah dan Presensi Terpadu Berbasis Web yang diranc
 
 ## 🏫 Deskripsi Sistem
 
-Portal Sekolah NTO National Plus merupakan platform operasional terpadu yang menghubungkan Administrator, Guru/Wali Kelas, dan Orang Tua Siswa secara *real-time*. Platform ini mengotomatisasi pendataan biodata komprehensif siswa standar Dapodik/Kependudukan, pencatatan kehadiran berbasis kartu QR Code dengan NISN, distribusi tugas PR dan penilaian digital, pemantauan pembayaran SPP/tagihan, hingga verifikasi surat izin sakit siswa.
+Portal Sekolah NTO National Plus merupakan platform operasional terpadu yang menghubungkan Administrator, Guru/Wali Kelas, dan Orang Tua Siswa secara *real-time*. Platform ini mengotomatisasi pendataan biodata komprehensif siswa standar Dapodik/Kependudukan, manajemen arsip kelulusan & alumni, pencatatan kehadiran berbasis kartu QR Code dengan NISN, distribusi tugas PR dan penilaian digital, pemantauan pembayaran SPP/tagihan, hingga verifikasi surat izin sakit siswa.
 
 ---
 
@@ -46,14 +47,14 @@ Basis data bawaan (*clean database*) telah disediakan akun Administrator utama u
 
 | Peran (Role) | Alamat Email | Kata Sandi | Wewenang & Hak Akses |
 | :--- | :--- | :--- | :--- |
-| **Administrator Utama** | `admin@nto-kupang.sch.id` | `admin123` | Akses Penuh Sistem: Master Data Biodata Lengkap Siswa, Kelola Akun Guru, Buat Tagihan SPP & Verifikasi Pembayaran, Switch Mode Guru (Impersonate), Pengaturan Jam Masuk/Pulang, Pantau Surat Izin, Reset Sandi Pengguna. |
+| **Administrator Utama** | `admin@nto-kupang.sch.id` | `admin123` | Akses Penuh Sistem: Master Data Biodata Lengkap Siswa, Kelulusan & Arsip Alumni, Kelola Akun Guru, Buat Tagihan SPP & Verifikasi Pembayaran, Switch Mode Guru (Impersonate), Pengaturan Jam Masuk/Pulang, Pantau Surat Izin, Reset Sandi Pengguna. |
 
 ---
 
 ### 2. Akun Guru / Wali Kelas
 Akun Guru / Wali Kelas dapat ditambahkan dan diatur oleh Administrator melalui menu **Kelola Guru**. Setiap wali kelas memiliki isolasi data (*scoping*) sesuai kelas yang diampu:
 - **Tingkat Kelas Tersedia:** *Nursery, Pre-K, Kindergarten, Primary Preparation, Primary A, Primary B, Primary C, Junior High, Senior High, Kelas 1 - 6*.
-- **Hak Akses:** Input presensi harian kelas binaan, buat & bagikan PR, periksa foto jawaban PR, beri nilai (0-100) & catatan guru, cetak rekap nilai A4, konfirmasi terima/tolak surat izin siswa, melihat foto profil & kartu QR siswa binaan (*read-only* tanpa izin edit biodata).
+- **Hak Akses:** Input presensi harian kelas binaan, buat & bagikan PR, periksa foto jawaban PR, beri nilai (0-100) & catatan guru, cetak rekap nilai A4, konfirmasi terima/tolak surat izin siswa, melihat foto profil & kartu QR siswa binaan, serta melihat direktori arsip alumni (*read-only*).
 
 ---
 
@@ -81,41 +82,51 @@ Akun Orang Tua dibuat secara otomatis ketika data siswa ditambahkan oleh Admin:
 - **Tampilan Foto Profil Siswa Terpadu:**
   - Foto resmi siswa yang diinput oleh Administrator otomatis disinkronisasi ke Dashboard Orang Tua, Portal Guru, Kartu Identitas QR Code, dan Scanner Presensi tanpa risiko *broken image*.
 
-### 2. Modul Pekerjaan Rumah (PR) & Penilaian Siswa
+### 2. Modul Alumni & Rekapitulasi Kelulusan Siswa (PDF / SKL)
+- **Dua Mekanisme Pemindahan Kelulusan:**
+  - **Kelulusan Satuan:** Tombol `🎓 Luluskan` di setiap baris siswa dengan modal interaktif untuk menginput tahun kelulusan, nomor seri ijazah, sekolah lanjutan, dan catatan prestasi.
+  - **Kelulusan Massal (Bulk Graduation):** Fitur seleksi checklist siswa per kelas untuk meluluskan puluhan siswa sekaligus secara serentak ke direktori alumni hanya dalam 1-klik.
+- **Fitur Pembatalan Kelulusan (Revert to Active):** Opsi instan bagi Administrator untuk mengembalikan status alumni menjadi siswa aktif jika terjadi kekeliruan tanpa menghilangkan integritas data riwayat sebelumnya.
+- **Isolasi Data Otomatis:** Siswa yang berstatus Alumni otomatis disembunyikan dari presensi harian kelas berjalan oleh guru dan terisolasi dari penagihan SPP baru, sementara rekap riwayat masa lalunya tetap tersimpan utuh di sistem.
+- **2 Pilihan Cetak Dokumen Resmi (Print to PDF):**
+  1. **Buku Rekapitulasi Data Alumni (A4 Lanskap):** Format cetak resmi ber-Kop Sekolah NTO Kupang dengan filter per angkatan kelulusan atau keseluruhan, dilengkapi tanda tangan Kepala Sekolah.
+  2. **Surat Keterangan Lulus / SKL Satuan (A4 Potret):** Format surat resmi satuan untuk legalisir kelulusan siswa, lengkap dengan pasfoto, nomor surat, identitas kependudukan, dan pengesahan sekolah.
+
+### 3. Modul Pekerjaan Rumah (PR) & Penilaian Siswa
 - **Pembuatan Tugas Fleksibel:** Guru dapat menugaskan PR untuk seluruh siswa di kelasnya atau khusus siswa tertentu (*remedial/tugas khusus*) dengan batas waktu (*deadline*) dan lampiran berkas materi/soal.
 - **Pengumpulan Digital oleh Siswa:** Orang tua dapat melihat instruksi dan mengunggah foto lembar jawaban PR langsung dari portal.
 - **Penilaian & Evaluasi Guru:** Guru dapat melihat pratinjau foto jawaban, menginput nilai skala 0–100, memberikan catatan *feedback*, serta melihat statistik nilai tertinggi, terendah, dan rata-rata kelas.
 - **Fitur Hapus PR Manual Siswa:** Guru/Wali Kelas memiliki opsi untuk menghapus data pengumpulan PR siswa secara manual (termasuk yang sudah dinilai) lengkap dengan pembersihan file foto dari storage jika diperlukan pengumpulan ulang.
 - **Cetak Rekap Nilai A4:** Cetak rekapitulasi penilaian dan pengumpulan tugas dalam format resmi A4.
 
-### 3. Modul Tagihan & Pembayaran Keuangan (SPP)
+### 4. Modul Tagihan & Pembayaran Keuangan (SPP)
 - **Penerbitan Tagihan:** Admin dapat membuat tagihan per siswa spesifik atau serentak ke seluruh siswa dalam satu kelas.
 - **Pengunggahan Bukti Transfer:** Orang tua dapat melihat status tagihan (*Belum Lunas, Menunggu Verifikasi, Lunas, Ditolak*) dan mengunggah bukti transfer/struk pembayaran.
 - **Verifikasi Pembayaran oleh Admin:** Admin meninjau bukti pembayaran lalu menyetujui (status menjadi *LUNAS*) atau menolak bukti dengan catatan revisi.
 
-### 4. Modul Surat Izin Orang Tua & Verifikasi Wali Kelas
+### 5. Modul Surat Izin Orang Tua & Verifikasi Wali Kelas
 - **Pengajuan Izin Mandiri:** Orang tua dapat mengajukan izin/sakit dengan melampirkan foto surat dokter atau surat izin bertandatangan.
 - **Otoritas Khusus Wali Kelas:** Hak konfirmasi Terima (*Setujui*) atau Tolak surat izin hanya dimiliki oleh Guru/Wali Kelas dari kelas siswa terkait. Jika ditolak, status kehadiran siswa otomatis berubah menjadi **Alpa**.
 - **Mode Monitor Admin:** Admin bertindak sebagai pemantau (*read-only*) untuk menjaga integritas data tanpa mengambil alih wewenang wali kelas.
 - **Hapus Berkas Surat:** Guru, Admin, atau Orang Tua pemilik dapat menghapus berkas lampiran jika terjadi kesalahan unggah.
 
-### 5. Modul Presensi Harian & QR Code Scanner
+### 6. Modul Presensi Harian & QR Code Scanner
 - **Cetak Kartu QR Code:** Setiap siswa memiliki kartu ID berisikan QR Code unik berbasis NISN siap cetak lengkap dengan foto siswa.
 - **Scanner Terintegrasi:** Mendukung pemindaian via kamera perangkat (laptop/smartphone) maupun barcode scanner eksternal.
 - **Deteksi Keterlambatan Otomatis:** Perhitungan durasi keterlambatan presisi (dalam menit/jam) berdasarkan jam operasional sekolah untuk siswa reguler maupun siswa ABK.
 - **Proteksi Scan Pertama:** Pemindaian ganda pada hari yang sama tidak akan menimpa waktu scan kedatangan pertama.
 - **Rekap Bulanan & Cetak A4 Lanskap:** Visualisasi matriks kehadiran bulanan dan cetak rekap absensi resmi A4.
 
-### 6. Panel Manajemen Guru & Switch Account (Impersonate)
+### 7. Panel Manajemen Guru & Switch Account (Impersonate)
 - **Kelola Akun Guru:** Admin dapat menambah, mengedit, atau menghapus akun guru serta menetapkan kelas yang diampu.
 - **Fitur Switch Account:** Fasilitas 1-klik bagi Admin untuk beralih sesi (*login sebagai guru*) guna memeriksa tampilan portal guru tanpa perlu logout, serta tombol kembali ke akun Admin kapan saja.
 
-### 7. Manajemen Password & Reset Mandiri
+### 8. Manajemen Password & Reset Mandiri
 - **Permintaan Reset Sandi:** Pengguna yang lupa kata sandi dapat mengirimkan permohonan melalui halaman Login tanpa konfigurasi SMTP email rumit.
 - **Panel Persetujuan Admin:** Admin menerima daftar permintaan reset dan dapat menetapkan password baru secara instan.
 - **Show / Hide Password:** Ikon toggle mata pada seluruh form input sandi untuk kenyamanan pengguna.
 
-### 8. Keamanan & Proteksi Data (Security Hardening)
+### 9. Keamanan & Proteksi Data (Security Hardening)
 - **Input Sanitization & CSRF Protection:** Validasi ketat pada seluruh form input data siswa, sanitasi tipe data numerik (NIK 16 digit, NISN, No KK), serta perlindungan CSRF token bawaan Laravel.
 - **Path Traversal Protection:** Penanganan route storage fallback diamankan secara ketat terhadap injeksi `..`, null-byte, dan penolakan otomatis untuk file konfigurasi sensitif (*dotfiles* seperti `.env`).
 - **Orphan File Cleanup:** Pembersihan file fisik otomatis di disk storage saat data siswa, foto profil, surat izin, bukti pembayaran, atau PR dihapus/diperbarui.

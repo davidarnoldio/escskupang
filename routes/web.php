@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminPasswordController;
+use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeworkController;
@@ -59,8 +60,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/parent/homeworks/{homework}/submit', [HomeworkController::class, 'submitHomework'])->name('parent.submit-homework');
 
     // Student CRUD & QR Card
+    Route::post('/students/bulk-graduate', [AlumniController::class, 'bulkGraduate'])->name('students.bulk-graduate');
+    Route::post('/students/{student}/graduate', [AlumniController::class, 'graduate'])->name('students.graduate');
     Route::resource('students', StudentController::class);
     Route::get('/students/{student}/qr-card', [QRController::class, 'card'])->name('students.qr-card');
+
+    // Alumni Management & Print Recap / SKL
+    Route::get('/alumni', [AlumniController::class, 'index'])->name('alumni.index');
+    Route::get('/alumni/print-rekap', [AlumniController::class, 'printRekap'])->name('alumni.print-rekap');
+    Route::get('/alumni/{student}/print-skl', [AlumniController::class, 'printSkl'])->name('alumni.print-skl');
+    Route::post('/alumni/{student}/revert', [AlumniController::class, 'revert'])->name('alumni.revert');
+    Route::put('/alumni/{student}', [AlumniController::class, 'update'])->name('alumni.update');
 
     // Teacher Management (Admin Only)
     Route::resource('teachers', TeacherController::class);

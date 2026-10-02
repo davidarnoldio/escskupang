@@ -28,7 +28,7 @@ class StudentController extends Controller
         $search = $request->input('search');
         $kelas = $assignedClass ?? $request->input('kelas');
 
-        $query = Student::query();
+        $query = Student::aktif();
 
         if ($assignedClass) {
             $query->where('kelas', $assignedClass);

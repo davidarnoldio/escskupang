@@ -30,7 +30,7 @@ class AttendanceController extends Controller
 
         $classList = Student::getAllClasses();
 
-        $studentsQuery = Student::query()->orderBy('nama', 'asc');
+        $studentsQuery = Student::aktif()->orderBy('nama', 'asc');
 
         if ($assignedClass) {
             $studentsQuery->where('kelas', $assignedClass);
