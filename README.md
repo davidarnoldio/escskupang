@@ -26,6 +26,7 @@ Sistem Informasi Manajemen Sekolah dan Presensi Terpadu Berbasis Web yang diranc
   - [7. Panel Manajemen Guru & Switch Account (Impersonate)](#7-panel-manajemen-guru--switch-account-impersonate)
   - [8. Manajemen Password & Reset Mandiri](#8-manajemen-password--reset-mandiri)
   - [9. Keamanan & Proteksi Data (Security Hardening)](#9-keamanan--proteksi-data-security-hardening)
+  - [10. Sistem Notifikasi Toast Interaktif (Real-Time Feedback)](#10-sistem-notifikasi-toast-interaktif-real-time-feedback)
 - [Panduan Instalasi & Pengoperasian](#-panduan-instalasi--pengoperasian)
 - [Pengujian Sistem (TDD / Testing)](#-pengujian-sistem-tdd--testing)
 - [Lisensi](#-lisensi)
@@ -131,6 +132,11 @@ Akun Orang Tua dibuat secara otomatis ketika data siswa ditambahkan oleh Admin:
 - **Path Traversal Protection:** Penanganan route storage fallback diamankan secara ketat terhadap injeksi `..`, null-byte, dan penolakan otomatis untuk file konfigurasi sensitif (*dotfiles* seperti `.env`).
 - **Orphan File Cleanup:** Pembersihan file fisik otomatis di disk storage saat data siswa, foto profil, surat izin, bukti pembayaran, atau PR dihapus/diperbarui.
 - **Strict Role Authorization:** Seluruh aksi manipulasi data divalidasi pada level controller dengan guard `isAdmin()` untuk mencegah eskalasi hak akses (*privilege escalation*).
+
+### 10. Sistem Notifikasi Toast Interaktif (Real-Time Feedback)
+- **Feedback Otomatis Setiap Aksi Simpan:** Notifikasi pop-up melayang (*floating toast*) otomatis muncul di pojok kanan atas layar setiap kali pengguna berhasil menyimpan perubahan data (edit siswa, simpan nilai PR, update jam operasional, mutasi kelulusan alumni, dsb.).
+- **Indikator Multi-Tipe & Visual Interaktif:** Dilengkapi ikon animasi, indikator warna tematik (*Success, Error, Warning, Info*), badge status, dan tombol dismiss silang (`×`).
+- **Progress Bar Countdown:** Dilengkapi bar waktu mundur animasi selama 5 detik yang secara otomatis menutup notifikasi tanpa mengganggu alur kerja pengguna.
 
 ---
 
