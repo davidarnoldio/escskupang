@@ -104,8 +104,19 @@
                             @endphp
                             <tr class="hover:bg-slate-50/80 transition">
                                 <td class="py-3.5 px-4 font-bold text-slate-900">
-                                    <div>{{ $st->nama }}</div>
-                                    <div class="text-[10px] text-slate-400 font-medium">NIS: {{ $st->nis }}</div>
+                                    <div class="flex items-center gap-3">
+                                        @if($st->foto_url)
+                                            <img src="{{ $st->foto_url }}" alt="{{ $st->nama }}" class="w-8 h-8 rounded-full object-cover border border-slate-200 shrink-0">
+                                        @else
+                                            <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center border border-slate-200 shrink-0">
+                                                {{ strtoupper(substr($st->nama, 0, 2)) }}
+                                            </div>
+                                        @endif
+                                        <div>
+                                            <div class="text-xs font-bold text-slate-900">{{ $st->nama }}</div>
+                                            <div class="text-[10px] text-slate-400 font-mono">NIS: {{ $st->nis }}</div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="py-3.5 px-4">
                                     @if($sub)

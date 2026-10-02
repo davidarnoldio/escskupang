@@ -16,8 +16,8 @@ class AlumniController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
-            abort(403, 'Akses data alumni khusus Guru dan Administrator.');
+        if (!$user || !$user->isAdmin()) {
+            abort(403, 'Akses data alumni khusus Administrator.');
         }
 
         $search = $request->input('search');
@@ -191,8 +191,8 @@ class AlumniController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
-            abort(403, 'Akses cetak rekap alumni khusus Guru dan Administrator.');
+        if (!$user || !$user->isAdmin()) {
+            abort(403, 'Akses cetak rekap alumni khusus Administrator.');
         }
 
         $tahunLulus = $request->input('tahun_lulus');
@@ -231,8 +231,8 @@ class AlumniController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
-            abort(403, 'Akses cetak SKL khusus Guru dan Administrator.');
+        if (!$user || !$user->isAdmin()) {
+            abort(403, 'Akses cetak SKL khusus Administrator.');
         }
 
         if ($student->status !== 'lulus') {

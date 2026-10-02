@@ -191,8 +191,19 @@
                                         {{ \Carbon\Carbon::parse($att->tanggal)->isoFormat('D MMMM YYYY') }}
                                     </td>
                                     <td class="px-5 py-4">
-                                        <div class="font-extrabold text-slate-900">{{ $att->student->nama ?? '-' }}</div>
-                                        <div class="text-xs font-mono text-slate-400">NIS: {{ $att->student->nis ?? '-' }}</div>
+                                        <div class="flex items-center gap-3">
+                                            @if($att->student && $att->student->foto_url)
+                                                <img src="{{ $att->student->foto_url }}" alt="{{ $att->student->nama }}" class="w-8 h-8 rounded-full object-cover border border-slate-200 shrink-0">
+                                            @else
+                                                <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center border border-slate-200 shrink-0">
+                                                    {{ strtoupper(substr($att->student->nama ?? 'S', 0, 2)) }}
+                                                </div>
+                                            @endif
+                                            <div>
+                                                <div class="font-extrabold text-slate-900">{{ $att->student->nama ?? '-' }}</div>
+                                                <div class="text-xs font-mono text-slate-400">NIS: {{ $att->student->nis ?? '-' }}</div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td class="px-5 py-4 whitespace-nowrap">
                                         <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-50 text-red-900 border border-red-200">

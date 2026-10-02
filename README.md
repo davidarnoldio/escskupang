@@ -18,7 +18,7 @@ Sistem Informasi Manajemen Sekolah dan Presensi Terpadu Berbasis Web yang diranc
   - [3. Portal Orang Tua Siswa](#3-portal-orang-tua-siswa)
 - [Modul & Fitur Utama](#-modul--fitur-utama)
   - [1. Modul Biodata Lengkap Siswa & Profil Dapodik (NISN)](#1-modul-biodata-lengkap-siswa--profil-dapodik-nisn)
-  - [2. Modul Alumni & Rekapitulasi Kelulusan Siswa (PDF / SKL)](#2-modul-alumni--rekapitulasi-kelulusan-siswa-pdf--skl)
+  - [2. Modul Alumni & Rekapitulasi Kelulusan Siswa (Khusus Administrator)](#2-modul-alumni--rekapitulasi-kelulusan-siswa-khusus-administrator)
   - [3. Modul Pekerjaan Rumah (PR) & Penilaian Siswa](#3-modul-pekerjaan-rumah-pr--penilaian-siswa)
   - [4. Modul Tagihan & Pembayaran Keuangan (SPP)](#4-modul-tagihan--pembayaran-keuangan-spp)
   - [5. Modul Surat Izin Orang Tua & Verifikasi Wali Kelas](#5-modul-surat-izin-orang-tua--verifikasi-wali-kelas)
@@ -55,7 +55,7 @@ Basis data bawaan (*clean database*) telah disediakan akun Administrator utama u
 ### 2. Akun Guru / Wali Kelas
 Akun Guru / Wali Kelas dapat ditambahkan dan diatur oleh Administrator melalui menu **Kelola Guru**. Setiap wali kelas memiliki isolasi data (*scoping*) sesuai kelas yang diampu:
 - **Tingkat Kelas Tersedia:** *Nursery, Pre-K, Kindergarten, Primary Preparation, Primary A, Primary B, Primary C, Junior High, Senior High, Kelas 1 - 6*.
-- **Hak Akses:** Input presensi harian kelas binaan, buat & bagikan PR, periksa foto jawaban PR, beri nilai (0-100) & catatan guru, cetak rekap nilai A4, konfirmasi terima/tolak surat izin siswa, melihat foto profil & kartu QR siswa binaan, serta melihat direktori arsip alumni (*read-only*).
+- **Hak Akses:** Input presensi harian kelas binaan, buat & bagikan PR, periksa foto jawaban PR, beri nilai (0-100) & catatan guru, cetak rekap nilai A4, konfirmasi terima/tolak surat izin siswa, melihat foto profil & kartu QR siswa binaan (khusus menu Data Alumni dikelola eksklusif oleh Administrator).
 
 ---
 
@@ -83,7 +83,8 @@ Akun Orang Tua dibuat secara otomatis ketika data siswa ditambahkan oleh Admin:
 - **Tampilan Foto Profil Siswa Terpadu:**
   - Foto resmi siswa yang diinput oleh Administrator otomatis disinkronisasi ke Dashboard Orang Tua, Portal Guru, Kartu Identitas QR Code, dan Scanner Presensi tanpa risiko *broken image*.
 
-### 2. Modul Alumni & Rekapitulasi Kelulusan Siswa (PDF / SKL)
+### 2. Modul Alumni & Rekapitulasi Kelulusan Siswa (Khusus Administrator)
+- **Akses Eksklusif Administrator:** Sesuai kebijakan sekolah, seluruh tombol, navigasi, dan pengelolaan Data Alumni hanya dapat diakses oleh Administrator (tersembunyi secara total dari Guru/Wali Kelas dan Orang Tua).
 - **Dua Mekanisme Pemindahan Kelulusan:**
   - **Kelulusan Satuan:** Tombol `🎓 Luluskan` di setiap baris siswa dengan modal interaktif untuk menginput tahun kelulusan, nomor seri ijazah, sekolah lanjutan, dan catatan prestasi.
   - **Kelulusan Massal (Bulk Graduation):** Fitur seleksi checklist siswa per kelas untuk meluluskan puluhan siswa sekaligus secara serentak ke direktori alumni hanya dalam 1-klik.

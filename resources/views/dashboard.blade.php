@@ -226,9 +226,13 @@
                             <div class="py-3.5 flex items-center justify-between hover:bg-slate-50/80 px-2 rounded-2xl transition">
                                 <div class="flex items-center gap-3.5">
                                     <!-- Student Circle Avatar Badge -->
-                                    <div class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
-                                        {{ strtoupper(substr($student->nama, 0, 2)) }}
-                                    </div>
+                                    @if($student->foto_url)
+                                        <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}" class="w-10 h-10 rounded-full object-cover border border-slate-200 shadow-2xs">
+                                    @else
+                                        <div class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xs shadow-xs">
+                                            {{ strtoupper(substr($student->nama, 0, 2)) }}
+                                        </div>
+                                    @endif
                                     <div>
                                         <div class="text-xs font-bold text-slate-900 flex items-center gap-2">
                                             <span>{{ $student->nama }}</span>

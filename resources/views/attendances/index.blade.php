@@ -152,11 +152,22 @@
                                         {{ $student->nis }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="font-bold text-slate-900 flex items-center gap-2">
-                                            <span>{{ $student->nama }}</span>
-                                            @if($student->is_abk)
-                                                <span class="px-1.5 py-0.5 text-[9px] font-black rounded bg-amber-100 text-amber-900 border border-amber-300">ABK</span>
+                                        <div class="flex items-center gap-3">
+                                            @if($student->foto_url)
+                                                <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}" class="w-8 h-8 rounded-full object-cover border border-slate-200 shrink-0">
+                                            @else
+                                                <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center border border-slate-200 shrink-0">
+                                                    {{ strtoupper(substr($student->nama, 0, 2)) }}
+                                                </div>
                                             @endif
+                                            <div>
+                                                <div class="font-bold text-slate-900 flex items-center gap-2">
+                                                    <span>{{ $student->nama }}</span>
+                                                    @if($student->is_abk)
+                                                        <span class="px-1.5 py-0.5 text-[9px] font-black rounded bg-amber-100 text-amber-900 border border-amber-300">ABK</span>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">

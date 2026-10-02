@@ -128,13 +128,6 @@
                     <span>Data Siswa</span>
                 </a>
 
-                <!-- Data Alumni Link -->
-                <a href="{{ route('alumni.index') }}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('alumni.*') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
-                    <svg class="w-5 h-5 fill-none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path></svg>
-                    <span>Data Alumni</span>
-                </a>
-
                 <!-- Scan QR Code Link -->
                 <a href="{{ route('qr.scan') }}"
                    class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('qr.scan') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
@@ -183,6 +176,13 @@
                 @endif
 
                 @if($user && $user->isAdmin())
+                    <!-- Data Alumni Link (Admin Only) -->
+                    <a href="{{ route('alumni.index') }}"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('alumni.*') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                        <svg class="w-5 h-5 fill-none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path></svg>
+                        <span>Data Alumni</span>
+                    </a>
+
                     <!-- Pembayaran SPP Link (Admin Only) -->
                     <a href="{{ route('payments.index') }}"
                        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('payments.*') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
@@ -337,7 +337,6 @@
         @else
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Dashboard</a>
             <a href="{{ route('students.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Data Siswa</a>
-            <a href="{{ route('alumni.index') }}" class="block px-4 py-2 rounded-xl {{ request()->routeIs('alumni.*') ? 'bg-red-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 font-bold' }}">Data Alumni</a>
             <a href="{{ route('qr.scan') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Scan QR Code</a>
             <a href="{{ route('attendances.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Presensi Harian</a>
             <a href="{{ route('attendances.rekap') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Rekap Presensi</a>
@@ -360,6 +359,7 @@
                 </a>
             @endif
             @if($user && $user->isAdmin())
+                <a href="{{ route('alumni.index') }}" class="block px-4 py-2 rounded-xl {{ request()->routeIs('alumni.*') ? 'bg-red-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 font-bold' }}">Data Alumni</a>
                 <a href="{{ route('payments.index') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
                     <span>Pembayaran SPP</span>
                     @if($pendingPaymentsCount > 0)

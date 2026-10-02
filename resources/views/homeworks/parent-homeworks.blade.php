@@ -28,12 +28,18 @@
         <!-- Student Info Banner -->
         <div class="bg-gradient-to-r from-slate-900 to-red-950 p-6 rounded-3xl text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 border border-red-500/30">
             <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-red-600/30 border border-red-400/30 flex items-center justify-center font-black text-lg text-red-300 shadow-inner">
-                    {{ strtoupper(substr($student->nama, 0, 2)) }}
+                <div class="relative shrink-0">
+                    @if($student->foto_url)
+                        <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}" class="w-14 h-14 rounded-2xl object-cover border-2 border-red-400/50 shadow-md">
+                    @else
+                        <div class="w-14 h-14 rounded-2xl bg-red-600/30 border border-red-400/30 flex items-center justify-center font-black text-lg text-red-300 shadow-inner">
+                            {{ strtoupper(substr($student->nama, 0, 2)) }}
+                        </div>
+                    @endif
                 </div>
                 <div>
                     <h3 class="text-lg font-black tracking-tight">{{ $student->nama }}</h3>
-                    <p class="text-xs text-slate-300 font-medium">Kelas: <span class="font-bold text-red-300">{{ $student->kelas }}</span> | NIS: {{ $student->nis }}</p>
+                    <p class="text-xs text-slate-300 font-medium">Kelas: <span class="font-bold text-red-300">{{ $student->kelas }}</span> | NISN: {{ $student->nisn ?? $student->nis }}</p>
                 </div>
             </div>
 
