@@ -49,7 +49,7 @@
         <!-- Header Gradient -->
         <div
             class="bg-gradient-to-br from-slate-950 via-slate-900 to-red-950 p-4 text-white text-center relative overflow-hidden border-b border-red-500/30 flex items-center justify-center gap-3">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="h-12 w-auto object-contain">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="h-12 w-auto object-contain" onerror="this.src='{{ asset('logo.png') }}'">
             <div class="text-left">
                 <p class="text-[9px] font-extrabold uppercase tracking-widest text-red-400">KARTU PRESENSI GURU / STAFF
                 </p>
