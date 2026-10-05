@@ -91,6 +91,15 @@ Route::middleware('auth')->group(function () {
     // School Operating Hours Settings
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    // Utility: Clear Cache for Admin (Bila route/view di hosting belum ter-refresh)
+    Route::get('/admin/clear-cache', function () {
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
+            abort(403);
+        }
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        return redirect()->route('dashboard')->with('success', 'Cache route, config, dan views berhasil dibersihkan!');
+    })->name('admin.clear-cache');
 });
 
 // Direct Storage Serving fallback (ensures static files, proof photos, and letters always load reliably)

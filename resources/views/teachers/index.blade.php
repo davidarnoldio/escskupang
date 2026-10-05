@@ -144,7 +144,7 @@
                                             </form>
 
                                             <div class="flex items-center gap-1">
-                                                <a href="{{ route('teachers.qr-card', $teacher) }}"
+                                                <a href="{{ \Illuminate\Support\Facades\Route::has('teachers.qr-card') ? route('teachers.qr-card', $teacher) : url('/teachers/' . $teacher->id . '/qr-card') }}"
                                                     target="_blank"
                                                     class="p-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl transition"
                                                     title="Cetak Kartu QR Guru">
