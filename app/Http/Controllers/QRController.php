@@ -72,7 +72,7 @@ class QRController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Kode QR kosong atau tidak terbaca.',
-            ], 400);
+            ], 200);
         }
 
         $isTeacherScan = false;
@@ -134,7 +134,7 @@ class QRController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => "Data siswa atau guru dengan kode/identitas '{$rawInput}' tidak ditemukan!",
-            ], 404);
+            ], 200);
         }
 
         return $this->processStudentAttendance($student);
@@ -243,7 +243,7 @@ class QRController extends Controller
                     'jam_pulang' => $attendance->jam_pulang,
                     'status_text' => 'TIDAK VALID (Batas 2x Scan)',
                 ],
-            ], 422);
+            ], 200);
         }
 
         // -------------------------------------------------------------
@@ -273,7 +273,7 @@ class QRController extends Controller
                     'status_text' => 'DITOLAK (Di Luar Jam Masuk)',
                     'jam_pulang_target' => $jamPulangConfig,
                 ],
-            ], 422);
+            ], 200);
         }
 
         // -------------------------------------------------------------
@@ -357,7 +357,7 @@ class QRController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => "Data Guru dengan identitas QR '{$rawInput}' tidak ditemukan!",
-            ], 404);
+            ], 200);
         }
 
         $today = now()->format('Y-m-d');
@@ -447,7 +447,7 @@ class QRController extends Controller
                     'jam_pulang' => $teacherAttendance->jam_pulang,
                     'status_text' => 'TIDAK VALID (Batas 2x Scan)',
                 ],
-            ], 422);
+            ], 200);
         }
 
         // -------------------------------------------------------------
@@ -476,7 +476,7 @@ class QRController extends Controller
                     'status_text' => 'DITOLAK (Di Luar Jam Masuk)',
                     'jam_pulang_target' => $jamPulangConfig,
                 ],
-            ], 422);
+            ], 200);
         }
 
         // -------------------------------------------------------------
