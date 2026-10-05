@@ -47,8 +47,28 @@
     }
 @endphp
 
+<style>
+    .sidebar-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(248, 113, 113, 0.35) transparent;
+    }
+    .sidebar-scroll::-webkit-scrollbar {
+        width: 5px;
+    }
+    .sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: rgba(248, 113, 113, 0.35);
+        border-radius: 9999px;
+    }
+    .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(248, 113, 113, 0.7);
+    }
+</style>
+
 <!-- Sidebar Desktop (lg:flex) -->
-<aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#7f1d1d] text-slate-100 z-40 flex-col justify-between border-r border-red-900/60 shadow-2xl overflow-hidden">
+<aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#7f1d1d] text-slate-100 z-40 flex-col border-r border-red-900/60 shadow-2xl overflow-hidden">
     
     <!-- Background Tree Logo Watermark Shadow (Monochromatic Mint Matching Gambar 1) -->
     <div class="absolute -bottom-16 -right-16 w-72 h-72 opacity-15 pointer-events-none z-0 select-none">
@@ -68,10 +88,10 @@
         </svg>
     </div>
     
-    <!-- Top Header: Logo & Brand -->
-    <div class="p-6 relative z-10">
-        <div class="flex items-center gap-3.5 mb-8">
-            <div class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/30 flex items-center justify-center p-1.5 shadow-lg shadow-red-500/10">
+    <!-- Top Header: Logo & Brand (Shrink 0 - Pinned at top) -->
+    <div class="p-5 pb-4 relative z-10 shrink-0 border-b border-red-900/40">
+        <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/30 flex items-center justify-center p-1.5 shadow-lg shadow-red-500/10 shrink-0">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
             </div>
             <div>
@@ -79,8 +99,10 @@
                 <p class="text-[9px] font-extrabold text-red-400 tracking-wider uppercase">PRIMARY SCHOOL</p>
             </div>
         </div>
+    </div>
 
-        <!-- Vertical Navigation Links -->
+    <!-- Scrollable Navigation Area (Takes remaining height, scrolls smoothly) -->
+    <div class="flex-1 min-h-0 overflow-y-auto px-4 py-3 relative z-10 sidebar-scroll">
         <nav class="space-y-1.5">
             @if($user && $user->isParent())
                 <!-- Parent Portal Link -->
@@ -246,8 +268,8 @@
         </nav>
     </div>
 
-    <!-- Bottom User Profile Card & Switch Account Dropdown -->
-    <div class="p-4 border-t border-slate-800/80 bg-slate-950/40 relative z-10" x-data="{ openUserMenu: false }">
+    <!-- Bottom User Profile Card & Switch Account Dropdown (Shrink-0: Pinned at bottom) -->
+    <div class="p-4 border-t border-red-900/60 bg-red-950/60 relative z-10 shrink-0" x-data="{ openUserMenu: false }">
         
         <!-- User Profile Card Button -->
         <div class="relative">
@@ -336,7 +358,7 @@
     </button>
 
     <!-- Mobile Slideout Menu -->
-    <div x-show="mobileOpen" @click.away="mobileOpen = false" class="fixed inset-x-0 top-14 bg-[#7f1d1d] border-b border-red-900 p-4 space-y-2 text-xs shadow-2xl z-50" style="display: none;">
+    <div x-show="mobileOpen" @click.away="mobileOpen = false" class="fixed inset-x-0 top-14 bg-[#7f1d1d] border-b border-red-900 p-4 space-y-2 text-xs shadow-2xl z-50 max-h-[calc(100vh-3.5rem)] overflow-y-auto sidebar-scroll" style="display: none;">
         @if($user && $user->isParent())
             <a href="{{ route('parent.dashboard') }}" class="block px-4 py-2 rounded-xl bg-red-600 text-white font-bold">Portal Presensi Anak</a>
             <a href="{{ route('parent.payments') }}" class="flex items-center justify-between px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">
