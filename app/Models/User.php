@@ -31,6 +31,19 @@ class User extends Authenticatable
         return $this->hasMany(Homework::class, 'teacher_id');
     }
 
+    public function teacherAttendances(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TeacherAttendance::class, 'teacher_id');
+    }
+
+    /**
+     * Unique QR code string identifier for teacher scanning.
+     */
+    public function getQrCodeValueAttribute(): string
+    {
+        return 'GURU-' . $this->id;
+    }
+
     /**
      * Role helper checks.
      */

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Student;
+use App\Models\TeacherAttendance;
+use App\Models\User;
+use App\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class QRController extends Controller
@@ -20,17 +24,26 @@ class QRController extends Controller
         }
 
         $today = now()->format('Y-m-d');
+        
+        // Latest student attendance today
         $todayAttendances = Attendance::with('student')
             ->where('tanggal', $today)
             ->latest('updated_at')
             ->take(10)
             ->get();
 
-        return view('qr.scan', compact('todayAttendances', 'today'));
+        // Latest teacher attendance today
+        $todayTeacherAttendances = TeacherAttendance::with('teacher')
+            ->where('tanggal', $today)
+            ->latest('updated_at')
+            ->take(10)
+            ->get();
+
+        return view('qr.scan', compact('todayAttendances', 'todayTeacherAttendances', 'today'));
     }
 
     /**
-     * Process scanned QR Code NIS for daily attendance.
+     * Process scanned QR Code (Student NISN/NIS or Teacher QR).
      */
     public function process(Request $request)
     {
@@ -44,109 +57,211 @@ class QRController extends Controller
         }
 
         $request->validate([
-            'nis'  => ['nullable', 'string', 'max:50'],
-            'nisn' => ['nullable', 'string', 'max:50'],
+            'nis'  => ['nullable', 'string', 'max:100'],
+            'nisn' => ['nullable', 'string', 'max:100'],
+            'code' => ['nullable', 'string', 'max:100'],
         ]);
 
-        $rawInput = trim($request->input('nisn') ?? $request->input('nis') ?? '');
+        $rawInput = trim($request->input('code') ?? $request->input('nisn') ?? $request->input('nis') ?? '');
 
-        // Handle JSON payload input
+        if (empty($rawInput)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kode QR kosong atau tidak terbaca.',
+            ], 400);
+        }
+
+        $isTeacherScan = false;
+        $teacherId = null;
+        $teacherEmail = null;
+
+        // Check if payload is JSON
         if (str_starts_with($rawInput, '{') && str_ends_with($rawInput, '}')) {
             $json = json_decode($rawInput, true);
-            if (isset($json['nisn'])) {
-                $rawInput = trim($json['nisn']);
-            } elseif (isset($json['nis'])) {
-                $rawInput = trim($json['nis']);
+            if (is_array($json)) {
+                if (isset($json['type']) && in_array(strtolower($json['type']), ['teacher', 'guru'])) {
+                    $isTeacherScan = true;
+                    $teacherId = $json['id'] ?? null;
+                    $teacherEmail = $json['email'] ?? null;
+                } elseif (isset($json['teacher_id'])) {
+                    $isTeacherScan = true;
+                    $teacherId = $json['teacher_id'];
+                } elseif (isset($json['nisn'])) {
+                    $rawInput = trim($json['nisn']);
+                } elseif (isset($json['nis'])) {
+                    $rawInput = trim($json['nis']);
+                }
             }
         }
 
-        // Handle prefix string e.g. "NISN: 0003.26.0236" or "NIS: 0003.26.0236"
+        // Check prefix patterns for teacher
+        if (!$isTeacherScan) {
+            if (preg_match('/^(guru|teacher)[-:\s]+(\d+)$/i', $rawInput, $matches)) {
+                $isTeacherScan = true;
+                $teacherId = (int)$matches[2];
+            } elseif (preg_match('/^(guru|teacher)[-:\s]+(.+)$/i', $rawInput, $matches)) {
+                $isTeacherScan = true;
+                $teacherEmail = trim($matches[2]);
+            }
+        }
+
+        // If it's a teacher scan, process teacher attendance
+        if ($isTeacherScan) {
+            return $this->processTeacherAttendance($teacherId, $teacherEmail, $rawInput);
+        }
+
+        // Normalize student input prefix e.g. "NISN: 0003.26.0236" or "NIS: 0003.26.0236"
         if (preg_match('/^(nisn|nis)[:\s]+(.*)$/i', $rawInput, $matches)) {
             $rawInput = trim($matches[2]);
         }
 
-        // Exact match lookup on nisn
+        // Check if raw input matches a teacher's email directly
+        $possibleTeacher = User::whereIn('role', ['guru', 'wali_kelas'])
+            ->where('email', $rawInput)
+            ->first();
+        if ($possibleTeacher) {
+            return $this->processTeacherAttendance($possibleTeacher->id, null, $rawInput);
+        }
+
+        // Look up student by NISN
         $student = Student::where('nisn', $rawInput)->first();
 
         if (!$student) {
             return response()->json([
                 'success' => false,
-                'message' => "Data siswa dengan NISN/NIS '{$rawInput}' tidak ditemukan!",
+                'message' => "Data siswa atau guru dengan kode/identitas '{$rawInput}' tidak ditemukan!",
             ], 404);
         }
 
+        return $this->processStudentAttendance($student);
+    }
+
+    /**
+     * Process student 2-phase attendance (Scan 1: Masuk, Scan 2: Pulang).
+     */
+    protected function processStudentAttendance(Student $student)
+    {
         $today = now()->format('Y-m-d');
         $time = now()->format('H:i:s');
         $currentTimeHM = now()->format('H:i');
 
-        $jamTerlambatConfig = $student->is_abk
-            ? \App\Models\Setting::get('jam_terlambat_abk', '08:30')
-            : \App\Models\Setting::get('jam_terlambat', '07:30');
+        $jamMasukConfig = $student->is_abk
+            ? Setting::get('jam_masuk_abk', '08:00')
+            : Setting::get('jam_masuk', '07:00');
 
-        // Check if student ALREADY has an attendance record for today to prevent overwriting initial scan time
-        $existingAttendance = Attendance::where('student_id', $student->id)
+        $jamTerlambatConfig = $student->is_abk
+            ? Setting::get('jam_terlambat_abk', '08:30')
+            : Setting::get('jam_terlambat', '07:30');
+
+        $jamPulangConfig = $student->is_abk
+            ? Setting::get('jam_pulang_abk', '13:00')
+            : Setting::get('jam_pulang', '14:00');
+
+        $attendance = Attendance::where('student_id', $student->id)
             ->where('tanggal', $today)
             ->first();
 
-        if ($existingAttendance && $existingAttendance->status === 'hadir' && preg_match('/\[(\d{2}:\d{2}:\d{2})\]/', $existingAttendance->keterangan ?? '', $existingTimeMatches)) {
-            $originalTime = $existingTimeMatches[1];
-            $originalLateMins = 0;
-            $originalIsLate = false;
+        // -------------------------------------------------------------
+        // SCAN 2: ALREADY CHECKED IN -> PROCESS CHECK-OUT (ABSEN PULANG)
+        // -------------------------------------------------------------
+        if ($attendance && !empty($attendance->jam_masuk) && empty($attendance->jam_pulang)) {
+            $jamMasukFormatted = substr($attendance->jam_masuk, 0, 5);
+            $isEarlyDeparture = $currentTimeHM < $jamPulangConfig;
 
-            if (preg_match('/Terlambat\s+(\d+)\s+menit/i', $existingAttendance->keterangan, $m)) {
-                $originalLateMins = (int) $m[1];
-                $originalIsLate = true;
+            if ($isEarlyDeparture) {
+                $statusText = "PULANG AWAL (Jam {$time})";
+                $message = "Presensi PULANG Berhasil! Siswa {$student->nama} ({$student->kelas}) dicatat PULANG pada jam [{$time}] (Lebih awal dari jam pulang resmi {$jamPulangConfig}). Jam Masuk: [{$attendance->jam_masuk}].";
+                $keteranganPulang = "Pulang Awal: [{$time}]";
             } else {
-                $scanCarbon = \Carbon\Carbon::parse($today . ' ' . $originalTime, 'Asia/Makassar');
-                $thresholdCarbon = \Carbon\Carbon::parse($today . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
-                if ($scanCarbon->greaterThan($thresholdCarbon)) {
-                    $originalLateMins = max(1, abs((int) $scanCarbon->diffInMinutes($thresholdCarbon)));
-                    $originalIsLate = true;
-                }
+                $statusText = "PULANG TEPAT WAKTU (Jam {$time})";
+                $message = "Presensi PULANG Berhasil! Siswa {$student->nama} ({$student->kelas}) dicatat PULANG TEPAT WAKTU pada jam [{$time}]. Jam Masuk: [{$attendance->jam_masuk}].";
+                $keteranganPulang = "Pulang: [{$time}]";
             }
 
-            $statusText = $originalIsLate ? "HADIR (Terlambat {$originalLateMins}m)" : "HADIR";
-            $message = $originalIsLate
-                ? "Siswa {$student->nama} ({$student->kelas}) SUDAH presensi hari ini jam [{$originalTime}] - TERLAMBAT {$originalLateMins} menit. Waktu scan pertama tetap dipertahankan."
-                : "Siswa {$student->nama} ({$student->kelas}) SUDAH presensi hari ini jam [{$originalTime}] (Tepat Waktu). Waktu scan pertama tetap dipertahankan.";
+            $newKeterangan = $attendance->keterangan 
+                ? $attendance->keterangan . " | " . $keteranganPulang
+                : $keteranganPulang;
+
+            $attendance->update([
+                'jam_pulang' => $time,
+                'keterangan' => $newKeterangan,
+            ]);
 
             return response()->json([
                 'success' => true,
-                'already_scanned' => true,
+                'scan_type' => 'pulang',
+                'role_type' => 'student',
                 'message' => $message,
-                'student' => [
+                'person' => [
                     'id' => $student->id,
-                    'nisn' => $student->nisn,
-                    'nis' => $student->nis,
                     'nama' => $student->nama,
+                    'nisn' => $student->nisn ?? $student->nis,
                     'kelas' => $student->kelas,
-                    'jenis_kelamin' => $student->jenis_kelamin,
+                    'foto_url' => $student->foto_url,
                     'is_abk' => $student->is_abk,
                 ],
                 'attendance' => [
                     'tanggal' => $today,
-                    'waktu' => $originalTime,
-                    'status' => 'hadir',
-                    'is_late' => $originalIsLate,
-                    'late_minutes' => $originalLateMins,
+                    'jam_masuk' => $attendance->jam_masuk,
+                    'jam_pulang' => $time,
+                    'is_late' => false,
+                    'is_early' => $isEarlyDeparture,
                     'status_text' => $statusText,
-                    'jam_terlambat' => $jamTerlambatConfig,
+                    'jam_pulang_target' => $jamPulangConfig,
                 ],
             ]);
         }
 
+        // -------------------------------------------------------------
+        // SCAN 3+: ALREADY FULLY RECORDED (MASUK & PULANG COMPLETE)
+        // -------------------------------------------------------------
+        if ($attendance && !empty($attendance->jam_masuk) && !empty($attendance->jam_pulang)) {
+            $message = "Siswa {$student->nama} ({$student->kelas}) SUDAH menyelesaikan presensi hari ini. Jam Masuk: [{$attendance->jam_masuk}], Jam Pulang: [{$attendance->jam_pulang}].";
+
+            return response()->json([
+                'success' => true,
+                'already_completed' => true,
+                'scan_type' => 'completed',
+                'role_type' => 'student',
+                'message' => $message,
+                'person' => [
+                    'id' => $student->id,
+                    'nama' => $student->nama,
+                    'nisn' => $student->nisn ?? $student->nis,
+                    'kelas' => $student->kelas,
+                    'foto_url' => $student->foto_url,
+                    'is_abk' => $student->is_abk,
+                ],
+                'attendance' => [
+                    'tanggal' => $today,
+                    'jam_masuk' => $attendance->jam_masuk,
+                    'jam_pulang' => $attendance->jam_pulang,
+                    'status_text' => 'SELESAI (Masuk & Pulang)',
+                ],
+            ]);
+        }
+
+        // -------------------------------------------------------------
+        // SCAN 1: CHECK-IN (ABSEN MASUK SISWA)
+        // -------------------------------------------------------------
         $isLate = $currentTimeHM > $jamTerlambatConfig;
         $lateMinutes = 0;
+
         if ($isLate) {
-            $scanCarbon = \Carbon\Carbon::parse($today . ' ' . $time, 'Asia/Makassar');
-            $thresholdCarbon = \Carbon\Carbon::parse($today . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
+            $scanCarbon = Carbon::parse($today . ' ' . $time, 'Asia/Makassar');
+            $thresholdCarbon = Carbon::parse($today . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
             $lateMinutes = max(1, abs((int) $scanCarbon->diffInMinutes($thresholdCarbon)));
         }
 
         $abkLabel = $student->is_abk ? ' (ABK)' : '';
         $statusNote = $isLate 
-            ? "Scan QR [{$time}] - Terlambat {$lateMinutes} menit{$abkLabel}" 
-            : "Scan QR [{$time}] - Tepat Waktu{$abkLabel}";
+            ? "Masuk: [{$time}] - Terlambat {$lateMinutes} menit{$abkLabel}" 
+            : "Masuk: [{$time}] - Tepat Waktu{$abkLabel}";
+
+        $statusText = $isLate ? "HADIR (Terlambat {$lateMinutes}m)" : "HADIR (Tepat Waktu)";
+        $message = $isLate
+            ? "Presensi MASUK Berhasil! Siswa {$student->nama} ({$student->kelas}) dicatat HADIR pada jam [{$time}] - TERLAMBAT {$lateMinutes} menit (Batas Masuk: {$jamTerlambatConfig})."
+            : "Presensi MASUK Berhasil! Siswa {$student->nama} ({$student->kelas}) dicatat HADIR TEPAT WAKTU pada jam [{$time}].";
 
         $attendance = Attendance::updateOrCreate(
             [
@@ -154,32 +269,200 @@ class QRController extends Controller
                 'tanggal' => $today,
             ],
             [
+                'jam_masuk' => $time,
                 'status' => 'hadir',
                 'keterangan' => $statusNote,
             ]
         );
 
-        $statusText = $isLate ? "HADIR (Terlambat {$lateMinutes}m)" : "HADIR";
-        $message = $isLate
-            ? "Presensi Berhasil! {$student->nama} ({$student->kelas}) dicatat HADIR (TERLAMBAT {$lateMinutes} menit - Jam scan {$time}, batas jam {$jamTerlambatConfig})."
-            : "Presensi Berhasil! {$student->nama} ({$student->kelas}) dicatat HADIR (Tepat Waktu).";
-
         return response()->json([
             'success' => true,
+            'scan_type' => 'masuk',
+            'role_type' => 'student',
             'message' => $message,
-            'student' => [
+            'person' => [
                 'id' => $student->id,
-                'nisn' => $student->nisn,
-                'nis' => $student->nis,
                 'nama' => $student->nama,
+                'nisn' => $student->nisn ?? $student->nis,
                 'kelas' => $student->kelas,
-                'jenis_kelamin' => $student->jenis_kelamin,
+                'foto_url' => $student->foto_url,
                 'is_abk' => $student->is_abk,
             ],
             'attendance' => [
                 'tanggal' => $today,
-                'waktu' => $time,
+                'jam_masuk' => $time,
+                'jam_pulang' => null,
+                'is_late' => $isLate,
+                'late_minutes' => $lateMinutes,
+                'status_text' => $statusText,
+                'jam_terlambat' => $jamTerlambatConfig,
+            ],
+        ]);
+    }
+
+    /**
+     * Process teacher 2-phase attendance (Scan 1: Masuk, Scan 2: Pulang).
+     */
+    protected function processTeacherAttendance($teacherId, $teacherEmail, $rawInput)
+    {
+        $query = User::whereIn('role', ['guru', 'wali_kelas']);
+        if ($teacherId) {
+            $query->where('id', $teacherId);
+        } elseif ($teacherEmail) {
+            $query->where('email', $teacherEmail);
+        } else {
+            $query->where(function ($q) use ($rawInput) {
+                $q->where('email', $rawInput)->orWhere('id', $rawInput);
+            });
+        }
+
+        $teacher = $query->first();
+
+        if (!$teacher) {
+            return response()->json([
+                'success' => false,
+                'message' => "Data Guru dengan identitas QR '{$rawInput}' tidak ditemukan!",
+            ], 404);
+        }
+
+        $today = now()->format('Y-m-d');
+        $time = now()->format('H:i:s');
+        $currentTimeHM = now()->format('H:i');
+
+        $jamMasukConfig = Setting::get('jam_masuk', '07:00');
+        $jamTerlambatConfig = Setting::get('jam_terlambat', '07:30');
+        $jamPulangConfig = Setting::get('jam_pulang', '14:00');
+
+        $teacherAttendance = TeacherAttendance::where('teacher_id', $teacher->id)
+            ->where('tanggal', $today)
+            ->first();
+
+        // -------------------------------------------------------------
+        // SCAN 2: ALREADY CHECKED IN -> PROCESS CHECK-OUT (ABSEN PULANG GURU)
+        // -------------------------------------------------------------
+        if ($teacherAttendance && !empty($teacherAttendance->jam_masuk) && empty($teacherAttendance->jam_pulang)) {
+            $isEarlyDeparture = $currentTimeHM < $jamPulangConfig;
+
+            if ($isEarlyDeparture) {
+                $statusText = "PULANG AWAL (Jam {$time})";
+                $message = "Presensi PULANG Guru Berhasil! {$teacher->name} dicatat PULANG pada jam [{$time}] (Sebelum jam kepulangan resmi {$jamPulangConfig}). Jam Masuk: [{$teacherAttendance->jam_masuk}].";
+                $keteranganPulang = "Pulang Awal: [{$time}]";
+            } else {
+                $statusText = "PULANG TEPAT WAKTU (Jam {$time})";
+                $message = "Presensi PULANG Guru Berhasil! {$teacher->name} dicatat PULANG TEPAT WAKTU pada jam [{$time}]. Jam Masuk: [{$teacherAttendance->jam_masuk}].";
+                $keteranganPulang = "Pulang: [{$time}]";
+            }
+
+            $newKeterangan = $teacherAttendance->keterangan 
+                ? $teacherAttendance->keterangan . " | " . $keteranganPulang
+                : $keteranganPulang;
+
+            $teacherAttendance->update([
+                'jam_pulang' => $time,
+                'keterangan' => $newKeterangan,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'scan_type' => 'pulang',
+                'role_type' => 'teacher',
+                'message' => $message,
+                'person' => [
+                    'id' => $teacher->id,
+                    'nama' => $teacher->name,
+                    'email' => $teacher->email,
+                    'kelas' => $teacher->getAssignedClass() ?? 'Guru Pengajar',
+                    'is_guru' => true,
+                ],
+                'attendance' => [
+                    'tanggal' => $today,
+                    'jam_masuk' => $teacherAttendance->jam_masuk,
+                    'jam_pulang' => $time,
+                    'is_late' => false,
+                    'is_early' => $isEarlyDeparture,
+                    'status_text' => $statusText,
+                    'jam_pulang_target' => $jamPulangConfig,
+                ],
+            ]);
+        }
+
+        // -------------------------------------------------------------
+        // SCAN 3+: ALREADY FULLY RECORDED (MASUK & PULANG COMPLETE)
+        // -------------------------------------------------------------
+        if ($teacherAttendance && !empty($teacherAttendance->jam_masuk) && !empty($teacherAttendance->jam_pulang)) {
+            $message = "Guru {$teacher->name} SUDAH menyelesaikan presensi hari ini. Jam Masuk: [{$teacherAttendance->jam_masuk}], Jam Pulang: [{$teacherAttendance->jam_pulang}].";
+
+            return response()->json([
+                'success' => true,
+                'already_completed' => true,
+                'scan_type' => 'completed',
+                'role_type' => 'teacher',
+                'message' => $message,
+                'person' => [
+                    'id' => $teacher->id,
+                    'nama' => $teacher->name,
+                    'email' => $teacher->email,
+                    'kelas' => $teacher->getAssignedClass() ?? 'Guru Pengajar',
+                    'is_guru' => true,
+                ],
+                'attendance' => [
+                    'tanggal' => $today,
+                    'jam_masuk' => $teacherAttendance->jam_masuk,
+                    'jam_pulang' => $teacherAttendance->jam_pulang,
+                    'status_text' => 'SELESAI (Masuk & Pulang)',
+                ],
+            ]);
+        }
+
+        // -------------------------------------------------------------
+        // SCAN 1: CHECK-IN (ABSEN MASUK GURU)
+        // -------------------------------------------------------------
+        $isLate = $currentTimeHM > $jamTerlambatConfig;
+        $lateMinutes = 0;
+
+        if ($isLate) {
+            $scanCarbon = Carbon::parse($today . ' ' . $time, 'Asia/Makassar');
+            $thresholdCarbon = Carbon::parse($today . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
+            $lateMinutes = max(1, abs((int) $scanCarbon->diffInMinutes($thresholdCarbon)));
+        }
+
+        $statusNote = $isLate 
+            ? "Masuk: [{$time}] - Terlambat {$lateMinutes} menit" 
+            : "Masuk: [{$time}] - Tepat Waktu";
+
+        $statusText = $isLate ? "HADIR (Terlambat {$lateMinutes}m)" : "HADIR (Tepat Waktu)";
+        $message = $isLate
+            ? "Presensi MASUK Guru Berhasil! {$teacher->name} dicatat HADIR pada jam [{$time}] - TERLAMBAT {$lateMinutes} menit (Batas: {$jamTerlambatConfig})."
+            : "Presensi MASUK Guru Berhasil! {$teacher->name} dicatat HADIR TEPAT WAKTU pada jam [{$time}].";
+
+        TeacherAttendance::updateOrCreate(
+            [
+                'teacher_id' => $teacher->id,
+                'tanggal' => $today,
+            ],
+            [
+                'jam_masuk' => $time,
                 'status' => 'hadir',
+                'keterangan' => $statusNote,
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'scan_type' => 'masuk',
+            'role_type' => 'teacher',
+            'message' => $message,
+            'person' => [
+                'id' => $teacher->id,
+                'nama' => $teacher->name,
+                'email' => $teacher->email,
+                'kelas' => $teacher->getAssignedClass() ?? 'Guru Pengajar',
+                'is_guru' => true,
+            ],
+            'attendance' => [
+                'tanggal' => $today,
+                'jam_masuk' => $time,
+                'jam_pulang' => null,
                 'is_late' => $isLate,
                 'late_minutes' => $lateMinutes,
                 'status_text' => $statusText,
@@ -208,5 +491,28 @@ class QRController extends Controller
         }
 
         return view('qr.card', compact('student'));
+    }
+
+    /**
+     * Display printable Teacher QR ID Card.
+     */
+    public function teacherCard(User $teacher)
+    {
+        /** @var \App\Models\User|null $user */
+        $user = auth()->user();
+        if (!$user) {
+            abort(403);
+        }
+
+        if (!$teacher->isTeacher()) {
+            abort(404, 'User ini bukan akun Guru.');
+        }
+
+        $isAuthorized = $user->isAdmin() || $user->id === $teacher->id;
+        if (!$isAuthorized) {
+            abort(403, 'Anda tidak memiliki wewenang untuk mengakses kartu QR Guru ini.');
+        }
+
+        return view('qr.teacher-card', compact('teacher'));
     }
 }

@@ -72,8 +72,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/alumni/{student}/revert', [AlumniController::class, 'revert'])->name('alumni.revert');
     Route::put('/alumni/{student}', [AlumniController::class, 'update'])->name('alumni.update');
 
-    // Teacher Management (Admin Only)
+    // Teacher Management (Admin Only) & Teacher QR Card
     Route::resource('teachers', TeacherController::class);
+    Route::get('/teachers/{teacher}/qr-card', [QRController::class, 'teacherCard'])->name('teachers.qr-card');
 
     // QR Code Scanner & Process
     Route::get('/scan-qr', [QRController::class, 'index'])->name('qr.scan');

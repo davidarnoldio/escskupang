@@ -167,6 +167,12 @@
                                                         <span class="px-1.5 py-0.5 text-[9px] font-black rounded bg-amber-100 text-amber-900 border border-amber-300">ABK</span>
                                                     @endif
                                                 </div>
+                                                @if($att && ($att->jam_masuk || $att->jam_pulang))
+                                                    <div class="text-[10px] font-mono text-slate-500 font-bold mt-0.5 flex items-center gap-2">
+                                                        @if($att->jam_masuk) <span class="bg-slate-100 px-1.5 py-0.5 rounded">In: {{ substr($att->jam_masuk, 0, 5) }}</span> @endif
+                                                        @if($att->jam_pulang) <span class="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded">Out: {{ substr($att->jam_pulang, 0, 5) }}</span> @endif
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </td>

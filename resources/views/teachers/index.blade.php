@@ -144,6 +144,12 @@
                                             </form>
 
                                             <div class="flex items-center gap-1">
+                                                <a href="{{ route('teachers.qr-card', $teacher) }}"
+                                                    target="_blank"
+                                                    class="p-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl transition"
+                                                    title="Cetak Kartu QR Guru">
+                                                    🪪
+                                                </a>
                                                 <a href="{{ route('teachers.edit', $teacher) }}"
                                                     class="p-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition"
                                                     title="Edit Data Guru">

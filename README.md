@@ -22,7 +22,7 @@ Sistem Informasi Manajemen Sekolah dan Presensi Terpadu Berbasis Web yang diranc
   - [3. Modul Pekerjaan Rumah (PR) & Penilaian Siswa](#3-modul-pekerjaan-rumah-pr--penilaian-siswa)
   - [4. Modul Tagihan & Pembayaran Keuangan (SPP)](#4-modul-tagihan--pembayaran-keuangan-spp)
   - [5. Modul Surat Izin Orang Tua & Verifikasi Wali Kelas](#5-modul-surat-izin-orang-tua--verifikasi-wali-kelas)
-  - [6. Modul Presensi Harian & QR Code Scanner](#6-modul-presensi-harian--qr-code-scanner)
+  - [6. Modul Presensi Harian & QR Code Scanner (Siswa & Guru)](#6-modul-presensi-harian--qr-code-scanner-siswa--guru)
   - [7. Panel Manajemen Guru & Switch Account (Impersonate)](#7-panel-manajemen-guru--switch-account-impersonate)
   - [8. Manajemen Password & Reset Mandiri](#8-manajemen-password--reset-mandiri)
   - [9. Keamanan & Proteksi Data (Security Hardening)](#9-keamanan--proteksi-data-security-hardening)
@@ -112,11 +112,16 @@ Akun Orang Tua dibuat secara otomatis ketika data siswa ditambahkan oleh Admin:
 - **Mode Monitor Admin:** Admin bertindak sebagai pemantau (*read-only*) untuk menjaga integritas data tanpa mengambil alih wewenang wali kelas.
 - **Hapus Berkas Surat:** Guru, Admin, atau Orang Tua pemilik dapat menghapus berkas lampiran jika terjadi kesalahan unggah.
 
-### 6. Modul Presensi Harian & QR Code Scanner
-- **Cetak Kartu QR Code:** Setiap siswa memiliki kartu ID berisikan QR Code unik berbasis NISN siap cetak lengkap dengan foto siswa.
-- **Scanner Terintegrasi:** Mendukung pemindaian via kamera perangkat (laptop/smartphone) maupun barcode scanner eksternal.
-- **Deteksi Keterlambatan Otomatis:** Perhitungan durasi keterlambatan presisi (dalam menit/jam) berdasarkan jam operasional sekolah untuk siswa reguler maupun siswa ABK.
-- **Proteksi Scan Pertama:** Pemindaian ganda pada hari yang sama tidak akan menimpa waktu scan kedatangan pertama.
+### 6. Modul Presensi Harian & QR Code Scanner (Siswa & Guru)
+- **Mekanisme Presensi 2-Tahap (Masuk & Pulang):**
+  - **Scan Pertama (Absen Masuk):** Sistem mencatat jam kedatangan (`jam_masuk`) secara akurat dan otomatis mendeteksi keterlambatan dengan notifikasi: *Hadir Tepat Waktu* atau *Terlambat X Menit* (berdasarkan batas jam masuk reguler vs ABK).
+  - **Scan Kedua (Absen Pulang):** Sistem otomatis mendeteksi bahwa yang bersangkutan sudah check-in dan mencatat kepulangan (`jam_pulang`) beserta status: *Pulang Tepat Waktu* atau *Pulang Awal* dengan kejelasan jam masuk dan jam pulang yang telah diselesaikan.
+  - **Scan Lanjutan (Scan 3+):** Sistem memberikan peringatan informatif bahwa presensi hari ini telah lengkap (menampilkan rincian waktu masuk & pulang).
+- **Presensi Mandiri Guru Berbasis QR Code:**
+  - Akun Guru kini memiliki **Kartu Presensi Guru QR Digital** siap cetak (berbasis kode `GURU-{id}` atau email).
+  - Guru dapat melakukan scan mandiri di pos scanner sekolah dengan alur yang sama persis seperti siswa (Scan 1: Masuk, Scan 2: Pulang) dan pencatatan riwayat terpisah di tabel `teacher_attendances`.
+- **Cetak Kartu QR Siswa & Guru:** Kartu ID berpenampilan resmi lengkap dengan logo NTO National Plus, identitas kelas/peran, dan QR Code siap scan.
+- **Deteksi Keterlambatan Otomatis:** Perhitungan durasi keterlambatan presisi (dalam menit/jam) berdasarkan jam operasional sekolah untuk siswa reguler, siswa ABK, dan guru.
 - **Rekap Bulanan & Cetak A4 Lanskap:** Visualisasi matriks kehadiran bulanan dan cetak rekap absensi resmi A4.
 
 ### 7. Panel Manajemen Guru & Switch Account (Impersonate)

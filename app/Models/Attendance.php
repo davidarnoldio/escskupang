@@ -13,6 +13,8 @@ class Attendance extends Model
     protected $fillable = [
         'student_id',
         'tanggal',
+        'jam_masuk',
+        'jam_pulang',
         'status',
         'keterangan',
         'surat_izin',

@@ -119,6 +119,19 @@
                                         class="inline-flex items-center px-4 py-2 rounded-2xl text-sm font-extrabold uppercase shadow-md {{ $statusClasses[$todayAttendance->status] ?? 'bg-slate-700 text-white' }}">
                                         ✔ {{ strtoupper($todayAttendance->status) }}
                                     </span>
+
+                                    <!-- Grid Jam Masuk & Jam Pulang -->
+                                    <div class="mt-3 grid grid-cols-2 gap-2 text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 font-semibold block">Jam Masuk</span>
+                                            <span class="font-extrabold text-slate-900 font-mono">{{ $todayAttendance->jam_masuk ?? '-' }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] text-slate-400 font-semibold block">Jam Pulang</span>
+                                            <span class="font-extrabold {{ $todayAttendance->jam_pulang ? 'text-indigo-600' : 'text-slate-400' }} font-mono">{{ $todayAttendance->jam_pulang ?? 'Belum Pulang' }}</span>
+                                        </div>
+                                    </div>
+
                                     <p class="text-xs font-medium text-slate-600 mt-2">
                                         Catatan: <span
                                             class="font-semibold text-slate-900">{{ $todayAttendance->keterangan ?? 'Hadir tepat waktu' }}</span>
