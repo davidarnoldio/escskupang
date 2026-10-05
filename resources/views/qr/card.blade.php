@@ -14,7 +14,7 @@
 </head>
 <body class="bg-slate-100 flex flex-col items-center justify-center min-h-screen p-4 font-sans text-slate-800">
 
-    <div class="no-print mb-6 flex gap-3">
+    <div class="no-print mb-6 flex gap-3 justify-center">
         <a href="{{ route('students.index') }}" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-sm transition">
             ← Kembali ke Data Siswa
         </a>
