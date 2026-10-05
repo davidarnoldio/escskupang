@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QRController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherAttendanceController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +76,12 @@ Route::middleware('auth')->group(function () {
     // Teacher Management (Admin Only) & Teacher QR Card
     Route::resource('teachers', TeacherController::class);
     Route::get('/teachers/{teacher}/qr-card', [QRController::class, 'teacherCard'])->name('teachers.qr-card');
+
+    // Teacher Daily Attendance & Monthly Recap (Admin Only)
+    Route::get('/teacher-attendances', [TeacherAttendanceController::class, 'index'])->name('teacher-attendances.index');
+    Route::post('/teacher-attendances/status', [TeacherAttendanceController::class, 'updateStatus'])->name('teacher-attendances.update-status');
+    Route::get('/teacher-attendances/rekap', [TeacherAttendanceController::class, 'rekap'])->name('teacher-attendances.rekap');
+    Route::get('/teacher-attendances/print-rekap', [TeacherAttendanceController::class, 'printRekap'])->name('teacher-attendances.print-rekap');
 
     // QR Code Scanner & Process
     Route::get('/scan-qr', [QRController::class, 'index'])->name('qr.scan');

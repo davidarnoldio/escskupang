@@ -221,6 +221,20 @@
                         <span>Kelola Guru</span>
                     </a>
 
+                    <!-- Presensi Guru (Admin Only) -->
+                    <a href="{{ route('teacher-attendances.index') }}"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('teacher-attendances.index') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                        <span>Presensi Guru</span>
+                    </a>
+
+                    <!-- Rekap Presensi Guru (Admin Only) -->
+                    <a href="{{ route('teacher-attendances.rekap') }}"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('teacher-attendances.rekap') || request()->routeIs('teacher-attendances.print-rekap') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span>Rekap Guru</span>
+                    </a>
+
                     <!-- Pengaturan Jam Link (Admin Only) -->
                     <a href="{{ route('settings.index') }}"
                        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('settings.index') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
@@ -387,6 +401,8 @@
                     @endif
                 </a>
                 <a href="{{ route('teachers.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Kelola Guru</a>
+                <a href="{{ route('teacher-attendances.index') }}" class="block px-4 py-2 rounded-xl {{ request()->routeIs('teacher-attendances.index') ? 'bg-red-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 font-bold' }}">Presensi Guru</a>
+                <a href="{{ route('teacher-attendances.rekap') }}" class="block px-4 py-2 rounded-xl {{ request()->routeIs('teacher-attendances.rekap') ? 'bg-red-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 font-bold' }}">Rekap Guru</a>
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Pengaturan Jam</a>
             @endif
         @endif
