@@ -19,9 +19,7 @@ class TeacherAttendance extends Model
         'keterangan',
     ];
 
-    protected $casts = [
-        'tanggal' => 'date',
-    ];
+
 
     public function teacher(): BelongsTo
     {
