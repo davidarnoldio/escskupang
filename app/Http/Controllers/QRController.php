@@ -56,6 +56,10 @@ class QRController extends Controller
             ], 403);
         }
 
+        if ($request->isMethod('get') && !$request->expectsJson() && !$request->ajax()) {
+            return redirect()->route('qr.scan');
+        }
+
         $request->validate([
             'nis'  => ['nullable', 'string', 'max:100'],
             'nisn' => ['nullable', 'string', 'max:100'],

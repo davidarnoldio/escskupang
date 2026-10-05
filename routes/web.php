@@ -78,7 +78,7 @@ Route::middleware('auth')->group(function () {
 
     // QR Code Scanner & Process
     Route::get('/scan-qr', [QRController::class, 'index'])->name('qr.scan');
-    Route::post('/scan-qr/process', [QRController::class, 'process'])->name('qr.process');
+    Route::match(['GET', 'POST'], '/scan-qr/process', [QRController::class, 'process'])->name('qr.process');
 
     // Attendance CRUD, Rekap & Print
     Route::get('/attendances/print-rekap', [AttendanceController::class, 'printRekap'])->name('attendances.print-rekap');

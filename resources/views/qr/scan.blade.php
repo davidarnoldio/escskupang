@@ -334,7 +334,7 @@
                     this.loading = true;
 
                     try {
-                        const response = await fetch("{{ route('qr.process') }}", {
+                        const response = await fetch("{{ route('qr.process', [], false) }}", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
