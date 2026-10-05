@@ -78,7 +78,7 @@
                 <div class="space-y-6">
                     <!-- Scan Result Feedback Alert -->
                     <div x-show="lastResult" x-transition class="bg-white p-6 rounded-3xl shadow-md border"
-                         :class="!lastResult?.success ? 'border-rose-200 bg-rose-50/50' : (lastResult?.scan_type === 'pulang' ? 'border-indigo-200 bg-indigo-50/40' : (lastResult?.attendance?.is_late ? 'border-amber-300 bg-amber-50/80' : 'border-emerald-200 bg-emerald-50/50'))">
+                         :class="!lastResult?.success ? 'border-rose-300 bg-rose-50/70' : (lastResult?.scan_type === 'pulang' ? 'border-indigo-200 bg-indigo-50/40' : (lastResult?.attendance?.is_late ? 'border-amber-300 bg-amber-50/80' : 'border-emerald-200 bg-emerald-50/50'))">
                         
                         <div class="flex items-start gap-3 mb-3">
                             <div class="w-10 h-10 rounded-2xl flex items-center justify-center text-lg font-black shrink-0 shadow-sm"
@@ -87,27 +87,29 @@
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center gap-2">
-                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider"
-                                          :class="lastResult?.role_type === 'teacher' ? 'bg-purple-100 text-purple-900 border border-purple-200' : 'bg-slate-100 text-slate-800 border border-slate-200'"
-                                          x-text="lastResult?.role_type === 'teacher' ? '👨‍🏫 Guru' : '🎒 Siswa'"></span>
+                                    <template x-if="lastResult?.role_type">
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider"
+                                              :class="lastResult?.role_type === 'teacher' ? 'bg-purple-100 text-purple-900 border border-purple-200' : 'bg-slate-100 text-slate-800 border border-slate-200'"
+                                              x-text="lastResult?.role_type === 'teacher' ? '👨‍🏫 Guru' : '🎒 Siswa'"></span>
+                                    </template>
 
                                     <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider"
-                                          :class="lastResult?.scan_type === 'pulang' ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' : (lastResult?.attendance?.is_late ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'bg-emerald-100 text-emerald-900 border border-emerald-200')"
-                                          x-text="lastResult?.scan_type === 'pulang' ? 'SCAN 2: PULANG' : (lastResult?.already_completed ? 'SUDAH LENGKAP' : 'SCAN 1: MASUK')"></span>
+                                          :class="!lastResult?.success ? 'bg-rose-100 text-rose-900 border border-rose-300 font-extrabold' : (lastResult?.scan_type === 'pulang' ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' : (lastResult?.attendance?.is_late ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'bg-emerald-100 text-emerald-900 border border-emerald-200'))"
+                                          x-text="!lastResult?.success ? (lastResult?.already_completed ? 'TIDAK VALID (>2x SCAN)' : (lastResult?.outside_hours ? 'DI LUAR JAM' : 'DITOLAK')) : (lastResult?.scan_type === 'pulang' ? 'SCAN 2: PULANG' : 'SCAN 1: MASUK')"></span>
                                 </div>
 
                                 <h4 class="font-extrabold text-sm mt-1"
-                                    :class="!lastResult?.success ? 'text-rose-900' : (lastResult?.scan_type === 'pulang' ? 'text-indigo-950' : (lastResult?.attendance?.is_late ? 'text-amber-950' : 'text-emerald-950'))"
-                                    x-text="!lastResult?.success ? 'Presensi Gagal!' : (lastResult?.scan_type === 'pulang' ? 'Presensi PULANG Berhasil!' : (lastResult?.attendance?.is_late ? 'Presensi MASUK (TERLAMBAT)!' : 'Presensi MASUK (Tepat Waktu)!'))"></h4>
+                                    :class="!lastResult?.success ? 'text-rose-900 font-black' : (lastResult?.scan_type === 'pulang' ? 'text-indigo-950' : (lastResult?.attendance?.is_late ? 'text-amber-950' : 'text-emerald-950'))"
+                                    x-text="lastResult?.title || (!lastResult?.success ? 'Presensi Ditolak!' : (lastResult?.scan_type === 'pulang' ? 'Presensi PULANG Berhasil!' : (lastResult?.attendance?.is_late ? 'Presensi MASUK (TERLAMBAT)!' : 'Presensi MASUK (Tepat Waktu)!')))"></h4>
                                 
-                                <p class="text-xs mt-0.5 font-medium leading-relaxed"
-                                   :class="!lastResult?.success ? 'text-rose-700' : (lastResult?.scan_type === 'pulang' ? 'text-indigo-900' : (lastResult?.attendance?.is_late ? 'text-amber-900' : 'text-emerald-900'))"
+                                <p class="text-xs mt-0.5 font-semibold leading-relaxed"
+                                   :class="!lastResult?.success ? 'text-rose-800' : (lastResult?.scan_type === 'pulang' ? 'text-indigo-900' : (lastResult?.attendance?.is_late ? 'text-amber-900' : 'text-emerald-900'))"
                                    x-text="lastResult?.message"></p>
                             </div>
                         </div>
 
                         <!-- Person Card Detail -->
-                        <template x-if="lastResult?.success && lastResult?.person">
+                        <template x-if="lastResult?.person">
                             <div class="mt-4 p-4 bg-white/90 rounded-2xl border border-slate-100 shadow-2xs space-y-2">
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                                     <span class="text-xs text-slate-400 font-medium">Nama</span>
@@ -137,8 +139,8 @@
                                 <div class="flex items-center justify-between pt-1">
                                     <span class="text-xs text-slate-400 font-medium">Status</span>
                                     <span class="text-xs font-black px-2.5 py-0.5 rounded-md"
-                                          :class="lastResult.scan_type === 'pulang' ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' : (lastResult.attendance?.is_late ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-emerald-100 text-emerald-800 border border-emerald-300')"
-                                          x-text="lastResult.attendance?.status_text || 'HADIR'"></span>
+                                          :class="!lastResult?.success ? 'bg-rose-100 text-rose-900 border border-rose-300' : (lastResult?.scan_type === 'pulang' ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' : (lastResult?.attendance?.is_late ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-emerald-100 text-emerald-800 border border-emerald-300'))"
+                                          x-text="lastResult?.attendance?.status_text || (!lastResult?.success ? 'DITOLAK' : 'HADIR')"></span>
                                 </div>
                             </div>
                         </template>

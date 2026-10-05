@@ -213,15 +213,16 @@ class QRController extends Controller
         }
 
         // -------------------------------------------------------------
-        // SCAN 3+: ALREADY FULLY RECORDED (MASUK & PULANG COMPLETE)
+        // SCAN 3+: SCAN LEBIH DARI 2 KALI -> TIDAK VALID / DITOLAK
         // -------------------------------------------------------------
         if ($attendance && !empty($attendance->jam_masuk) && !empty($attendance->jam_pulang)) {
-            $message = "Siswa {$student->nama} ({$student->kelas}) SUDAH menyelesaikan presensi hari ini. Jam Masuk: [{$attendance->jam_masuk}], Jam Pulang: [{$attendance->jam_pulang}].";
+            $message = "Presensi TIDAK VALID! Siswa {$student->nama} ({$student->kelas}) SUDAH melakukan scan masuk jam [{$attendance->jam_masuk}] dan scan pulang jam [{$attendance->jam_pulang}]. Batas scan presensi hari ini maksimal 2 kali (1x Masuk & 1x Keluar). Silakan hadir kembali besok.";
 
             return response()->json([
-                'success' => true,
+                'success' => false,
                 'already_completed' => true,
-                'scan_type' => 'completed',
+                'scan_type' => 'invalid',
+                'title' => 'Presensi Tidak Valid (Batas Scan Habis)!',
                 'role_type' => 'student',
                 'message' => $message,
                 'person' => [
@@ -236,9 +237,39 @@ class QRController extends Controller
                     'tanggal' => $today,
                     'jam_masuk' => $attendance->jam_masuk,
                     'jam_pulang' => $attendance->jam_pulang,
-                    'status_text' => 'SELESAI (Masuk & Pulang)',
+                    'status_text' => 'TIDAK VALID (Batas 2x Scan)',
                 ],
-            ]);
+            ], 422);
+        }
+
+        // -------------------------------------------------------------
+        // CEK JAM LUAR SEKOLAH: ISENG ABSEN MASUK SETELAH JAM PULANG
+        // -------------------------------------------------------------
+        if ($currentTimeHM >= $jamPulangConfig || $currentTimeHM < '05:30') {
+            $message = "Presensi MASUK Ditolak! Waktu presensi hari ini sudah berakhir (Batas akhir presensi masuk: {$jamPulangConfig} WITA). Siswa {$student->nama} dipersilakan hadir dan melakukan presensi kembali besok pagi.";
+
+            return response()->json([
+                'success' => false,
+                'outside_hours' => true,
+                'scan_type' => 'outside_hours',
+                'title' => 'Presensi Masuk Ditolak!',
+                'role_type' => 'student',
+                'message' => $message,
+                'person' => [
+                    'id' => $student->id,
+                    'nama' => $student->nama,
+                    'nisn' => $student->nisn ?? $student->nis,
+                    'kelas' => $student->kelas,
+                    'foto_url' => $student->foto_url,
+                    'is_abk' => $student->is_abk,
+                ],
+                'attendance' => [
+                    'tanggal' => $today,
+                    'waktu' => $time,
+                    'status_text' => 'DITOLAK (Di Luar Jam Masuk)',
+                    'jam_pulang_target' => $jamPulangConfig,
+                ],
+            ], 422);
         }
 
         // -------------------------------------------------------------
@@ -348,8 +379,8 @@ class QRController extends Controller
                 $message = "Presensi PULANG Guru Berhasil! {$teacher->name} dicatat PULANG pada jam [{$time}] (Sebelum jam kepulangan resmi {$jamPulangConfig}). Jam Masuk: [{$teacherAttendance->jam_masuk}].";
                 $keteranganPulang = "Pulang Awal: [{$time}]";
             } else {
-                $statusText = "PULANG TEPAT WAKTU (Jam {$time})";
-                $message = "Presensi PULANG Guru Berhasil! {$teacher->name} dicatat PULANG TEPAT WAKTU pada jam [{$time}]. Jam Masuk: [{$teacherAttendance->jam_masuk}].";
+                $statusText = "PULANG (Jam {$time})";
+                $message = "Presensi PULANG Guru Berhasil! {$teacher->name} dicatat PULANG pada jam [{$time}]. Jam Masuk: [{$teacherAttendance->jam_masuk}].";
                 $keteranganPulang = "Pulang: [{$time}]";
             }
 
@@ -387,15 +418,16 @@ class QRController extends Controller
         }
 
         // -------------------------------------------------------------
-        // SCAN 3+: ALREADY FULLY RECORDED (MASUK & PULANG COMPLETE)
+        // SCAN 3+: SCAN LEBIH DARI 2 KALI -> TIDAK VALID / DITOLAK
         // -------------------------------------------------------------
         if ($teacherAttendance && !empty($teacherAttendance->jam_masuk) && !empty($teacherAttendance->jam_pulang)) {
-            $message = "Guru {$teacher->name} SUDAH menyelesaikan presensi hari ini. Jam Masuk: [{$teacherAttendance->jam_masuk}], Jam Pulang: [{$teacherAttendance->jam_pulang}].";
+            $message = "Presensi TIDAK VALID! Guru {$teacher->name} SUDAH melakukan scan masuk jam [{$teacherAttendance->jam_masuk}] dan scan pulang jam [{$teacherAttendance->jam_pulang}]. Batas scan presensi hari ini maksimal 2 kali (1x Masuk & 1x Keluar). Silakan hadir kembali besok.";
 
             return response()->json([
-                'success' => true,
+                'success' => false,
                 'already_completed' => true,
-                'scan_type' => 'completed',
+                'scan_type' => 'invalid',
+                'title' => 'Presensi Tidak Valid (Batas Scan Habis)!',
                 'role_type' => 'teacher',
                 'message' => $message,
                 'person' => [
@@ -409,9 +441,38 @@ class QRController extends Controller
                     'tanggal' => $today,
                     'jam_masuk' => $teacherAttendance->jam_masuk,
                     'jam_pulang' => $teacherAttendance->jam_pulang,
-                    'status_text' => 'SELESAI (Masuk & Pulang)',
+                    'status_text' => 'TIDAK VALID (Batas 2x Scan)',
                 ],
-            ]);
+            ], 422);
+        }
+
+        // -------------------------------------------------------------
+        // CEK JAM LUAR SEKOLAH: ISENG ABSEN MASUK SETELAH JAM PULANG
+        // -------------------------------------------------------------
+        if ($currentTimeHM >= $jamPulangConfig || $currentTimeHM < '05:30') {
+            $message = "Presensi MASUK Guru Ditolak! Waktu presensi hari ini sudah berakhir (Batas akhir presensi masuk: {$jamPulangConfig} WITA). Guru {$teacher->name} dipersilakan hadir dan melakukan presensi kembali besok pagi.";
+
+            return response()->json([
+                'success' => false,
+                'outside_hours' => true,
+                'scan_type' => 'outside_hours',
+                'title' => 'Presensi Masuk Ditolak!',
+                'role_type' => 'teacher',
+                'message' => $message,
+                'person' => [
+                    'id' => $teacher->id,
+                    'nama' => $teacher->name,
+                    'email' => $teacher->email,
+                    'kelas' => $teacher->getAssignedClass() ?? 'Guru Pengajar',
+                    'is_guru' => true,
+                ],
+                'attendance' => [
+                    'tanggal' => $today,
+                    'waktu' => $time,
+                    'status_text' => 'DITOLAK (Di Luar Jam Masuk)',
+                    'jam_pulang_target' => $jamPulangConfig,
+                ],
+            ], 422);
         }
 
         // -------------------------------------------------------------
