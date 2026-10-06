@@ -79,6 +79,18 @@ class ParentController extends Controller
             $weeklyAlpa[] = ($dayAtt && $dayAtt->status === 'alpa') ? 1 : 0;
         }
 
+        // Daily notes from teacher for child
+        $latestDailyNotes = \App\Models\StudentDailyNote::with('teacher')
+            ->where('student_id', $student->id)
+            ->latest('tanggal')
+            ->latest('id')
+            ->take(3)
+            ->get();
+
+        $unreadNotesCount = \App\Models\StudentDailyNote::where('student_id', $student->id)
+            ->where('is_read', false)
+            ->count();
+
         return view('parent.dashboard', compact(
             'student',
             'todayAttendance',
@@ -93,7 +105,9 @@ class ParentController extends Controller
             'weeklyDates',
             'weeklyHadir',
             'weeklyIzinSakit',
-            'weeklyAlpa'
+            'weeklyAlpa',
+            'latestDailyNotes',
+            'unreadNotesCount'
         ));
     }
 

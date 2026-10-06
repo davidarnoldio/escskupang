@@ -161,6 +161,11 @@ class Student extends Model
         return $this->hasMany(HomeworkSubmission::class);
     }
 
+    public function dailyNotes(): HasMany
+    {
+        return $this->hasMany(StudentDailyNote::class)->orderBy('tanggal', 'desc')->latest();
+    }
+
     /**
      * Check if a user has permission to view this student's profile photo.
      * Allowed: Admin, Student's own Wali Kelas (class homeroom teacher), and Student's own Parent.

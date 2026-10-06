@@ -36,6 +36,11 @@ class User extends Authenticatable
         return $this->hasMany(TeacherAttendance::class, 'teacher_id');
     }
 
+    public function studentDailyNotes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(StudentDailyNote::class, 'teacher_id')->orderBy('tanggal', 'desc')->latest();
+    }
+
     /**
      * Unique QR code string identifier for teacher scanning.
      */

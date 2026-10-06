@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QRController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentDailyNoteController;
 use App\Http\Controllers\TeacherAttendanceController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
@@ -38,8 +39,15 @@ Route::middleware('auth')->group(function () {
 
     // Parent Portal
     Route::get('/parent/dashboard', [ParentController::class, 'dashboard'])->name('parent.dashboard');
+    Route::get('/parent/daily-notes', [StudentDailyNoteController::class, 'parentIndex'])->name('parent.daily-notes');
     Route::post('/parent/upload-letter', [ParentController::class, 'uploadLetter'])->name('parent.upload-letter');
     Route::post('/parent/update-account', [ParentController::class, 'updateAccount'])->name('parent.update-account');
+
+    // Student Daily Notes (Buku Penghubung Guru untuk Siswa)
+    Route::get('/daily-notes', [StudentDailyNoteController::class, 'index'])->name('daily-notes.index');
+    Route::post('/daily-notes', [StudentDailyNoteController::class, 'store'])->name('daily-notes.store');
+    Route::put('/daily-notes/{dailyNote}', [StudentDailyNoteController::class, 'update'])->name('daily-notes.update');
+    Route::delete('/daily-notes/{dailyNote}', [StudentDailyNoteController::class, 'destroy'])->name('daily-notes.destroy');
 
     // Payments Module (Admin & Parent)
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');

@@ -212,6 +212,71 @@
 
                 </div>
 
+                <!-- Highlight Widget: Catatan Harian Guru (Buku Penghubung) -->
+                <div class="bg-white rounded-3xl shadow-xs border border-slate-200/80 p-6 relative overflow-hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-4 mb-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">📖</span>
+                                <h3 class="font-extrabold text-base text-slate-900">Catatan Harian Guru</h3>
+                                @if(isset($unreadNotesCount) && $unreadNotesCount > 0)
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-500 text-white animate-pulse">
+                                        {{ $unreadNotesCount }} Catatan Baru
+                                    </span>
+                                @endif
+                            </div>
+                            <p class="text-xs text-slate-500 mt-0.5">Komunikasi perkembangan, sikap, dan pesan pembelajaran langsung dari Bapak/Ibu Guru.</p>
+                        </div>
+                        <a href="{{ route('parent.daily-notes') }}"
+                           class="inline-flex items-center gap-1.5 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 font-extrabold text-xs rounded-xl border border-red-200 transition">
+                            <span>Buka Buku Penghubung</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+
+                    @if(isset($latestDailyNotes) && $latestDailyNotes->isNotEmpty())
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            @foreach($latestDailyNotes as $dNote)
+                                <div class="bg-slate-50/80 rounded-2xl p-4 border border-slate-200/70 hover:border-red-300 transition flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between gap-2 mb-2">
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[10px] font-bold border {{ $dNote->getKategoriBadgeClass() }}">
+                                                <span>{{ $dNote->getKategoriIcon() }}</span>
+                                                <span>{{ $dNote->kategori }}</span>
+                                            </span>
+                                            <span class="text-[10px] font-semibold text-slate-400">
+                                                {{ \Carbon\Carbon::parse($dNote->tanggal)->translatedFormat('d M Y') }}
+                                            </span>
+                                        </div>
+                                        <h4 class="text-xs font-black text-slate-900 line-clamp-1 mb-1">
+                                            {{ $dNote->judul }}
+                                        </h4>
+                                        <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                                            {{ $dNote->catatan }}
+                                        </p>
+
+                                        @if($dNote->pesan_untuk_orangtua)
+                                            <div class="mt-2.5 p-2 bg-red-100/50 rounded-xl border border-red-200/60 text-[11px] text-red-900">
+                                                <span class="font-bold text-red-700 block text-[10px] uppercase">🏡 Pesan untuk di Rumah:</span>
+                                                <p class="line-clamp-2 italic mt-0.5 text-slate-700">"{{ $dNote->pesan_untuk_orangtua }}"</p>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="mt-3 pt-2.5 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-400">
+                                        <span class="truncate">Guru: <strong class="text-slate-700">{{ $dNote->teacher?->name ?? 'Wali Kelas' }}</strong></span>
+                                        <a href="{{ route('parent.daily-notes') }}" class="text-red-600 font-bold hover:underline shrink-0">Lihat Detail</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-6 bg-slate-50/60 rounded-2xl border border-dashed border-slate-200 text-xs text-slate-500">
+                            <span>Belum ada catatan harian dari guru untuk Ananda {{ $student->nama }}. Setiap pesan atau evaluasi harian akan muncul di sini.</span>
+                        </div>
+                    @endif
+                </div>
+
                 <!-- Form Unggah Foto Surat Izin / Sakit ke Wali Kelas -->
                 <div class="bg-white rounded-3xl shadow-xs border border-slate-200/80 p-6">
                     <div class="border-b border-slate-100 pb-3 mb-4">
