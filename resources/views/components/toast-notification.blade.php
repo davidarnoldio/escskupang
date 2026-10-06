@@ -1,6 +1,6 @@
 <div x-data="toastManager()"
      @notify.window="add($event.detail)"
-     class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none sm:max-w-md"
+     class="fixed top-4 right-4 sm:top-5 sm:right-5 z-[9999] flex flex-col gap-3 max-w-sm w-full pointer-events-none sm:max-w-md"
      style="display: none;"
      x-show="toasts.length > 0">
     <template x-for="(toast, index) in toasts" :key="toast.id">
@@ -11,22 +11,23 @@
              x-transition:leave="transition ease-in duration-200"
              x-transition:leave-start="opacity-100 transform scale-100"
              x-transition:leave-end="opacity-0 transform scale-95"
-             class="pointer-events-auto relative overflow-hidden rounded-2xl bg-white/95 backdrop-blur-md border shadow-2xl p-4 transition duration-200"
+             class="pointer-events-auto relative overflow-hidden rounded-2xl border-2 shadow-2xl p-4 transition duration-200"
              :class="{
-                 'border-emerald-200 text-slate-800 shadow-emerald-900/10': toast.type === 'success',
-                 'border-rose-200 text-slate-800 shadow-rose-900/10': toast.type === 'error',
-                 'border-amber-200 text-slate-800 shadow-amber-900/10': toast.type === 'warning',
-                 'border-blue-200 text-slate-800 shadow-blue-900/10': toast.type === 'info'
-             }">
+                 'border-emerald-500 shadow-emerald-500/20': toast.type === 'success',
+                 'border-rose-500 shadow-rose-500/20': toast.type === 'error',
+                 'border-amber-500 shadow-amber-500/20': toast.type === 'warning',
+                 'border-blue-500 shadow-blue-500/20': toast.type === 'info'
+             }"
+             style="background-color: #ffffff !important;">
             
             <div class="flex items-start gap-3.5">
                 <!-- Icon Box -->
-                <div class="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center shadow-xs"
+                <div class="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
                      :class="{
-                         'bg-emerald-100 text-emerald-700': toast.type === 'success',
-                         'bg-rose-100 text-rose-700': toast.type === 'error',
-                         'bg-amber-100 text-amber-700': toast.type === 'warning',
-                         'bg-blue-100 text-blue-700': toast.type === 'info'
+                         'bg-emerald-500 text-white': toast.type === 'success',
+                         'bg-rose-500 text-white': toast.type === 'error',
+                         'bg-amber-500 text-white': toast.type === 'warning',
+                         'bg-blue-500 text-white': toast.type === 'info'
                      }">
                     <!-- Success Icon -->
                     <template x-if="toast.type === 'success'">
@@ -56,21 +57,21 @@
 
                 <!-- Text Content -->
                 <div class="flex-1 min-w-0 pr-6">
-                    <h5 class="text-xs font-black tracking-tight"
+                    <h5 class="text-sm font-extrabold tracking-tight"
                         :class="{
-                            'text-emerald-950': toast.type === 'success',
-                            'text-rose-950': toast.type === 'error',
-                            'text-amber-950': toast.type === 'warning',
-                            'text-blue-950': toast.type === 'info'
+                            'text-emerald-800': toast.type === 'success',
+                            'text-rose-800': toast.type === 'error',
+                            'text-amber-800': toast.type === 'warning',
+                            'text-blue-800': toast.type === 'info'
                         }"
                         x-text="toast.title"></h5>
-                    <p class="text-xs font-semibold text-slate-600 mt-0.5 leading-snug break-words" x-text="toast.message"></p>
+                    <p class="text-xs font-semibold text-slate-700 mt-0.5 leading-snug break-words" x-text="toast.message"></p>
                     <span class="text-[10px] font-bold text-slate-400 mt-1 block">Baru saja</span>
                 </div>
 
                 <!-- Close Button -->
                 <button type="button" @click="remove(toast.id)"
-                        class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition cursor-pointer">
+                        class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
