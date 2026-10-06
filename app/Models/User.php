@@ -11,12 +11,28 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'student_id', 'assigned_class'])]
+#[Fillable([
+    'name', 'email', 'password', 'role', 'student_id', 'assigned_class',
+    'nik', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'nama_ibu_kandung',
+    'alamat', 'rt', 'rw', 'dusun', 'desa_kelurahan', 'kecamatan', 'lintang', 'bujur', 'kode_pos',
+    'status_kepegawaian', 'niy_nigk', 'nuptk', 'sk_pengangkatan', 'tmt_pengangkatan', 'lembaga_pengangkat',
+    'sumber_gaji', 'keahlian_laboratorium', 'mampu_menangani_kebutuhan_khusus', 'no_hp', 'alasan_keluar_kerja',
+    'jenis_sertifikasi', 'nomor_sertifikasi', 'tahun_sertifikasi', 'bidang_studi_sertifikasi', 'nrg', 'nomor_peserta'
+])]
 #[Hidden(['password', 'remember_token', 'plain_password'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    public const STATUS_KEPEGAWAIAN_OPTIONS = [
+        'PNS',
+        'PPPK',
+        'GTY/PTY',
+        'Guru Honor Sekolah',
+        'Tenaga Honor Sekolah',
+        'Kontrak Kerja WNA',
+    ];
 
     /**
      * Get the student record linked to parent user.

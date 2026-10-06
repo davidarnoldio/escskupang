@@ -24,10 +24,10 @@ class DatabaseSeeder extends Seeder
 
         // Only Administrator Account
         User::updateOrCreate(
-            ['email' => 'admin@nto-kupang.sch.id'],
+            ['email' => 'admin@ntokupang.sch.id'],
             [
                 'name' => 'Administrator NTO',
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make('ntokupang123'),
                 'plain_password' => null,
                 'role' => 'admin',
                 'assigned_class' => null,

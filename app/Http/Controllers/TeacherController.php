@@ -62,7 +62,8 @@ class TeacherController extends Controller
         }
 
         $officialClasses = Student::getAllClasses();
-        return view('teachers.create', compact('officialClasses'));
+        $statusKepegawaianOptions = User::STATUS_KEPEGAWAIAN_OPTIONS;
+        return view('teachers.create', compact('officialClasses', 'statusKepegawaianOptions'));
     }
 
     /**
@@ -81,6 +82,37 @@ class TeacherController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6'],
             'assigned_class' => ['nullable', 'string', 'max:100'],
+            'nik' => ['nullable', 'string', 'max:30'],
+            'jenis_kelamin' => ['nullable', 'in:L,P'],
+            'tempat_lahir' => ['nullable', 'string', 'max:100'],
+            'tanggal_lahir' => ['nullable', 'date'],
+            'nama_ibu_kandung' => ['nullable', 'string', 'max:255'],
+            'alamat' => ['nullable', 'string'],
+            'rt' => ['nullable', 'string', 'max:10'],
+            'rw' => ['nullable', 'string', 'max:10'],
+            'dusun' => ['nullable', 'string', 'max:100'],
+            'desa_kelurahan' => ['nullable', 'string', 'max:100'],
+            'kecamatan' => ['nullable', 'string', 'max:100'],
+            'lintang' => ['nullable', 'string', 'max:50'],
+            'bujur' => ['nullable', 'string', 'max:50'],
+            'kode_pos' => ['nullable', 'string', 'max:20'],
+            'status_kepegawaian' => ['nullable', 'string', 'max:100'],
+            'niy_nigk' => ['nullable', 'string', 'max:50'],
+            'nuptk' => ['nullable', 'string', 'max:50'],
+            'sk_pengangkatan' => ['nullable', 'string', 'max:100'],
+            'tmt_pengangkatan' => ['nullable', 'date'],
+            'lembaga_pengangkat' => ['nullable', 'string', 'max:150'],
+            'sumber_gaji' => ['nullable', 'string', 'max:100'],
+            'keahlian_laboratorium' => ['nullable', 'string', 'max:150'],
+            'mampu_menangani_kebutuhan_khusus' => ['nullable', 'in:Ya,Tidak'],
+            'no_hp' => ['nullable', 'string', 'max:30'],
+            'alasan_keluar_kerja' => ['nullable', 'string'],
+            'jenis_sertifikasi' => ['nullable', 'string', 'max:150'],
+            'nomor_sertifikasi' => ['nullable', 'string', 'max:100'],
+            'tahun_sertifikasi' => ['nullable', 'string', 'max:10'],
+            'bidang_studi_sertifikasi' => ['nullable', 'string', 'max:150'],
+            'nrg' => ['nullable', 'string', 'max:50'],
+            'nomor_peserta' => ['nullable', 'string', 'max:100'],
         ]);
 
         $assignedClass = $validated['assigned_class'] ?? null;
@@ -93,15 +125,14 @@ class TeacherController extends Controller
             }
         }
 
-        User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => 'guru',
-            'assigned_class' => $assignedClass,
-        ]);
+        $data = $validated;
+        $data['password'] = Hash::make($validated['password']);
+        $data['role'] = 'guru';
+        $data['assigned_class'] = $assignedClass;
 
-        return redirect()->route('teachers.index')->with('success', 'Akun Guru / Wali Kelas berhasil ditambahkan.');
+        User::create($data);
+
+        return redirect()->route('teachers.index')->with('success', 'Akun Guru dan Biodata Dapodik berhasil ditambahkan.');
     }
 
     /**
@@ -116,7 +147,8 @@ class TeacherController extends Controller
         }
 
         $officialClasses = Student::getAllClasses();
-        return view('teachers.edit', compact('teacher', 'officialClasses'));
+        $statusKepegawaianOptions = User::STATUS_KEPEGAWAIAN_OPTIONS;
+        return view('teachers.edit', compact('teacher', 'officialClasses', 'statusKepegawaianOptions'));
     }
 
     /**
@@ -135,6 +167,37 @@ class TeacherController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($teacher->id)],
             'password' => ['nullable', 'string', 'min:6'],
             'assigned_class' => ['nullable', 'string', 'max:100'],
+            'nik' => ['nullable', 'string', 'max:30'],
+            'jenis_kelamin' => ['nullable', 'in:L,P'],
+            'tempat_lahir' => ['nullable', 'string', 'max:100'],
+            'tanggal_lahir' => ['nullable', 'date'],
+            'nama_ibu_kandung' => ['nullable', 'string', 'max:255'],
+            'alamat' => ['nullable', 'string'],
+            'rt' => ['nullable', 'string', 'max:10'],
+            'rw' => ['nullable', 'string', 'max:10'],
+            'dusun' => ['nullable', 'string', 'max:100'],
+            'desa_kelurahan' => ['nullable', 'string', 'max:100'],
+            'kecamatan' => ['nullable', 'string', 'max:100'],
+            'lintang' => ['nullable', 'string', 'max:50'],
+            'bujur' => ['nullable', 'string', 'max:50'],
+            'kode_pos' => ['nullable', 'string', 'max:20'],
+            'status_kepegawaian' => ['nullable', 'string', 'max:100'],
+            'niy_nigk' => ['nullable', 'string', 'max:50'],
+            'nuptk' => ['nullable', 'string', 'max:50'],
+            'sk_pengangkatan' => ['nullable', 'string', 'max:100'],
+            'tmt_pengangkatan' => ['nullable', 'date'],
+            'lembaga_pengangkat' => ['nullable', 'string', 'max:150'],
+            'sumber_gaji' => ['nullable', 'string', 'max:100'],
+            'keahlian_laboratorium' => ['nullable', 'string', 'max:150'],
+            'mampu_menangani_kebutuhan_khusus' => ['nullable', 'in:Ya,Tidak'],
+            'no_hp' => ['nullable', 'string', 'max:30'],
+            'alasan_keluar_kerja' => ['nullable', 'string'],
+            'jenis_sertifikasi' => ['nullable', 'string', 'max:150'],
+            'nomor_sertifikasi' => ['nullable', 'string', 'max:100'],
+            'tahun_sertifikasi' => ['nullable', 'string', 'max:10'],
+            'bidang_studi_sertifikasi' => ['nullable', 'string', 'max:150'],
+            'nrg' => ['nullable', 'string', 'max:50'],
+            'nomor_peserta' => ['nullable', 'string', 'max:100'],
         ]);
 
         $assignedClass = $validated['assigned_class'] ?? null;
@@ -147,19 +210,18 @@ class TeacherController extends Controller
             }
         }
 
-        $data = [
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'assigned_class' => $assignedClass,
-        ];
+        $data = $validated;
+        $data['assigned_class'] = $assignedClass;
 
         if (!empty($validated['password'])) {
             $data['password'] = Hash::make($validated['password']);
+        } else {
+            unset($data['password']);
         }
 
         $teacher->update($data);
 
-        return redirect()->route('teachers.index')->with('success', 'Data Guru / Wali Kelas berhasil diperbarui.');
+        return redirect()->route('teachers.index')->with('success', 'Data Guru dan Biodata Dapodik berhasil diperbarui.');
     }
 
     /**
