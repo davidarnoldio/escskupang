@@ -277,6 +277,69 @@
                     @endif
                 </div>
 
+                <!-- Highlight Widget: Surat Edaran & Pengumuman Resmi PDF Sekolah -->
+                <div class="bg-white rounded-3xl shadow-xs border border-slate-200/80 p-6 relative overflow-hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-4 mb-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">📄</span>
+                                <h3 class="font-extrabold text-base text-slate-900">Surat & Pengumuman Sekolah (PDF)</h3>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-0.5">Surat edaran resmi, kalender pendidikan, dan dokumen penting dari pihak sekolah.</p>
+                        </div>
+                        <a href="{{ route('parent.announcements') }}"
+                           class="inline-flex items-center gap-1.5 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 font-extrabold text-xs rounded-xl border border-red-200 transition">
+                            <span>Lihat Semua Dokumen</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+
+                    @if(isset($latestAnnouncements) && $latestAnnouncements->isNotEmpty())
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            @foreach($latestAnnouncements as $ann)
+                                <div class="bg-slate-50/80 rounded-2xl p-4 border border-slate-200/70 hover:border-red-300 transition flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between gap-2 mb-2">
+                                            <span class="px-2 py-0.5 rounded-lg text-[10px] font-extrabold {{ $ann->target_class === 'Semua Kelas' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800' }}">
+                                                {{ $ann->target_class === 'Semua Kelas' ? '📢 Semua Kelas' : '🏫 Kelas ' . $ann->target_class }}
+                                            </span>
+                                            <span class="text-[10px] font-semibold text-slate-400">
+                                                {{ $ann->created_at->isoFormat('D MMM Y') }}
+                                            </span>
+                                        </div>
+                                        <h4 class="text-xs font-black text-slate-900 line-clamp-1 mb-1" title="{{ $ann->title }}">
+                                            {{ $ann->title }}
+                                        </h4>
+                                        @if($ann->description)
+                                            <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-2">
+                                                {{ $ann->description }}
+                                            </p>
+                                        @endif
+                                        <div class="text-[10px] text-slate-400 font-mono truncate">
+                                            📎 {{ $ann->file_name }} ({{ $ann->formatted_file_size }})
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3 pt-2.5 border-t border-slate-200/60 flex items-center justify-between gap-2">
+                                        <a href="{{ route('school-announcements.download', $ann) }}"
+                                           class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition inline-flex items-center gap-1 shadow-xs">
+                                            <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                            <span>Unduh PDF</span>
+                                        </a>
+                                        <a href="{{ asset('storage/' . $ann->file_path) }}" target="_blank" class="text-xs font-bold text-red-600 hover:underline">
+                                            Buka ↗
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-6 bg-slate-50/60 rounded-2xl border border-dashed border-slate-200 text-xs text-slate-500">
+                            <span>Belum ada surat edaran atau dokumen PDF dari pihak sekolah saat ini.</span>
+                        </div>
+                    @endif
+                </div>
+
                 <!-- Form Unggah Foto Surat Izin / Sakit ke Wali Kelas -->
                 <div class="bg-white rounded-3xl shadow-xs border border-slate-200/80 p-6">
                     <div class="border-b border-slate-100 pb-3 mb-4">

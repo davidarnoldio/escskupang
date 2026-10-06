@@ -91,6 +91,17 @@ class ParentController extends Controller
             ->where('is_read', false)
             ->count();
 
+        // Latest PDF circulars & announcements for child
+        $latestAnnouncements = \App\Models\SchoolAnnouncement::where(function ($q) use ($student) {
+                $q->where('target_class', 'Semua Kelas');
+                if ($student && $student->kelas) {
+                    $q->orWhere('target_class', $student->kelas);
+                }
+            })
+            ->latest()
+            ->take(3)
+            ->get();
+
         return view('parent.dashboard', compact(
             'student',
             'todayAttendance',
@@ -107,7 +118,8 @@ class ParentController extends Controller
             'weeklyIzinSakit',
             'weeklyAlpa',
             'latestDailyNotes',
-            'unreadNotesCount'
+            'unreadNotesCount',
+            'latestAnnouncements'
         ));
     }
 

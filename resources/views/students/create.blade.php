@@ -331,7 +331,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 sm:gap-6">
                         <!-- Tinggi Badan -->
                         <div>
                             <label for="tinggi_badan"
@@ -372,12 +372,24 @@
                         <div>
                             <label for="jumlah_saudara_kandung"
                                 class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                Jml Saudara Kandung
+                                Jml Saudara
                             </label>
                             <input type="number" id="jumlah_saudara_kandung" name="jumlah_saudara_kandung"
                                 value="{{ old('jumlah_saudara_kandung', 0) }}" min="0" max="30" placeholder="0"
                                 class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-red-500 focus:bg-white transition">
                             <x-input-error :messages="$errors->get('jumlah_saudara_kandung')" class="mt-1" />
+                        </div>
+
+                        <!-- Anak Ke- Berapa -->
+                        <div>
+                            <label for="anak_ke"
+                                class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Anak Ke-
+                            </label>
+                            <input type="number" id="anak_ke" name="anak_ke"
+                                value="{{ old('anak_ke') }}" min="1" max="30" placeholder="Contoh: 1"
+                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-red-500 focus:bg-white transition">
+                            <x-input-error :messages="$errors->get('anak_ke')" class="mt-1" />
                         </div>
                     </div>
                 </div>

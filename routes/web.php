@@ -10,6 +10,7 @@ use App\Http\Controllers\ParentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QRController;
+use App\Http\Controllers\SchoolAnnouncementController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentDailyNoteController;
@@ -39,9 +40,16 @@ Route::middleware('auth')->group(function () {
 
     // Parent Portal
     Route::get('/parent/dashboard', [ParentController::class, 'dashboard'])->name('parent.dashboard');
+    Route::get('/parent/announcements', [SchoolAnnouncementController::class, 'parentIndex'])->name('parent.announcements');
     Route::get('/parent/daily-notes', [StudentDailyNoteController::class, 'parentIndex'])->name('parent.daily-notes');
     Route::post('/parent/upload-letter', [ParentController::class, 'uploadLetter'])->name('parent.upload-letter');
     Route::post('/parent/update-account', [ParentController::class, 'updateAccount'])->name('parent.update-account');
+
+    // School Announcements & PDF Circular Broadcast (Admin & Shared Download)
+    Route::get('/school-announcements', [SchoolAnnouncementController::class, 'index'])->name('school-announcements.index');
+    Route::post('/school-announcements', [SchoolAnnouncementController::class, 'store'])->name('school-announcements.store');
+    Route::delete('/school-announcements/{announcement}', [SchoolAnnouncementController::class, 'destroy'])->name('school-announcements.destroy');
+    Route::get('/school-announcements/{announcement}/download', [SchoolAnnouncementController::class, 'download'])->name('school-announcements.download');
 
     // Student Daily Notes (Buku Penghubung Guru untuk Siswa)
     Route::get('/daily-notes', [StudentDailyNoteController::class, 'index'])->name('daily-notes.index');

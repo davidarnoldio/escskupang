@@ -344,7 +344,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-6">
                         <!-- Tinggi Badan -->
                         <div>
                             <label for="tinggi_badan"
@@ -382,6 +382,19 @@
                                 placeholder="Contoh: 50"
                                 class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-red-500 focus:bg-white transition">
                             <x-input-error :messages="$errors->get('lingkar_kepala')" class="mt-1" />
+                        </div>
+
+                        <!-- Anak Ke -->
+                        <div>
+                            <label for="anak_ke"
+                                class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Anak Ke-
+                            </label>
+                            <input type="number" id="anak_ke" name="anak_ke"
+                                value="{{ old('anak_ke', $student->anak_ke) }}" min="1" max="50"
+                                placeholder="Contoh: 1"
+                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-red-500 focus:bg-white transition">
+                            <x-input-error :messages="$errors->get('anak_ke')" class="mt-1" />
                         </div>
 
                         <!-- Jumlah Saudara Kandung -->

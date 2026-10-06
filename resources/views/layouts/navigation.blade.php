@@ -152,6 +152,13 @@
                         </span>
                     @endif
                 </a>
+
+                <!-- Parent Announcements (PDF) Link -->
+                <a href="{{ route('parent.announcements') }}"
+                   class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('parent.announcements') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                    <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    <span class="flex-1">Surat & Pengumuman</span>
+                </a>
             @else
                 <!-- Dashboard Link -->
                 <a href="{{ route('dashboard') }}"
@@ -279,6 +286,13 @@
                        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('teacher-attendances.rekap') || request()->routeIs('teacher-attendances.print-rekap') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         <span>Rekap Guru</span>
+                    </a>
+
+                    <!-- Surat Edaran & Pengumuman PDF (Admin Only) -->
+                    <a href="{{ route('school-announcements.index') }}"
+                       class="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition duration-200 {{ request()->routeIs('school-announcements.*') ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 font-extrabold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                        <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        <span>Surat & Pengumuman (PDF)</span>
                     </a>
 
                     <!-- Pengaturan Jam Link (Admin Only) -->
@@ -409,6 +423,9 @@
                     </span>
                 @endif
             </a>
+            <a href="{{ route('parent.announcements') }}" class="block px-4 py-2 rounded-xl {{ request()->routeIs('parent.announcements') ? 'bg-red-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 font-bold' }}">
+                📄 Surat & Pengumuman
+            </a>
         @else
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Dashboard</a>
             <a href="{{ route('students.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Data Siswa</a>
@@ -460,6 +477,7 @@
                 <a href="{{ route('teachers.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Kelola Guru</a>
                 <a href="{{ route('teacher-attendances.index') }}" class="block px-4 py-2 rounded-xl {{ request()->routeIs('teacher-attendances.index') ? 'bg-red-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 font-bold' }}">Presensi Guru</a>
                 <a href="{{ route('teacher-attendances.rekap') }}" class="block px-4 py-2 rounded-xl {{ request()->routeIs('teacher-attendances.rekap') ? 'bg-red-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 font-bold' }}">Rekap Guru</a>
+                <a href="{{ route('school-announcements.index') }}" class="block px-4 py-2 rounded-xl {{ request()->routeIs('school-announcements.*') ? 'bg-red-600 text-white font-bold' : 'text-slate-300 hover:bg-slate-800 font-bold' }}">📄 Surat & Pengumuman (PDF)</a>
                 <a href="{{ route('settings.index') }}" class="block px-4 py-2 rounded-xl text-slate-300 hover:bg-slate-800 font-bold">Pengaturan Jam</a>
             @endif
         @endif

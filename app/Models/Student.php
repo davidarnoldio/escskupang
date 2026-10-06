@@ -54,6 +54,7 @@ class Student extends Model
         'berat_badan',
         'lingkar_kepala',
         'jumlah_saudara_kandung',
+        'anak_ke',
         'nama_ayah',
         'nik_ayah',
         'tahun_lahir_ayah',
@@ -80,6 +81,7 @@ class Student extends Model
         'berat_badan' => 'integer',
         'lingkar_kepala' => 'integer',
         'jumlah_saudara_kandung' => 'integer',
+        'anak_ke' => 'integer',
     ];
 
     /**

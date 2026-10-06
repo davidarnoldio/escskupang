@@ -171,7 +171,7 @@
                                 <h4 class="font-bold text-sm text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
                                     <span>📏</span> Data Fisik Siswa (Periodik)
                                 </h4>
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
                                     <div class="p-3 bg-slate-50 rounded-xl text-center">
                                         <span class="block text-[10px] font-bold text-slate-400 uppercase">Tinggi Badan</span>
                                         <span class="font-extrabold text-base text-slate-900">{{ $student->tinggi_badan ? $student->tinggi_badan . ' cm' : '-' }}</span>
@@ -183,6 +183,10 @@
                                     <div class="p-3 bg-slate-50 rounded-xl text-center">
                                         <span class="block text-[10px] font-bold text-slate-400 uppercase">Lingkar Kepala</span>
                                         <span class="font-extrabold text-base text-slate-900">{{ $student->lingkar_kepala ? $student->lingkar_kepala . ' cm' : '-' }}</span>
+                                    </div>
+                                    <div class="p-3 bg-slate-50 rounded-xl text-center">
+                                        <span class="block text-[10px] font-bold text-slate-400 uppercase">Anak Ke-</span>
+                                        <span class="font-extrabold text-base text-red-600">{{ $student->anak_ke ? 'Ke-' . $student->anak_ke : '-' }}</span>
                                     </div>
                                     <div class="p-3 bg-slate-50 rounded-xl text-center">
                                         <span class="block text-[10px] font-bold text-slate-400 uppercase">Saudara</span>
