@@ -21,9 +21,6 @@
     </head>
     <body class="font-sans antialiased text-slate-800 bg-white selection:bg-red-600 selection:text-white min-h-screen">
         
-        <!-- Global Toast Notification System -->
-        <x-toast-notification />
-
         <!-- Left Sidebar Navigation Component -->
         @include('layouts.navigation')
 

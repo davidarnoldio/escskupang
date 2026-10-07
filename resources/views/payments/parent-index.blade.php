@@ -113,7 +113,7 @@
 
                         @if(in_array($p->status, ['belum_lunas', 'ditolak']))
                             <button @click="uploadModal = {{ $p->id }}"
-                                class="flex-1 md:flex-initial px-4 py-2 bg-gradient-to-r from-red-600 to-red-800 text-white hover:from-red-700 hover:to-red-900 rounded-xl text-xs font-bold shadow-md shadow-red-600/20 transition">
+                                class="flex-1 md:flex-initial px-4 py-2 bg-red-600 text-white hover:bg-red-700 active:bg-red-800 rounded-xl text-xs font-bold shadow-md shadow-red-600/30 transition">
                                 📤 Upload Bukti Transfer
                             </button>
                         @endif

@@ -126,7 +126,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <button type="button" @click="openBulkModal()" class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black rounded-xl text-xs shadow-lg transition flex items-center gap-1.5 cursor-pointer">
+                <button type="button" @click="openBulkModal()" class="px-4 py-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-black rounded-xl text-xs shadow-md shadow-red-600/30 transition flex items-center gap-1.5 cursor-pointer">
                     <span>🎓 Luluskan Siswa Terpilih (Massal)</span>
                 </button>
                 <button type="button" @click="selectedIds = []; selectAll = false;" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition">

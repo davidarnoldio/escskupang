@@ -13,7 +13,7 @@
             </div>
             <div>
                 <button @click="$dispatch('open-create-modal')" type="button"
-                        class="px-4 py-2.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold text-xs rounded-2xl shadow-lg shadow-red-600/30 transition flex items-center gap-2 cursor-pointer">
+                        class="px-4 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold text-xs rounded-2xl shadow-md shadow-red-600/30 transition flex items-center gap-2 cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -394,7 +394,7 @@
                                 Batal
                             </button>
                             <button type="submit"
-                                    class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold text-xs rounded-xl shadow-md transition">
+                                    class="px-5 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold text-xs rounded-xl shadow-md shadow-red-600/30 transition">
                                 🚀 Simpan & Kirim ke Orang Tua
                             </button>
                         </div>

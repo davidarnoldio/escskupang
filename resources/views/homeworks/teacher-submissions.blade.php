@@ -5,7 +5,7 @@
                 {{ __('Penilaian & Rekap Nilai PR: ') . $homework->judul }}
             </h2>
             <div class="flex items-center gap-2 shrink-0">
-                <a href="{{ route('homeworks.print-recap', $homework) }}?autoprint=1" target="_blank" class="px-3.5 py-1.5 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 text-white rounded-xl text-xs font-bold transition shadow-sm inline-flex items-center gap-1.5">
+                <a href="{{ route('homeworks.print-recap', $homework) }}?autoprint=1" target="_blank" class="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white rounded-xl text-xs font-bold transition shadow-sm inline-flex items-center gap-1.5">
                     <span>🖨️</span> Cetak Rekap Nilai A4
                 </a>
                 <a href="{{ route('homeworks.index') }}" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
@@ -156,7 +156,7 @@
                                 <td class="py-3.5 px-4 text-center">
                                     @if($sub)
                                         <div class="flex items-center justify-center gap-1.5">
-                                            <button @click="gradeModal = { id: {{ $sub->id }}, name: '{{ addslashes($st->nama) }}', grade: '{{ $sub->nilai ?? '' }}', notes: '{{ addslashes($sub->catatan_guru ?? '') }}' }" class="px-3 py-1.5 bg-gradient-to-r from-red-600 to-red-800 text-white hover:from-red-700 hover:to-red-900 rounded-xl text-xs font-bold shadow-sm transition inline-flex items-center gap-1">
+                                            <button @click="gradeModal = { id: {{ $sub->id }}, name: '{{ addslashes($st->nama) }}', grade: '{{ $sub->nilai ?? '' }}', notes: '{{ addslashes($sub->catatan_guru ?? '') }}' }" class="px-3 py-1.5 bg-red-600 text-white hover:bg-red-700 active:bg-red-800 rounded-xl text-xs font-bold shadow-sm transition inline-flex items-center gap-1">
                                                 ✏️ <span>{{ $sub->nilai !== null ? 'Edit Nilai' : 'Input Nilai' }}</span>
                                             </button>
                                             <form id="delete-sub-form-{{ $sub->id }}" action="{{ route('homeworks.destroy-submission', $sub) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengumpulan PR siswa {{ addslashes($st->nama) }}? File foto dan nilai yang sudah ada akan dihapus.')" class="inline">

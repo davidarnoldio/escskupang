@@ -135,7 +135,7 @@
                                 </button>
                             @endif
 
-                            <button @click="uploadModal = {{ $hw->id }}" class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-800 text-white hover:from-red-700 hover:to-red-900 rounded-xl text-xs font-bold shadow-md shadow-red-600/20 transition">
+                            <button @click="uploadModal = {{ $hw->id }}" class="px-4 py-2 bg-red-600 text-white hover:bg-red-700 active:bg-red-800 rounded-xl text-xs font-bold shadow-md shadow-red-600/30 transition">
                                 {{ $sub ? '🔄 Upload Ulang Foto PR' : '📤 Upload Foto PR' }}
                             </button>
                         </div>

@@ -133,7 +133,7 @@
                         <input type="file" name="lampiran_guru" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-red-50 file:text-red-700 hover:file:bg-red-100">
                     </div>
 
-                    <button type="submit" class="w-full py-2.5 px-4 bg-gradient-to-r from-red-600 to-red-800 text-white rounded-xl font-bold text-xs shadow-md shadow-red-500/20 hover:from-red-700 hover:to-red-900 transition">
+                    <button type="submit" class="w-full py-2.5 px-4 bg-red-600 text-white rounded-xl font-bold text-xs shadow-md shadow-red-600/30 hover:bg-red-700 active:bg-red-800 transition">
                         Posting Pemberitahuan PR
                     </button>
                 </form>
@@ -179,7 +179,7 @@
                                 $ungradedCount = $hw->submissions->whereNull('nilai')->count();
                             @endphp
                             <div class="shrink-0 flex items-center gap-2 w-full md:w-auto">
-                                <a href="{{ route('homeworks.submissions', $hw) }}" class="flex-1 md:flex-initial px-4 py-2.5 bg-gradient-to-r from-red-600 to-red-800 text-white hover:from-red-700 hover:to-red-900 rounded-xl text-xs font-bold shadow-md shadow-red-500/20 transition flex items-center justify-center gap-2">
+                                <a href="{{ route('homeworks.submissions', $hw) }}" class="flex-1 md:flex-initial px-4 py-2.5 bg-red-600 text-white hover:bg-red-700 active:bg-red-800 rounded-xl text-xs font-bold shadow-md shadow-red-600/30 transition flex items-center justify-center gap-2">
                                     <span>📊 Rekap Nilai & Pengumpulan</span>
                                     @if($ungradedCount > 0)
                                         <span class="px-2 py-0.5 text-[9px] font-black bg-amber-400 text-amber-950 rounded-full animate-pulse shadow-sm">

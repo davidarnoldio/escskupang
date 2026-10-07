@@ -147,7 +147,7 @@
                         <textarea name="keterangan" rows="2" placeholder="Transfer ke BCA 123456789 a.n. NTO National Plus" class="w-full rounded-xl border-slate-200 text-xs font-medium focus:ring-red-500 focus:border-red-500"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full py-2.5 px-4 bg-gradient-to-r from-red-600 to-red-800 text-white rounded-xl font-bold text-xs shadow-md shadow-red-500/20 hover:from-red-700 hover:to-red-900 transition">
+                    <button type="submit" class="w-full py-2.5 px-4 bg-red-600 text-white rounded-xl font-bold text-xs shadow-md shadow-red-600/30 hover:bg-red-700 active:bg-red-800 transition">
                         Kirim Notifikasi Tagihan
                     </button>
                 </form>
