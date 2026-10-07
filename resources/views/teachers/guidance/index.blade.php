@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4" x-data>
             <div>
                 <h2 class="text-xl font-bold text-slate-900 leading-tight flex items-center gap-2">
                     <span class="p-2 bg-red-100 text-red-600 rounded-xl">📋</span>
@@ -8,19 +8,21 @@
                 </h2>
                 <p class="text-xs text-slate-500 mt-1">
                     Pencatatan perilaku, bimbingan berkala, dan pembinaan siswa &bull; 
-                    <strong class="text-red-700">Kelas {{ $selectedClass }}</strong>
+                    <strong class="text-red-700">{{ str_starts_with($selectedClass, 'Kelas') ? $selectedClass : 'Kelas ' . $selectedClass }}</strong>
                 </p>
             </div>
             <div class="flex items-center gap-2.5">
                 <a href="{{ route('guidance-journal.print', ['kelas' => $selectedClass, 'bulan' => $selectedMonth]) }}" target="_blank"
-                   class="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-xs transition">
+                   class="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer">
                     <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     <span>Cetak Lembar A4</span>
                 </a>
-                <button type="button" @click="$dispatch('open-create-modal')"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs font-bold rounded-xl shadow-md shadow-red-600/30 transition">
+                <button type="button"
+                        onclick="window.dispatchEvent(new CustomEvent('open-create-modal'))"
+                        @click="$dispatch('open-create-modal')"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs font-bold rounded-xl shadow-md shadow-red-600/30 transition cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    <span>+ Tambah Observasi Siswa</span>
+                    <span>Tambah Observasi Siswa</span>
                 </button>
             </div>
         </div>
@@ -170,16 +172,23 @@
         <!-- BAGIAN A: TABEL JURNAL OBSERVASI HARIAN                        -->
         <!-- ============================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-slate-200/80 space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-4">
                 <div>
                     <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
                         <span>A.</span> Jurnal Observasi Harian
                     </h3>
                     <p class="text-xs text-slate-500 mt-0.5">Catatan kejadian, akar masalah, pendekatan, komitmen siswa, dan tindak lanjut perorangan.</p>
                 </div>
-                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold">
-                    Total: {{ $journals->count() }} Kejadian
-                </span>
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold">
+                        Total: {{ $journals->count() }} Kejadian
+                    </span>
+                    <button type="button" @click="createOpen = true"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs font-bold rounded-xl shadow-xs transition cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <span>+ Tambah Data</span>
+                    </button>
+                </div>
             </div>
 
             @if($journals->isEmpty())
@@ -188,7 +197,12 @@
                         📝
                     </div>
                     <h4 class="font-bold text-sm text-slate-800">Belum Ada Catatan Observasi di Bulan Ini</h4>
-                    <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Klik tombol "+ Tambah Observasi Siswa" di kanan atas untuk mulai mencatat bimbingan siswa di kelas {{ $selectedClass }}.</p>
+                    <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Mulai mencatat jurnal observasi dan bimbingan untuk siswa di {{ str_starts_with($selectedClass, 'Kelas') ? $selectedClass : 'Kelas ' . $selectedClass }}.</p>
+                    <button type="button" @click="createOpen = true"
+                            class="mt-4 inline-flex items-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold text-xs rounded-xl shadow-md shadow-red-600/30 transition cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <span>Tambah Observasi Siswa</span>
+                    </button>
                 </div>
             @else
                 <div class="overflow-x-auto rounded-2xl border border-slate-200/80">
@@ -424,7 +438,7 @@
         <!-- ============================================================== -->
         <!-- MODAL 1: TAMBAH CATATAN OBSERVASI SISWA (CREATE)              -->
         <!-- ============================================================== -->
-        <div x-show="createOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+        <div x-show="createOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto">
             <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
                 <div class="fixed inset-0 transition-opacity bg-slate-900/60 backdrop-blur-xs" @click="createOpen = false"></div>
 
@@ -536,7 +550,7 @@
         <!-- ============================================================== -->
         <!-- MODAL 2: EDIT CATATAN OBSERVASI SISWA (EDIT)                    -->
         <!-- ============================================================== -->
-        <div x-show="editOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+        <div x-show="editOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto">
             <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
                 <div class="fixed inset-0 transition-opacity bg-slate-900/60 backdrop-blur-xs" @click="editOpen = false"></div>
 

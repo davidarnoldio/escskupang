@@ -72,4 +72,12 @@ class StudentGuidanceJournal extends Model
             default => 'bg-slate-100 text-slate-800 border-slate-200',
         };
     }
+
+    /**
+     * Alias for identifikasi_akar_masalah
+     */
+    public function getIdentifikasiAkarMasalahAttribute(): ?string
+    {
+        return $this->identifikasi_masalah;
+    }
 }

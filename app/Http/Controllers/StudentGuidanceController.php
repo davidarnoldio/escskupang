@@ -271,7 +271,7 @@ class StudentGuidanceController extends Controller
 
         // Ambil nama Wali Kelas
         $waliKelas = User::where('assigned_class', $selectedClass)
-            ->where('role', 'teacher')
+            ->whereIn('role', ['guru', 'wali_kelas', 'teacher'])
             ->first() ?? $user;
 
         // Tanggal Kupang

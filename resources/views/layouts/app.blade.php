@@ -41,7 +41,7 @@
             @endif
 
             <!-- Top Greeting Bar Header matching Reference Image 2 -->
-            <header class="px-6 lg:px-8 py-5 flex items-center justify-between bg-white border-b border-slate-100">
+            <header class="px-6 lg:px-8 py-5 flex items-center justify-between bg-white border-b border-slate-100" x-data>
                 <div>
                     @isset($header)
                         {{ $header }}

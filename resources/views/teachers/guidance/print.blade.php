@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buku Bimbingan & Jurnal Observasi Siswa - Kelas {{ $selectedClass }} ({{ \Carbon\Carbon::parse($selectedMonth . '-01')->locale('id')->isoFormat('MMMM Y') }})</title>
+    <title>Buku Bimbingan & Jurnal Observasi Siswa - {{ str_starts_with($selectedClass, 'Kelas') ? $selectedClass : 'Kelas ' . $selectedClass }} ({{ \Carbon\Carbon::parse($selectedMonth . '-01')->locale('id')->isoFormat('MMMM Y') }})</title>
     <style>
         @page {
             size: A4 portrait;
@@ -235,7 +235,7 @@
     </div>
 
     <div class="document-meta">
-        <div>KELAS : <strong>KELAS {{ $selectedClass }}</strong></div>
+        <div>KELAS : <strong>{{ strtoupper(str_starts_with($selectedClass, 'Kelas') ? $selectedClass : 'Kelas ' . $selectedClass) }}</strong></div>
         <div>BULAN / TAHUN : <strong>{{ \Carbon\Carbon::parse($selectedMonth . '-01')->locale('id')->isoFormat('MMMM Y') }}</strong></div>
         <div>WALI KELAS : <strong>{{ $waliKelas->name ?? '-' }}</strong></div>
     </div>
@@ -267,7 +267,7 @@
                     <td style="text-align: center; font-weight: bold;">
                         <span class="cat-badge">{{ $item->kategori }}</span>
                     </td>
-                    <td>{{ $item->identifikasi_akar_masalah ?? '-' }}</td>
+                    <td>{{ $item->identifikasi_masalah ?? $item->identifikasi_akar_masalah ?? '-' }}</td>
                     <td>{{ $item->pendekatan_wali_kelas ?? '-' }}</td>
                     <td>{{ $item->komitmen_siswa ?? '-' }}</td>
                     <td>{{ $item->tindak_lanjut ?? '-' }}</td>
