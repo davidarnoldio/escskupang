@@ -12,7 +12,7 @@
     
     // Default list of options ordered logically
     $defaultOptions = [
-        'TK', 'TK A', 'TK B',
+        'TK',
         'Kelas 1',
         'Kelas 2', 
         'Kelas 3', 
