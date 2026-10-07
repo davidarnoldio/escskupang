@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/password-requests', [AdminPasswordController::class, 'index'])->name('admin.password-requests.index');
     Route::post('/admin/reset-password/{user}', [AdminPasswordController::class, 'reset'])->name('admin.reset-password');
     Route::post('/admin/password-requests/{resetRequest}/resolve', [AdminPasswordController::class, 'resolveRequest'])->name('admin.password-requests.resolve');
+    Route::post('/admin/change-password', [AdminPasswordController::class, 'changeOwnPassword'])->name('admin.change-password');
 
     // Parent Portal
     Route::get('/parent/dashboard', [ParentController::class, 'dashboard'])->name('parent.dashboard');

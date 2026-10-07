@@ -9,6 +9,11 @@
                     Kelola laporan Lupa Password dari Guru dan Orang Tua Siswa NTO National Plus
                 </p>
             </div>
+            <div>
+                <a href="#ganti-password-admin" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-sm transition flex items-center gap-2 cursor-pointer">
+                    <span>🔑 Ganti Password Saya</span>
+                </a>
+            </div>
         </div>
     </x-slot>
 
@@ -23,6 +28,85 @@
                 </div>
             </div>
         @endif
+
+        <!-- Change Own Admin Password Card -->
+        <div id="ganti-password-admin" class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden" x-data="{ showPass: false, showNewPass: false }">
+            <div class="px-6 py-4 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-red-600 flex items-center justify-center font-bold text-sm shadow-md">
+                        🔑
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-sm text-white">Ganti Kata Sandi Akun Administrator</h3>
+                        <p class="text-[11px] text-slate-300">Ubah password akun admin yang sedang aktif ({{ Auth::user()->email }})</p>
+                    </div>
+                </div>
+                <span class="px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold text-red-300 border border-white/10">
+                    Akun: {{ Auth::user()->name }}
+                </span>
+            </div>
+
+            <form method="POST" action="{{ route('admin.change-password') }}" class="p-6 space-y-4">
+                @csrf
+                
+                @if ($errors->any())
+                    <div class="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold rounded-2xl">
+                        <ul class="list-disc pl-5 space-y-0.5">
+                            @foreach ($errors->all() as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="current_password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            Password Saat Ini <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input :type="showPass ? 'text' : 'password'" id="current_password" name="current_password" required
+                                   placeholder="Masukkan password lama"
+                                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition pr-10">
+                            <button type="button" @click="showPass = !showPass" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-xs" tabindex="-1">
+                                <span x-show="!showPass">👁️</span>
+                                <span x-show="showPass">🙈</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="new_password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            Password Baru <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input :type="showNewPass ? 'text' : 'password'" id="new_password" name="new_password" required minlength="6"
+                                   placeholder="Minimal 6 karakter"
+                                   class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition pr-10">
+                            <button type="button" @click="showNewPass = !showNewPass" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-xs" tabindex="-1">
+                                <span x-show="!showNewPass">👁️</span>
+                                <span x-show="showNewPass">🙈</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="new_password_confirmation" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            Ulangi Password Baru <span class="text-rose-500">*</span>
+                        </label>
+                        <input :type="showNewPass ? 'text' : 'password'" id="new_password_confirmation" name="new_password_confirmation" required minlength="6"
+                               placeholder="Ketik ulang password baru"
+                               class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end pt-2">
+                    <button type="submit" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-extrabold text-xs rounded-2xl shadow-md shadow-red-600/30 transition flex items-center gap-2 cursor-pointer">
+                        <span>💾 Simpan Kata Sandi Baru</span>
+                    </button>
+                </div>
+            </form>
+        </div>
 
         <!-- Pending Password Reset Requests Container -->
         <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">

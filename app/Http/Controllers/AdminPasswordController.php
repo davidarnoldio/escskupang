@@ -71,4 +71,33 @@ class AdminPasswordController extends Controller
 
         return redirect()->back()->with('success', 'Permintaan reset password telah ditandai Selesai.');
     }
+
+    /**
+     * Change Admin's own account password directly.
+     */
+    public function changeOwnPassword(Request $request)
+    {
+        /** @var \App\Models\User $admin */
+        $admin = Auth::user();
+        if (!$admin || !$admin->isAdmin()) {
+            abort(403, 'Akses khusus Administrator.');
+        }
+
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'new_password' => ['required', 'string', 'min:6', 'confirmed'],
+        ], [
+            'current_password.required' => 'Password saat ini wajib diisi.',
+            'current_password.current_password' => 'Password saat ini tidak cocok dengan akun Anda.',
+            'new_password.required' => 'Password baru wajib diisi.',
+            'new_password.min' => 'Password baru minimal 6 karakter.',
+            'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        $admin->update([
+            'password' => Hash::make($request->input('new_password')),
+        ]);
+
+        return redirect()->back()->with('success', 'Kata sandi Administrator berhasil diubah! Silakan gunakan password baru ini untuk login berikutnya.');
+    }
 }

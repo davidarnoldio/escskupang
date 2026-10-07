@@ -48,7 +48,7 @@ Basis data bawaan (*clean database*) telah disediakan akun Administrator utama u
 
 | Peran (Role) | Alamat Email | Kata Sandi | Wewenang & Hak Akses |
 | :--- | :--- | :--- | :--- |
-| **Administrator Utama** | `admin@nto-kupang.sch.id` | `admin123` | Akses Penuh Sistem: Master Data Biodata Lengkap Siswa, Kelulusan & Arsip Alumni, Kelola Akun Guru, Buat Tagihan SPP & Verifikasi Pembayaran, Switch Mode Guru (Impersonate), Pengaturan Jam Masuk/Pulang, Pantau Surat Izin, Reset Sandi Pengguna. |
+| **Administrator Utama** | `admin@ntokupang.sch.id` | `ntokupang123` | Akses Penuh Sistem: Master Data Biodata Lengkap Siswa, Kelulusan & Arsip Alumni, Kelola Akun Guru, Buat Tagihan SPP & Verifikasi Pembayaran, Switch Mode Guru (Impersonate), Pengaturan Jam Masuk/Pulang, Pantau Surat Izin, Reset Sandi Pengguna. |
 
 ---
 
@@ -212,8 +212,8 @@ php artisan storage:link
 ### 7. Buka di Browser
 Akses aplikasi melalui peramban: **[http://localhost:5000/login](http://localhost:5000/login)**  
 Gunakan akun Administrator:
-- **Email:** `admin@nto-kupang.sch.id`
-- **Password:** `admin123`
+- **Email:** `admin@ntokupang.sch.id`
+- **Password:** `ntokupang123`
 
 ---
 

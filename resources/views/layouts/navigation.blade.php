@@ -349,6 +349,12 @@
                     👤 Profile Saya
                 </a>
 
+                @if($user && $user->isAdmin())
+                    <a href="{{ route('admin.password-requests.index') }}#ganti-password-admin" class="block px-4 py-2 text-xs font-bold text-slate-700 hover:bg-red-50 hover:text-red-600 transition">
+                        🔑 Ganti Password Admin
+                    </a>
+                @endif
+
                 <!-- Switch Account Section (Placed between Profile and Log Out) -->
                 @if(session()->has('impersonated_by'))
                     <div class="border-t border-slate-100 my-1"></div>

@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
         Setting::set('jam_terlambat_abk', '08:30');
         Setting::set('jam_pulang_abk', '13:00');
 
+        // Delete old admin account if still present
+        User::where('email', 'admin@nto-kupang.sch.id')->delete();
+
         // Only Administrator Account
         User::updateOrCreate(
             ['email' => 'admin@ntokupang.sch.id'],
