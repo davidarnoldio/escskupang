@@ -14,6 +14,7 @@ use App\Http\Controllers\SchoolAnnouncementController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentDailyNoteController;
+use App\Http\Controllers\StudentGuidanceController;
 use App\Http\Controllers\TeacherAttendanceController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/daily-notes', [StudentDailyNoteController::class, 'store'])->name('daily-notes.store');
     Route::put('/daily-notes/{dailyNote}', [StudentDailyNoteController::class, 'update'])->name('daily-notes.update');
     Route::delete('/daily-notes/{dailyNote}', [StudentDailyNoteController::class, 'destroy'])->name('daily-notes.destroy');
+
+    // Student Guidance & Observation Journal (Buku Bimbingan Siswa - Guru & Admin)
+    Route::get('/guidance-journal', [StudentGuidanceController::class, 'index'])->name('guidance-journal.index');
+    Route::post('/guidance-journal', [StudentGuidanceController::class, 'store'])->name('guidance-journal.store');
+    Route::put('/guidance-journal/{journal}', [StudentGuidanceController::class, 'update'])->name('guidance-journal.update');
+    Route::delete('/guidance-journal/{journal}', [StudentGuidanceController::class, 'destroy'])->name('guidance-journal.destroy');
+    Route::post('/guidance-journal/recap', [StudentGuidanceController::class, 'saveRecap'])->name('guidance-journal.recap');
+    Route::get('/guidance-journal/print', [StudentGuidanceController::class, 'print'])->name('guidance-journal.print');
 
     // Payments Module (Admin & Parent)
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
