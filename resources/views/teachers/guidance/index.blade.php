@@ -77,7 +77,7 @@
                         <span>Kelas:</span>
                         <select name="kelas" onchange="this.form.submit()" class="py-1.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:ring-red-500">
                             @foreach($availableClasses as $cls)
-                                <option value="{{ $cls }}" {{ $selectedClass == $cls ? 'selected' : '' }}>Kelas {{ $cls }}</option>
+                                <option value="{{ $cls }}" {{ $selectedClass == $cls ? 'selected' : '' }}>{{ \App\Models\Student::formatClass($cls) }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -448,7 +448,7 @@
                             <span class="p-2 bg-red-50 text-red-600 rounded-xl text-lg">📝</span>
                             <div>
                                 <h3 class="font-extrabold text-base text-slate-900">Tambah Jurnal Observasi Siswa</h3>
-                                <p class="text-xs text-slate-500">Kelas {{ $selectedClass }}</p>
+                                <p class="text-xs text-slate-500">{{ \App\Models\Student::formatClass($selectedClass) }}</p>
                             </div>
                         </div>
                         <button type="button" @click="createOpen = false" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>

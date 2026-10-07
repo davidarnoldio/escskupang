@@ -144,7 +144,7 @@
         <p>
             Tahun Kelulusan / Angkatan: <strong>{{ $tahunLulus ? 'Angkatan ' . $tahunLulus : 'Semua Angkatan' }}</strong>
             @if($kelas)
-                | Kelas Terakhir: <strong>Kelas {{ $kelas }}</strong>
+                | Kelas Terakhir: <strong>{{ \App\Models\Student::formatClass($kelas) }}</strong>
             @endif
             | Jumlah: <strong>{{ $alumni->count() }} Orang</strong>
         </p>

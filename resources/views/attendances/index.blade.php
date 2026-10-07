@@ -40,14 +40,14 @@
                         <select name="kelas" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-600 focus:bg-white transition cursor-pointer">
                             <option value="">Semua Kelas</option>
                             @foreach($classList as $k)
-                                <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>Kelas {{ $k }}</option>
+                                <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>{{ \App\Models\Student::formatClass($k) }}</option>
                             @endforeach
                         </select>
                     </div>
                 @else
                     <div class="pt-4">
                         <span class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-800 font-extrabold text-xs rounded-full border border-red-200">
-                            🏫 Kelas {{ $assignedClass }} (Wali Kelas)
+                            🏫 {{ \App\Models\Student::formatWaliClass($assignedClass) }}
                         </span>
                     </div>
                 @endif
@@ -178,7 +178,7 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full bg-red-50 text-red-700 border border-red-200/80">
-                                            Kelas {{ $student->kelas }}
+                                            {{ $student->formatted_kelas }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">

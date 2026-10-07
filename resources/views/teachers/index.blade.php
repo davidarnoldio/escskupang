@@ -85,7 +85,7 @@
                         <div class="flex items-center gap-3">
                             <div class="w-3 h-3 rounded-full bg-red-600 shadow-xs"></div>
                             <h3 class="font-extrabold text-slate-900 text-sm">
-                                {{ $class === 'Unassigned' ? 'Guru Tanpa Penugasan Kelas' : 'Wali Kelas: ' . $class }}
+                                {{ $class === 'Unassigned' ? 'Guru Tanpa Penugasan Kelas' : \App\Models\Student::formatWaliClass($class) }}
                             </h3>
                         </div>
                         <span
@@ -127,7 +127,7 @@
                                                     <span class="font-semibold text-slate-500">Kelas Binaan:</span>
                                                     <span
                                                         class="font-extrabold text-red-700 bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
-                                                        {{ $teacher->getAssignedClass() ?? 'Belum Ditentukan' }}
+                                                        {{ $teacher->getAssignedClass() ? \App\Models\Student::formatClass($teacher->getAssignedClass()) : 'Belum Ditentukan' }}
                                                     </span>
                                                 </div>
                                                 <div class="flex items-center justify-between text-[11px]">

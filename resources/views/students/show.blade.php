@@ -40,7 +40,7 @@
                         <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
                             <h3 class="font-extrabold text-2xl text-slate-900">{{ $student->nama }}</h3>
                             <span class="px-3 py-0.5 bg-red-50 text-red-900 border border-red-200 font-bold text-xs rounded-full">
-                                Kelas {{ $student->kelas }}
+                                {{ $student->formatted_kelas }}
                             </span>
                             @if($student->status === 'lulus')
                                 <span class="px-3 py-0.5 bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold text-xs rounded-full flex items-center gap-1">

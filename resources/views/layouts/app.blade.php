@@ -30,7 +30,7 @@
             <!-- Sticky Impersonation Banner Alert -->
             @if(session()->has('impersonated_by'))
                 <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold px-4 py-2.5 text-xs text-center border-b border-amber-600 shadow-md flex items-center justify-center gap-3 z-30">
-                    <span>⚠️ <strong>Mode Peninjauan Guru:</strong> Anda sedang mengakses sebagai <u>{{ Auth::user()?->name }}</u> (Wali Kelas {{ Auth::user()?->getAssignedClass() ?? 'Guru' }}).</span>
+                    <span>⚠️ <strong>Mode Peninjauan Guru:</strong> Anda sedang mengakses sebagai <u>{{ Auth::user()?->name }}</u> ({{ Auth::user()?->getFormattedWaliClass() }}).</span>
                     <form method="POST" action="{{ route('impersonate.leave') }}" class="inline-block">
                         @csrf
                         <button type="submit" class="px-3 py-1 bg-slate-950 hover:bg-slate-900 text-white rounded-xl text-xs font-extrabold transition cursor-pointer shadow-xs">

@@ -248,13 +248,13 @@
                                 <!-- Class Badge Pill -->
                                 <div>
                                     <span class="px-3 py-1 text-[11px] font-extrabold rounded-full bg-red-50 text-red-700 border border-red-200/80">
-                                        Kelas {{ $student->kelas }}
+                                        {{ $student->formatted_kelas }}
                                     </span>
                                 </div>
                             </div>
                         @empty
                             <div class="py-12 text-center text-xs font-semibold text-slate-400 italic">
-                                Belum ada siswa terdaftar di {{ $assignedClass ? 'kelas ' . $assignedClass : 'sistem' }}.
+                                Belum ada siswa terdaftar di {{ $assignedClass ? \App\Models\Student::formatClass($assignedClass) : 'sistem' }}.
                             </div>
                         @endforelse
                     </div>

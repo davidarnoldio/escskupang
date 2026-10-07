@@ -11,7 +11,7 @@
             @if($student)
                 <span class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-red-50 text-red-900 font-bold text-xs rounded-xl border border-red-200">
                     <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <span>Anak: {{ $student->nama }} (Kelas {{ $student->kelas }})</span>
+                    <span>Anak: {{ $student->nama }} ({{ $student->formatted_kelas }})</span>
                 </span>
             @endif
         </div>

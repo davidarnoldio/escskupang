@@ -259,7 +259,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7">Tidak ada data siswa untuk kelas {{ $homework->kelas }}.</td>
+                    <td colspan="7">Tidak ada data siswa untuk {{ \App\Models\Student::formatClass($homework->kelas) }}.</td>
                 </tr>
             @endforelse
         </tbody>

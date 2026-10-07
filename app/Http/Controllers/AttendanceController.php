@@ -319,7 +319,7 @@ class AttendanceController extends Controller
                     ->where('name', 'like', "%{$kelas}%")
                     ->first();
             }
-            $teacherName = $waliKelasUser ? $waliKelasUser->name : 'Wali Kelas ' . $kelas;
+            $teacherName = $waliKelasUser ? $waliKelasUser->name : \App\Models\Student::formatWaliClass($kelas);
         }
 
         return view('attendances.print_rekap', compact(

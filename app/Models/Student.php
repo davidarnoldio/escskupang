@@ -110,6 +110,14 @@ class Student extends Model
         return $this->status === 'lulus';
     }
 
+    /**
+     * Accessor untuk nama kelas yang sudah terformat rapi tanpa duplikat 'Kelas Kelas X'.
+     */
+    public function getFormattedKelasAttribute(): string
+    {
+        return static::formatClass($this->kelas);
+    }
+
 
     /**
      * Backward-compatibility accessor for NIS -> NISN.
@@ -195,5 +203,36 @@ class Student extends Model
         }
 
         return false;
+    }
+
+    /**
+     * Format nama kelas agar tidak duplikat 'Kelas Kelas X' atau 'Kelas TK'.
+     */
+    public static function formatClass(?string $kelas): string
+    {
+        $k = trim((string)$kelas);
+        if ($k === '' || $k === '-') {
+            return '-';
+        }
+
+        $cleaned = trim(preg_replace('/^(kelas\s*)+/i', '', $k));
+        if (strcasecmp($cleaned, 'tk') === 0 || strcasecmp($k, 'tk') === 0) {
+            return 'TK';
+        }
+
+        return 'Kelas ' . $cleaned;
+    }
+
+    /**
+     * Format sebutan Wali Kelas agar tidak duplikat 'Wali Kelas Kelas X'.
+     */
+    public static function formatWaliClass(?string $kelas): string
+    {
+        $k = trim((string)$kelas);
+        if ($k === '' || $k === '-' || strcasecmp($k, 'guru') === 0 || strcasecmp($k, 'semua kelas') === 0) {
+            return $k === '' ? 'Guru' : $k;
+        }
+
+        return 'Wali ' . static::formatClass($k);
     }
 }

@@ -230,7 +230,7 @@
             <tr>
                 <td class="label">Asal Kelas</td>
                 <td class="colon">:</td>
-                <td class="value">Kelas {{ $student->kelas }}</td>
+                <td class="value">{{ $student->formatted_kelas }}</td>
             </tr>
             @if($student->no_ijazah)
             <tr>

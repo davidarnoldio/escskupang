@@ -73,7 +73,7 @@
                 <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Kategori Tingkat Kelas</span>
                 @if($assignedClass)
                     <span class="px-3 py-1 bg-red-50 text-red-800 border border-red-200 font-extrabold text-xs rounded-full">
-                        Wali Kelas {{ $assignedClass }}
+                        {{ \App\Models\Student::formatWaliClass($assignedClass) }}
                     </span>
                 @endif
             </div>
@@ -193,7 +193,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full bg-red-50 text-red-700 border border-red-200/80">
-                                        Kelas {{ $student->kelas }}
+                                        {{ $student->formatted_kelas }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-xs font-bold text-slate-600">

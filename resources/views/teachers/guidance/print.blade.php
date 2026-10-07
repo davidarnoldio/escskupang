@@ -392,7 +392,7 @@
                 </td>
                 <td style="text-align: left; padding-left: 60px;">
                     <p>{{ $tanggalCetak }}</p>
-                    <p style="font-weight: bold; margin-top: 2px;">Wali Kelas {{ $selectedClass }}</p>
+                    <p style="font-weight: bold; margin-top: 2px;">{{ \App\Models\Student::formatWaliClass($selectedClass) }}</p>
                     <div class="signature-space"></div>
                     <p style="font-weight: bold; text-decoration: underline;">{{ $waliKelas->name ?? 'Wali Kelas' }}</p>
                     <p style="font-size: 9pt; margin-top: 2px;">NIP/NUPTK. {{ $waliKelas->nip ?? '-' }}</p>

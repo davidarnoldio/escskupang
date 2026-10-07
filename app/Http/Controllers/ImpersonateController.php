@@ -35,7 +35,8 @@ class ImpersonateController extends Controller
         Auth::login($teacher);
 
         $assignedClass = $teacher->getAssignedClass() ?? 'Semua Kelas';
-        return redirect()->route('dashboard')->with('success', "Mode Switch Guru: {$teacher->name} (Wali Kelas {$assignedClass}).");
+        $waliLabel = \App\Models\Student::formatWaliClass($assignedClass);
+        return redirect()->route('dashboard')->with('success', "Mode Switch Guru: {$teacher->name} ({$waliLabel}).");
     }
 
     /**

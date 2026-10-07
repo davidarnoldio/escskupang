@@ -40,7 +40,7 @@
                             <span class="text-[10px] font-extrabold uppercase tracking-widest text-red-400">BUKU PENGHUBUNG DIGITAL</span>
                             <h3 class="text-xl font-extrabold text-white leading-tight mt-0.5">{{ $student->nama }}</h3>
                             <div class="flex items-center gap-2 mt-1 flex-wrap text-xs text-slate-300">
-                                <span class="px-2.5 py-0.5 bg-white/10 rounded-full font-semibold">Kelas {{ $student->kelas }}</span>
+                                <span class="px-2.5 py-0.5 bg-white/10 rounded-full font-semibold">{{ $student->formatted_kelas }}</span>
                                 <span>&bull;</span>
                                 <span class="font-mono text-red-300">NISN: {{ $student->nisn ?? $student->nis }}</span>
                             </div>

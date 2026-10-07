@@ -110,6 +110,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Get clean Wali Kelas label without duplicates (e.g. 'Wali Kelas 1', 'Guru Pengajar').
+     */
+    public function getFormattedWaliClass(): string
+    {
+        $assigned = $this->getAssignedClass();
+        return $assigned ? Student::formatWaliClass($assigned) : 'Guru Pengajar';
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

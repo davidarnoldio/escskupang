@@ -76,7 +76,7 @@
                             <option value="Semua Kelas" {{ old('target_class') == 'Semua Kelas' ? 'selected' : '' }}>📢 Seluruh Orang Tua Siswa (Semua Kelas)</option>
                             @foreach($availableClasses as $cls)
                                 <option value="{{ $cls }}" {{ old('target_class') == $cls ? 'selected' : '' }}>
-                                    🏫 Khusus Kelas {{ $cls }}
+                                    🏫 Khusus {{ \App\Models\Student::formatClass($cls) }}
                                 </option>
                             @endforeach
                         </select>
@@ -141,7 +141,7 @@
                         <option value="all">Semua Target</option>
                         <option value="Semua Kelas" {{ request('target_class') == 'Semua Kelas' ? 'selected' : '' }}>Semua Kelas</option>
                         @foreach($availableClasses as $cls)
-                            <option value="{{ $cls }}" {{ request('target_class') == $cls ? 'selected' : '' }}>Kelas {{ $cls }}</option>
+                            <option value="{{ $cls }}" {{ request('target_class') == $cls ? 'selected' : '' }}>{{ \App\Models\Student::formatClass($cls) }}</option>
                         @endforeach
                     </select>
 

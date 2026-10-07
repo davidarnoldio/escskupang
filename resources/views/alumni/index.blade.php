@@ -119,7 +119,7 @@
                 <select name="kelas" class="px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-semibold focus:ring-2 focus:ring-red-600">
                     <option value="">-- Semua Kelas Terakhir --</option>
                     @foreach($classList as $c)
-                        <option value="{{ $c }}" {{ request('kelas') == $c ? 'selected' : '' }}>Kelas {{ $c }}</option>
+                        <option value="{{ $c }}" {{ request('kelas') == $c ? 'selected' : '' }}>{{ \App\Models\Student::formatClass($c) }}</option>
                     @endforeach
                 </select>
 

@@ -35,14 +35,14 @@
                         <select name="kelas" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-600 focus:bg-white transition cursor-pointer">
                             <option value="">Semua Kelas</option>
                             @foreach($classList as $k)
-                                <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>Kelas {{ $k }}</option>
+                                <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>{{ \App\Models\Student::formatClass($k) }}</option>
                             @endforeach
                         </select>
                     </div>
                 @else
                     <div class="pt-4">
                         <span class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-800 font-extrabold text-xs rounded-full border border-red-200">
-                            🏫 Kelas {{ $assignedClass }} (Wali Kelas)
+                            🏫 {{ \App\Models\Student::formatWaliClass($assignedClass) }}
                         </span>
                     </div>
                 @endif
@@ -237,7 +237,7 @@
                                         <span class="px-1.5 py-0.5 text-[9px] font-black rounded bg-amber-100 text-amber-900 border border-amber-300">ABK</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 font-semibold text-slate-600">Kelas {{ $item->student->kelas }}</td>
+                                <td class="px-6 py-4 font-semibold text-slate-600">{{ $item->student->formatted_kelas }}</td>
                                 <td class="px-6 py-4 font-semibold text-slate-700">{{ \Carbon\Carbon::parse($item->tanggal)->locale('id')->isoFormat('D MMMM Y') }}</td>
                                 <td class="px-6 py-4 font-mono font-bold text-amber-900 bg-amber-50 px-2 py-1 rounded-lg inline-block border border-amber-200">{{ $item->waktu_scan }} WITA</td>
                                 <td class="px-6 py-4 font-mono font-semibold text-slate-500">{{ $item->jam_terlambat }} WITA</td>

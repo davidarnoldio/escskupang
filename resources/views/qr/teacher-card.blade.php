@@ -73,7 +73,7 @@
                 <p class="text-xs font-mono text-red-600 font-bold mt-0.5">{{ $teacher->email }}</p>
                 <span
                     class="inline-block mt-1 px-3 py-0.5 bg-red-50 text-red-700 border border-red-200 rounded-full text-xs font-bold">
-                    {{ $teacher->getAssignedClass() ? 'Wali Kelas ' . $teacher->getAssignedClass() : 'Guru Pengajar' }}
+                    {{ $teacher->getFormattedWaliClass() }}
                 </span>
             </div>
 

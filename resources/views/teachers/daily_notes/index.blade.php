@@ -9,7 +9,7 @@
                     </svg>
                     <span>Catatan Harian Siswa</span>
                 </h2>
-                <p class="text-xs text-slate-500 mt-1">Buku penghubung digital dari Guru ke Orang Tua murid @if($assignedClass) &bull; Wali Kelas: <strong>{{ $assignedClass }}</strong> @endif</p>
+                <p class="text-xs text-slate-500 mt-1">Buku penghubung digital dari Guru ke Orang Tua murid @if($assignedClass) &bull; <strong>{{ \App\Models\Student::formatWaliClass($assignedClass) }}</strong> @endif</p>
             </div>
             <div>
                 <button @click="$dispatch('open-create-modal')" type="button"
@@ -339,7 +339,7 @@
                                 <option value="" disabled selected>-- Pilih Siswa yang Dituju --</option>
                                 @foreach($students as $st)
                                     <option value="{{ $st->id }}" {{ old('student_id', request('student_id')) == $st->id ? 'selected' : '' }}>
-                                        {{ $st->nama }} (Kelas {{ $st->kelas }} &bull; NISN: {{ $st->nisn ?? $st->nis }})
+                                        {{ $st->nama }} ({{ \App\Models\Student::formatClass($st->kelas) }} &bull; NISN: {{ $st->nisn ?? $st->nis }})
                                     </option>
                                 @endforeach
                             </select>

@@ -30,7 +30,7 @@
         <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-3">
             <div class="flex flex-wrap items-center gap-2">
                 <span class="px-3 py-1 text-xs font-black rounded-full bg-red-100 text-red-800 border border-red-200">
-                    Kelas {{ $homework->kelas }}
+                    {{ \App\Models\Student::formatClass($homework->kelas) }}
                 </span>
                 <span class="px-3 py-1 text-xs font-black rounded-full bg-teal-50 text-red-800 border border-teal-200">
                     Mata Pelajaran: {{ $homework->mata_pelajaran }}
@@ -78,7 +78,7 @@
         <!-- Grade Recap & Submissions Table -->
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden" x-data="{ photoModal: null, gradeModal: null }">
             <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-                <h3 class="text-base font-bold text-slate-900">Rekapan Nilai & Pengumpulan Siswa Kelas {{ $homework->kelas }}</h3>
+                <h3 class="text-base font-bold text-slate-900">Rekapan Nilai & Pengumpulan Siswa {{ \App\Models\Student::formatClass($homework->kelas) }}</h3>
                 <a href="{{ route('homeworks.print-recap', $homework) }}?autoprint=1" target="_blank" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold transition inline-flex items-center gap-1.5">
                     <span>🖨️</span> Cetak Rekap A4
                 </a>

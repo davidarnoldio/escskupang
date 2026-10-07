@@ -53,7 +53,7 @@
                 <h4 class="font-bold text-lg text-slate-900 leading-tight">{{ $student->nama }}</h4>
                 <p class="text-xs font-mono text-red-600 font-bold mt-0.5">NISN: {{ $student->nisn ?? $student->nis }}</p>
                 <span class="inline-block mt-1 px-3 py-0.5 bg-slate-100 text-slate-800 rounded-full text-xs font-semibold">
-                    Kelas {{ $student->kelas }} ({{ $student->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }})
+                    {{ $student->formatted_kelas }} ({{ $student->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }})
                 </span>
             </div>
 
