@@ -5,20 +5,28 @@
                 <h2 class="text-xl lg:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
                     <span>Presensi Siswa Harian NTO National Plus</span>
                 </h2>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5">Catat dan perbarui kehadiran siswa harian secara manual atau kelompok</p>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5">Catat dan perbarui kehadiran siswa harian secara
+                    manual atau kelompok</p>
             </div>
-            <a href="{{ route('attendances.rekap') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold rounded-2xl text-xs transition cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <a href="{{ route('attendances.rekap') }}"
+                class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold rounded-2xl text-xs transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                    </path>
+                </svg>
                 <span>Lihat Rekap Presensi</span>
             </a>
         </div>
     </x-slot>
 
-    <div class="space-y-6" x-data="{ setAllHadir() { document.querySelectorAll('.radio-hadir').forEach(el => el.checked = true); }, setAllLibur() { document.querySelectorAll('.radio-libur').forEach(el => el.checked = true); } }">
-        
+    <div class="space-y-6"
+        x-data="{ setAllHadir() { document.querySelectorAll('.radio-hadir').forEach(el => el.checked = true); }, setAllLibur() { document.querySelectorAll('.radio-libur').forEach(el => el.checked = true); } }">
+
         <!-- Flash Alert -->
         @if(session('success'))
-            <div class="p-4 bg-red-50 border border-red-200 text-red-900 rounded-2xl text-xs font-extrabold flex items-center justify-between shadow-2xs">
+            <div
+                class="p-4 bg-red-50 border border-red-200 text-red-900 rounded-2xl text-xs font-extrabold flex items-center justify-between shadow-2xs">
                 <div class="flex items-center gap-2.5">
                     <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
                     <span>{{ session('success') }}</span>
@@ -27,33 +35,41 @@
         @endif
 
         <!-- Filter & Batch Actions Header Card -->
-        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <div
+            class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
             <form method="GET" action="{{ route('attendances.index') }}" class="flex flex-wrap items-center gap-3">
                 <div>
-                    <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Tanggal Presensi</label>
-                    <input type="date" name="tanggal" value="{{ $tanggal }}" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-600 focus:bg-white transition cursor-pointer">
+                    <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Tanggal
+                        Presensi</label>
+                    <input type="date" name="tanggal" value="{{ $tanggal }}" onchange="this.form.submit()"
+                        class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-600 focus:bg-white transition cursor-pointer">
                 </div>
 
                 @if(Auth::user()->isAdmin())
                     <div>
-                        <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Pilih Kelas</label>
-                        <select name="kelas" onchange="this.form.submit()" class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-600 focus:bg-white transition cursor-pointer">
+                        <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Pilih
+                            Kelas</label>
+                        <select name="kelas" onchange="this.form.submit()"
+                            class="py-2 px-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-red-600 focus:bg-white transition cursor-pointer">
                             <option value="">Semua Kelas</option>
                             @foreach($classList as $k)
-                                <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>{{ \App\Models\Student::formatClass($k) }}</option>
+                                <option value="{{ $k }}" {{ $kelas == $k ? 'selected' : '' }}>
+                                    {{ \App\Models\Student::formatClass($k) }}</option>
                             @endforeach
                         </select>
                     </div>
                 @else
                     <div class="pt-4">
-                        <span class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-800 font-extrabold text-xs rounded-full border border-red-200">
+                        <span
+                            class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-800 font-extrabold text-xs rounded-full border border-red-200">
                             🏫 {{ \App\Models\Student::formatWaliClass($assignedClass) }}
                         </span>
                     </div>
                 @endif
 
                 <div class="pt-4">
-                    <button type="submit" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-extrabold transition cursor-pointer">
+                    <button type="submit"
+                        class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-extrabold transition cursor-pointer">
                         Filter
                     </button>
                 </div>
@@ -61,10 +77,12 @@
 
             <!-- Quick Batch Buttons -->
             <div class="flex items-center gap-2 pt-2 md:pt-0">
-                <button type="button" @click="setAllHadir()" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-800 border border-red-200 rounded-2xl text-xs font-extrabold transition cursor-pointer shadow-2xs">
+                <button type="button" @click="setAllHadir()"
+                    class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-800 border border-red-200 rounded-2xl text-xs font-extrabold transition cursor-pointer shadow-2xs">
                     ✓ Set Semua Hadir
                 </button>
-                <button type="button" @click="setAllLibur()" class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-red-900 border border-teal-200 rounded-2xl text-xs font-extrabold transition cursor-pointer shadow-2xs">
+                <button type="button" @click="setAllLibur()"
+                    class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-red-900 border border-teal-200 rounded-2xl text-xs font-extrabold transition cursor-pointer shadow-2xs">
                     🏖️ Set Semua Libur
                 </button>
             </div>
@@ -78,17 +96,23 @@
 
                 <div class="px-6 py-4 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
                     <h3 class="font-black text-slate-900 text-xs uppercase tracking-wider">
-                        Daftar Presensi Siswa (Tanggal: {{ \Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y') }})
+                        Daftar Presensi Siswa (Tanggal:
+                        {{ \Carbon\Carbon::parse($tanggal)->locale('id')->isoFormat('D MMMM Y') }})
                     </h3>
-                    <button type="submit" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-red-600/30 transition cursor-pointer flex items-center gap-1.5">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <button type="submit"
+                        class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-red-600/30 transition cursor-pointer flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
                         <span>Simpan Presensi</span>
                     </button>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm text-slate-700">
-                        <thead class="bg-slate-50 text-slate-500 text-[11px] uppercase font-black tracking-wider border-b border-slate-100">
+                        <thead
+                            class="bg-slate-50 text-slate-500 text-[11px] uppercase font-black tracking-wider border-b border-slate-100">
                             <tr>
                                 <th class="px-6 py-3.5">NIS</th>
                                 <th class="px-6 py-3.5">Siswa</th>
@@ -154,9 +178,11 @@
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
                                             @if($student->foto_url)
-                                                <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}" class="w-8 h-8 rounded-full object-cover border border-slate-200 shrink-0">
+                                                <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}"
+                                                    class="w-8 h-8 rounded-full object-cover border border-slate-200 shrink-0">
                                             @else
-                                                <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center border border-slate-200 shrink-0">
+                                                <div
+                                                    class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center border border-slate-200 shrink-0">
                                                     {{ strtoupper(substr($student->nama, 0, 2)) }}
                                                 </div>
                                             @endif
@@ -164,65 +190,95 @@
                                                 <div class="font-bold text-slate-900 flex items-center gap-2">
                                                     <span>{{ $student->nama }}</span>
                                                     @if($student->is_abk)
-                                                        <span class="px-1.5 py-0.5 text-[9px] font-black rounded bg-amber-100 text-amber-900 border border-amber-300">ABK</span>
+                                                        <span
+                                                            class="px-1.5 py-0.5 text-[9px] font-black rounded bg-amber-100 text-amber-900 border border-amber-300">ABK</span>
                                                     @endif
                                                 </div>
                                                 @if($att && ($att->jam_masuk || $att->jam_pulang))
-                                                    <div class="text-[10px] font-mono text-slate-500 font-bold mt-0.5 flex items-center gap-2">
-                                                        @if($att->jam_masuk) <span class="bg-slate-100 px-1.5 py-0.5 rounded">In: {{ substr($att->jam_masuk, 0, 5) }}</span> @endif
-                                                        @if($att->jam_pulang) <span class="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded">Out: {{ substr($att->jam_pulang, 0, 5) }}</span> @endif
+                                                    <div
+                                                        class="text-[10px] font-mono text-slate-500 font-bold mt-0.5 flex items-center gap-2">
+                                                        @if($att->jam_masuk) <span
+                                                            class="bg-slate-100 px-1.5 py-0.5 rounded">In:
+                                                        {{ substr($att->jam_masuk, 0, 5) }}</span> @endif
+                                                        @if($att->jam_pulang) <span
+                                                            class="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded">Out:
+                                                        {{ substr($att->jam_pulang, 0, 5) }}</span> @endif
                                                     </div>
                                                 @endif
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <span class="inline-block px-3 py-1 text-xs font-extrabold rounded-full bg-red-50 text-red-700 border border-red-200/80">
+                                        <span
+                                            class="inline-block px-3 py-1 text-xs font-extrabold rounded-full bg-red-50 text-red-700 border border-red-200/80">
                                             {{ $student->formatted_kelas }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-2 flex-wrap">
                                             <label class="inline-flex items-center gap-1 cursor-pointer">
-                                                <input type="radio" name="attendances[{{ $student->id }}][status]" value="hadir" class="radio-hadir text-red-600 focus:ring-red-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'hadir' ? 'checked' : '' }}>
+                                                <input type="radio" name="attendances[{{ $student->id }}][status]"
+                                                    value="hadir"
+                                                    class="radio-hadir text-red-600 focus:ring-red-500 w-4 h-4 cursor-pointer"
+                                                    {{ $currentStatus == 'hadir' ? 'checked' : '' }}>
                                                 @if($isLateStudent)
-                                                    <span class="text-xs font-black text-amber-950 bg-amber-100 px-2 py-0.5 rounded border border-amber-300 flex items-center gap-1 shadow-2xs">
+                                                    <span
+                                                        class="text-xs font-black text-amber-950 bg-amber-100 px-2 py-0.5 rounded border border-amber-300 flex items-center gap-1 shadow-2xs">
                                                         <span>Hadir</span>
-                                                        <span class="text-[10px] bg-amber-200 text-amber-950 px-1 py-0.2 rounded font-extrabold">(Terlambat {{ $lateFormatted ?: ($lateMinutesDisplay . 'm') }})</span>
+                                                        <span
+                                                            class="text-[10px] bg-amber-200 text-amber-950 px-1 py-0.2 rounded font-extrabold">(Terlambat
+                                                            {{ $lateFormatted ?: ($lateMinutesDisplay . 'm') }})</span>
                                                     </span>
                                                 @else
-                                                    <span class="text-xs font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">Hadir</span>
+                                                    <span
+                                                        class="text-xs font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">Hadir</span>
                                                 @endif
                                             </label>
 
                                             <label class="inline-flex items-center gap-1 cursor-pointer">
-                                                <input type="radio" name="attendances[{{ $student->id }}][status]" value="izin" class="text-red-700 focus:ring-red-600 w-4 h-4 cursor-pointer" {{ $currentStatus == 'izin' ? 'checked' : '' }}>
-                                                <span class="text-xs font-bold text-red-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">Izin</span>
+                                                <input type="radio" name="attendances[{{ $student->id }}][status]"
+                                                    value="izin"
+                                                    class="text-red-700 focus:ring-red-600 w-4 h-4 cursor-pointer" {{ $currentStatus == 'izin' ? 'checked' : '' }}>
+                                                <span
+                                                    class="text-xs font-bold text-red-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">Izin</span>
                                             </label>
 
                                             <label class="inline-flex items-center gap-1 cursor-pointer">
-                                                <input type="radio" name="attendances[{{ $student->id }}][status]" value="sakit" class="text-red-700 focus:ring-red-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'sakit' ? 'checked' : '' }}>
-                                                <span class="text-xs font-bold text-red-800 bg-red-100/60 px-2 py-0.5 rounded border border-red-300">Sakit</span>
+                                                <input type="radio" name="attendances[{{ $student->id }}][status]"
+                                                    value="sakit"
+                                                    class="text-red-700 focus:ring-red-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'sakit' ? 'checked' : '' }}>
+                                                <span
+                                                    class="text-xs font-bold text-red-800 bg-red-100/60 px-2 py-0.5 rounded border border-red-300">Sakit</span>
                                             </label>
 
                                             <label class="inline-flex items-center gap-1 cursor-pointer">
-                                                <input type="radio" name="attendances[{{ $student->id }}][status]" value="alpa" class="text-rose-600 focus:ring-rose-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'alpa' ? 'checked' : '' }}>
-                                                <span class="text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">Alpa</span>
+                                                <input type="radio" name="attendances[{{ $student->id }}][status]"
+                                                    value="alpa"
+                                                    class="text-rose-600 focus:ring-rose-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'alpa' ? 'checked' : '' }}>
+                                                <span
+                                                    class="text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">Alpa</span>
                                             </label>
 
                                             <label class="inline-flex items-center gap-1 cursor-pointer">
-                                                <input type="radio" name="attendances[{{ $student->id }}][status]" value="libur" class="radio-libur text-slate-600 focus:ring-slate-500 w-4 h-4 cursor-pointer" {{ $currentStatus == 'libur' ? 'checked' : '' }}>
-                                                <span class="text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-300">Libur</span>
+                                                <input type="radio" name="attendances[{{ $student->id }}][status]"
+                                                    value="libur"
+                                                    class="radio-libur text-slate-600 focus:ring-slate-500 w-4 h-4 cursor-pointer"
+                                                    {{ $currentStatus == 'libur' ? 'checked' : '' }}>
+                                                <span
+                                                    class="text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-300">Libur</span>
                                             </label>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <input type="text" name="attendances[{{ $student->id }}][keterangan]" value="{{ $att ? $att->keterangan : '' }}" placeholder="Catatan tambahan..." class="w-full px-3 py-1.5 border rounded-xl text-xs font-medium focus:ring-2 focus:ring-red-600 transition {{ $isLateStudent ? 'bg-amber-50/70 border-amber-300 text-amber-950 font-bold' : 'bg-slate-50 border-slate-200' }}">
+                                        <input type="text" name="attendances[{{ $student->id }}][keterangan]"
+                                            value="{{ $att ? $att->keterangan : '' }}" placeholder="Catatan tambahan..."
+                                            class="w-full px-3 py-1.5 border rounded-xl text-xs font-medium focus:ring-2 focus:ring-red-600 transition {{ $isLateStudent ? 'bg-amber-50/70 border-amber-300 text-amber-950 font-bold' : 'bg-slate-50 border-slate-200' }}">
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-6 py-8 text-center text-xs font-semibold text-slate-400 italic">
+                                    <td colspan="5"
+                                        class="px-6 py-8 text-center text-xs font-semibold text-slate-400 italic">
                                         Tidak ada siswa terdaftar di {{ $kelas ? 'kelas ' . $kelas : 'sistem' }}.
                                     </td>
                                 </tr>
@@ -230,17 +286,5 @@
                         </tbody>
                     </table>
                 </div>
-
-                @if(count($students) > 0)
-                    <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-end">
-                        <button type="submit" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-2xl text-xs shadow-lg shadow-red-600/30 transition cursor-pointer flex items-center gap-1.5">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span>Simpan Presensi Harian</span>
-                        </button>
-                    </div>
-                @endif
-            </form>
         </div>
-
-    </div>
 </x-app-layout>
