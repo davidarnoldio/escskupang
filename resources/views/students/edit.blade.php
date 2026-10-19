@@ -92,7 +92,7 @@
                             <x-class-combobox name="kelas" id="kelas" :value="old('kelas', $student->kelas)"
                                 :officialClasses="\App\Models\Student::getAllClasses()" :required="true" />
                             <p class="text-[11px] text-slate-400 mt-1 font-medium">Bisa pilih opsi atau ketik manual
-                                (misal: 6A, 5C, TK-A).</p>
+                                (misal: 6A, 5C, Kelas 1B).</p>
                             <x-input-error :messages="$errors->get('kelas')" class="mt-1" />
                         </div>
 

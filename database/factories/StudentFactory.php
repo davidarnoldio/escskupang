@@ -20,7 +20,6 @@ class StudentFactory extends Factory
             'no_kk'                  => fake()->numerify('53710###########'),
             'nama'                   => fake()->name(),
             'kelas'                  => fake()->randomElement([
-                'TK',
                 'Kelas 1',
                 'Kelas 2',
                 'Kelas 3',

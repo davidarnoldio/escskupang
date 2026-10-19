@@ -80,7 +80,7 @@
 
         <!-- Footer Copyright -->
         <p class="mt-6 text-center text-[11px] text-slate-400 font-medium">
-            &copy; {{ date('Y') }} NTO National Plus Primary School &bull; Excellent Spirit Christian School
+            &copy; {{ date('Y') }} NTO National Plus Primary School
         </p>
 
     </div>

@@ -212,7 +212,7 @@ class AlumniController extends Controller
                         ->orderBy('nama', 'asc')
                         ->get();
 
-        $sekolahNama = 'EXCELLENT SPIRIT CHRISTIAN SCHOOL (NTO) KUPANG';
+        $sekolahNama = 'NTO NATIONAL PLUS PRIMARY SCHOOL KUPANG';
         $tanggalCetak = now()->translatedFormat('d F Y');
 
         return view('alumni.print_rekap', compact(

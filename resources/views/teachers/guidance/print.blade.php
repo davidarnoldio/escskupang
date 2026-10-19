@@ -219,9 +219,7 @@
                 <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="logo-img" onerror="this.src='{{ asset('logo.png') }}'">
             </td>
             <td class="school-title">
-                <h2>YAYASAN EXCELLENT SPIRIT CHRISTIAN</h2>
-                <h1>EXCELLENT SPIRIT CHRISTIAN SCHOOL (NTO)</h1>
-                <p>NTO NATIONAL PLUS PRIMARY SCHOOL KUPANG</p>
+                <h1>NTO NATIONAL PLUS PRIMARY SCHOOL KUPANG</h1>
                 <p>Jl. Frans Seda, Kota Kupang, Nusa Tenggara Timur &bull; Telp: (0380) 823456</p>
             </td>
         </tr>

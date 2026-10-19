@@ -54,7 +54,7 @@
                 <p class="text-[9px] font-extrabold uppercase tracking-widest text-red-400">KARTU PRESENSI GURU / STAFF
                 </p>
                 <h3 class="font-extrabold text-base tracking-tight text-white leading-tight">NTO NATIONAL PLUS</h3>
-                <p class="text-[9px] text-slate-300 font-medium">Excellent Spirit Christian School</p>
+                <p class="text-[9px] text-slate-300 font-medium">Primary School Kupang</p>
             </div>
         </div>
 

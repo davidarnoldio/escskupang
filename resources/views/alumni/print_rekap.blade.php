@@ -125,7 +125,7 @@
                     <img src="{{ asset('images/logo.png') }}" alt="NTO Logo" class="logo-img" onerror="this.src='{{ asset('logo.png') }}'">
                     <div>
                         <strong style="font-size: 13px; color: #0f172a; display: block;">NTO National Plus</strong>
-                        <span style="font-size: 10px; color: #475569;">Excellent Spirit Christian School Kupang</span>
+                        <span style="font-size: 10px; color: #475569;">Primary School Kupang</span>
                     </div>
                 </div>
             </td>

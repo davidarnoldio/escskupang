@@ -1,6 +1,6 @@
 # Portal Sistem Informasi & Absensi Sekolah Digital - NTO National Plus
 
-Sistem Informasi Manajemen Sekolah dan Presensi Terpadu Berbasis Web yang dirancang menggunakan **Laravel 12 / 13**, **Tailwind CSS**, **Alpine.js**, **Chart.js**, dan arsitektur keamanan modern. Sistem ini disesuaikan khusus dengan standar operasional dan identitas visual **Excellent Spirit Christian School (NTO) Kupang**.
+Sistem Informasi Manajemen Sekolah dan Presensi Terpadu Berbasis Web yang dirancang menggunakan **Laravel 12 / 13**, **Tailwind CSS**, **Alpine.js**, **Chart.js**, dan arsitektur keamanan modern. Sistem ini disesuaikan khusus dengan standar operasional dan identitas visual **NTO National Plus Primary School Kupang**.
 
 ![PHP Version](https://img.shields.io/badge/PHP-8.3%20%7C%208.4-777BB4?style=flat&logo=php)
 ![Laravel Version](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=flat&logo=laravel)

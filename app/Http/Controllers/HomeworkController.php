@@ -53,7 +53,7 @@ class HomeworkController extends Controller
         }
 
         $assignedClass = $user->getAssignedClass();
-        $defaultClass = $assignedClass ?? (Student::getAllClasses()[0] ?? 'TK');
+        $defaultClass = $assignedClass ?? (Student::getAllClasses()[0] ?? 'Kelas 1');
 
         $validated = $request->validate([
             'target_type' => 'required|in:all,student',

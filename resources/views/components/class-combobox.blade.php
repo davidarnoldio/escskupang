@@ -2,7 +2,7 @@
     'name' => 'kelas',
     'id' => null,
     'value' => '',
-    'placeholder' => 'Pilih atau ketik kelas (misal: TK, Kelas 1, 6A, 5C)',
+    'placeholder' => 'Pilih atau ketik kelas (misal: Kelas 1, Kelas 2, 6A, 5C)',
     'officialClasses' => [],
     'required' => false
 ])
@@ -12,7 +12,6 @@
     
     // Default list of options ordered logically
     $defaultOptions = [
-        'TK',
         'Kelas 1',
         'Kelas 2', 
         'Kelas 3', 
@@ -24,12 +23,9 @@
     // Merge provided officialClasses / DB classes with default options
     $merged = array_unique(array_merge($defaultOptions, (array)$officialClasses));
     
-    // Custom sort helper to group TK first, then Kelas 1, 2, 3, 4, 5, 6 properly
+    // Custom sort helper to order Kelas 1, 2, 3, 4, 5, 6 properly
     usort($merged, function($a, $b) {
         $getWeight = function($str) {
-            if (preg_match('/^TK\s*([A-Z])?/i', trim($str), $m)) {
-                return 0 + (isset($m[1]) ? (ord(strtoupper($m[1])) - 64) * 0.01 : 0);
-            }
             if (preg_match('/^Kelas\s*(\d+)\s*([A-Z])?/i', trim($str), $m)) {
                 $num = (int)$m[1];
                 $sub = isset($m[2]) ? (ord(strtoupper($m[2])) - 64) * 0.01 : 0;

@@ -11,7 +11,6 @@ class Student extends Model
     use HasFactory;
 
     public const OFFICIAL_CLASSES = [
-        'TK',
         'Kelas 1',
         'Kelas 2',
         'Kelas 3',
@@ -206,7 +205,7 @@ class Student extends Model
     }
 
     /**
-     * Format nama kelas agar tidak duplikat 'Kelas Kelas X' atau 'Kelas TK'.
+     * Format nama kelas agar tidak duplikat 'Kelas Kelas X'.
      */
     public static function formatClass(?string $kelas): string
     {
@@ -216,10 +215,6 @@ class Student extends Model
         }
 
         $cleaned = trim(preg_replace('/^(kelas\s*)+/i', '', $k));
-        if (strcasecmp($cleaned, 'tk') === 0 || strcasecmp($k, 'tk') === 0) {
-            return 'TK';
-        }
-
         return 'Kelas ' . $cleaned;
     }
 
