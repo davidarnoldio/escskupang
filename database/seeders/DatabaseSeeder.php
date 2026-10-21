@@ -38,5 +38,8 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        // Seed Teachers & Staff
+        $this->call(TeacherSeeder::class);
     }
 }
