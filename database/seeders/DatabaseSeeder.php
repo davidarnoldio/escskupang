@@ -41,5 +41,8 @@ class DatabaseSeeder extends Seeder
 
         // Seed Teachers & Staff
         $this->call(TeacherSeeder::class);
+
+        // Seed Official Students & Parent Accounts (32 Siswa)
+        $this->call(StudentSeeder::class);
     }
 }

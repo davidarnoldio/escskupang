@@ -49,7 +49,7 @@
         <!-- Header Gradient -->
         <div
             class="bg-gradient-to-br from-slate-950 via-slate-900 to-red-950 p-4 text-white text-center relative overflow-hidden border-b border-red-500/30 flex items-center justify-center gap-3">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="h-12 w-auto object-contain" onerror="this.src='{{ asset('logo.png') }}'">
+            <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="Logo NTO" class="h-12 w-12 rounded-full object-contain p-0.5 bg-white shadow-md shrink-0" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
             <div class="text-left">
                 <p class="text-[9px] font-extrabold uppercase tracking-widest text-red-400">KARTU PRESENSI GURU / STAFF
                 </p>
@@ -58,34 +58,41 @@
             </div>
         </div>
 
-        <div class="p-6 text-center space-y-4">
-            <!-- Teacher Avatar Badge -->
-            <div class="relative inline-block">
-                <div
-                    class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-slate-900 via-slate-800 to-red-900 text-red-400 border-2 border-red-400/50 flex items-center justify-center font-extrabold text-2xl shadow-md mx-auto">
-                    {{ strtoupper(substr($teacher->name, 0, 2)) }}
+        <div class="p-6 text-center space-y-4 relative">
+            <!-- Translucent Logo Watermark Background -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0">
+                <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="" class="w-64 h-64 object-contain transform scale-105" style="opacity: 0.07; mix-blend-mode: multiply;" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
+            </div>
+
+            <div class="relative z-10 space-y-4">
+                <!-- Teacher Avatar Badge -->
+                <div class="relative inline-block">
+                    <div
+                        class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-slate-900 via-slate-800 to-red-900 text-red-400 border-2 border-red-400/50 flex items-center justify-center font-extrabold text-2xl shadow-md mx-auto">
+                        {{ strtoupper(substr($teacher->name, 0, 2)) }}
+                    </div>
                 </div>
-            </div>
 
-            <!-- Teacher Info -->
-            <div>
-                <h4 class="font-bold text-lg text-slate-900 leading-tight">{{ $teacher->name }}</h4>
-                <p class="text-xs font-mono text-red-600 font-bold mt-0.5">{{ $teacher->email }}</p>
-                <span
-                    class="inline-block mt-1 px-3 py-0.5 bg-red-50 text-red-700 border border-red-200 rounded-full text-xs font-bold">
-                    {{ $teacher->getFormattedWaliClass() }}
-                </span>
-            </div>
+                <!-- Teacher Info -->
+                <div>
+                    <h4 class="font-bold text-lg text-slate-900 leading-tight">{{ $teacher->name }}</h4>
+                    <p class="text-xs font-mono text-red-600 font-bold mt-0.5">{{ $teacher->email }}</p>
+                    <span
+                        class="inline-block mt-1 px-3 py-0.5 bg-red-50 text-red-700 border border-red-200 rounded-full text-xs font-bold backdrop-blur-xs">
+                        {{ $teacher->getFormattedWaliClass() }}
+                    </span>
+                </div>
 
-            <!-- QR Code Section -->
-            @php
-                $qrCodeData = $teacher->qr_code_value; // e.g. GURU-1
-            @endphp
-            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 inline-block shadow-2xs">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode($qrCodeData) }}"
-                    onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + encodeURIComponent('{{ $qrCodeData }}');"
-                    alt="QR Code Guru {{ $teacher->name }}" class="w-32 h-32 mx-auto rounded-lg">
-                <p class="text-[10px] font-mono text-slate-500 mt-1 font-bold">{{ $qrCodeData }}</p>
+                <!-- QR Code Section -->
+                @php
+                    $qrCodeData = $teacher->qr_code_value; // e.g. GURU-1
+                @endphp
+                <div class="p-3 bg-white/95 rounded-xl border border-slate-200 inline-block shadow-2xs backdrop-blur-xs">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode($qrCodeData) }}"
+                        onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + encodeURIComponent('{{ $qrCodeData }}');"
+                        alt="QR Code Guru {{ $teacher->name }}" class="w-32 h-32 mx-auto rounded-lg">
+                    <p class="text-[10px] font-mono text-slate-500 mt-1 font-bold">{{ $qrCodeData }}</p>
+                </div>
             </div>
         </div>
 

@@ -60,6 +60,10 @@
                     <!-- Student Profile Card with Cropper Upload -->
                     <div
                         class="bg-gradient-to-br from-slate-950 via-slate-900 to-red-950 text-white p-6 rounded-3xl shadow-xl border border-red-500/30 relative overflow-hidden flex flex-col justify-between">
+                        <!-- Translucent Logo Watermark Background -->
+                        <div class="absolute right-0 top-0 bottom-0 w-48 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0">
+                            <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="" class="w-44 h-44 rounded-full object-contain transform translate-x-6" style="opacity: 0.08;" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
+                        </div>
                         <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-red-600/10 rounded-full blur-md"></div>
                         <div>
                             <span class="text-[10px] font-extrabold uppercase tracking-widest text-red-400">PROFIL

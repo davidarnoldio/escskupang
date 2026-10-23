@@ -8,9 +8,9 @@
         <title>{{ config('app.name', 'NTO National Plus Primary School') }}</title>
 
         <!-- Favicon / Tab Logo -->
-        <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-        <link rel="shortcut icon" type="image/png" href="{{ asset('images/logo.png') }}">
-        <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+        <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}?v={{ time() }}">
+        <link rel="shortcut icon" type="image/png" href="{{ asset('images/logo.png') }}?v={{ time() }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}?v={{ time() }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

@@ -25,3 +25,4 @@ Homestead.yaml
 Thumbs.db
 /public/uploads
 scratch/
+/storage/framework/lsp-*.php

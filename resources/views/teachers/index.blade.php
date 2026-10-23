@@ -103,7 +103,11 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                                 @foreach($classTeachers as $teacher)
                                     <div
-                                        class="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 space-y-4 hover:border-red-300 hover:bg-red-50/30 transition duration-200 relative flex flex-col justify-between">
+                                        class="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 space-y-4 hover:border-red-300 hover:bg-red-50/30 transition duration-200 relative flex flex-col justify-between overflow-hidden">
+                                        <!-- Translucent Logo Watermark Background -->
+                                        <div class="absolute -right-6 -bottom-6 pointer-events-none select-none overflow-hidden z-0">
+                                            <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="" class="w-32 h-32 object-contain" style="opacity: 0.07; mix-blend-mode: multiply;" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
+                                        </div>
                                         <div>
                                             <div class="flex items-start justify-between gap-3">
                                                 <div class="flex items-center gap-3">

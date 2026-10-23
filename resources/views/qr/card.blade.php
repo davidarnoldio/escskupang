@@ -28,7 +28,7 @@
     <div class="w-[360px] bg-white rounded-2xl shadow-2xl border border-red-500/20 overflow-hidden relative">
         <!-- Header Gradient -->
         <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-red-950 p-4 text-white text-center relative overflow-hidden border-b border-red-500/30 flex items-center justify-center gap-3">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="h-12 w-auto object-contain" onerror="this.src='{{ asset('logo.png') }}'">
+            <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="Logo NTO" class="h-12 w-12 rounded-full object-contain p-0.5 bg-white shadow-md shrink-0" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
             <div class="text-left">
                 <p class="text-[9px] font-extrabold uppercase tracking-widest text-red-400">KARTU TANDA PELAJAR</p>
                 <h3 class="font-extrabold text-base tracking-tight text-white leading-tight">NTO NATIONAL PLUS</h3>
@@ -36,34 +36,41 @@
             </div>
         </div>
 
-        <div class="p-6 text-center space-y-4">
-            <!-- Student Avatar Badge -->
-            <div class="relative inline-block">
-                @if($student->foto_url)
-                    <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}" class="w-20 h-20 rounded-2xl object-cover border-2 border-red-400/40 shadow-md mx-auto">
-                @else
-                    <div class="w-20 h-20 rounded-2xl bg-slate-900 text-red-300 border-2 border-red-400/40 flex items-center justify-center font-extrabold text-2xl shadow-md mx-auto">
-                        {{ strtoupper(substr($student->nama, 0, 2)) }}
-                    </div>
-                @endif
+        <div class="p-6 text-center space-y-4 relative">
+            <!-- Translucent Logo Watermark Background -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0">
+                <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="" class="w-64 h-64 object-contain transform scale-105" style="opacity: 0.07; mix-blend-mode: multiply;" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
             </div>
 
-            <!-- Student Info -->
-            <div>
-                <h4 class="font-bold text-lg text-slate-900 leading-tight">{{ $student->nama }}</h4>
-                <p class="text-xs font-mono text-red-600 font-bold mt-0.5">NISN: {{ $student->nisn ?? $student->nis }}</p>
-                <span class="inline-block mt-1 px-3 py-0.5 bg-slate-100 text-slate-800 rounded-full text-xs font-semibold">
-                    {{ $student->formatted_kelas }} ({{ $student->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }})
-                </span>
-            </div>
+            <div class="relative z-10 space-y-4">
+                <!-- Student Avatar Badge -->
+                <div class="relative inline-block">
+                    @if($student->foto_url)
+                        <img src="{{ $student->foto_url }}" alt="{{ $student->nama }}" class="w-20 h-20 rounded-2xl object-cover border-2 border-red-400/40 shadow-md mx-auto">
+                    @else
+                        <div class="w-20 h-20 rounded-2xl bg-slate-900 text-red-300 border-2 border-red-400/40 flex items-center justify-center font-extrabold text-2xl shadow-md mx-auto">
+                            {{ strtoupper(substr($student->nama, 0, 2)) }}
+                        </div>
+                    @endif
+                </div>
 
-            <!-- QR Code Section -->
-            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 inline-block shadow-2xs">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode($student->nisn ?? $student->nis) }}" 
-                     onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + encodeURIComponent('{{ $student->nisn ?? $student->nis }}');"
-                     alt="QR Code NISN {{ $student->nisn ?? $student->nis }}" 
-                     class="w-32 h-32 mx-auto rounded-lg">
-                <p class="text-[10px] font-mono text-slate-400 mt-1 font-semibold">NISN: {{ $student->nisn ?? $student->nis }}</p>
+                <!-- Student Info -->
+                <div>
+                    <h4 class="font-bold text-lg text-slate-900 leading-tight">{{ $student->nama }}</h4>
+                    <p class="text-xs font-mono text-red-600 font-bold mt-0.5">NISN: {{ $student->nisn ?? $student->nis }}</p>
+                    <span class="inline-block mt-1 px-3 py-0.5 bg-slate-100/90 text-slate-800 rounded-full text-xs font-semibold backdrop-blur-xs">
+                        {{ $student->formatted_kelas }} ({{ $student->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }})
+                    </span>
+                </div>
+
+                <!-- QR Code Section -->
+                <div class="p-3 bg-white/95 rounded-xl border border-slate-200 inline-block shadow-2xs backdrop-blur-xs">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode($student->nisn ?? $student->nis) }}" 
+                         onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + encodeURIComponent('{{ $student->nisn ?? $student->nis }}');"
+                         alt="QR Code NISN {{ $student->nisn ?? $student->nis }}" 
+                         class="w-32 h-32 mx-auto rounded-lg">
+                    <p class="text-[10px] font-mono text-slate-400 mt-1 font-semibold">NISN: {{ $student->nisn ?? $student->nis }}</p>
+                </div>
             </div>
         </div>
 

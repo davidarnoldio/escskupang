@@ -17,7 +17,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <!-- Profile Summary Card -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-slate-200/80 flex flex-col md:flex-row items-center md:items-start gap-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-slate-200/80 flex flex-col md:flex-row items-center md:items-start gap-6 relative overflow-hidden">
+                <!-- Translucent Logo Watermark Background -->
+                <div class="absolute -right-8 -bottom-8 pointer-events-none select-none overflow-hidden z-0">
+                    <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="" class="w-80 h-80 object-contain" style="opacity: 0.07; mix-blend-mode: multiply;" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
+                </div>
+
                 <!-- Avatar / Photo -->
                 <div class="relative shrink-0">
                     @if($student->foto_url)

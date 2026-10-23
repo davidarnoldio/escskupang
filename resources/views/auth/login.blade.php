@@ -1601,8 +1601,8 @@
 
                     <div class="nto-logo-image-wrapper">
 
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo NTO National Plus Primary School"
-                            class="nto-logo-image" onerror="this.onerror=null;this.src='{{ asset('logo.png') }}';">
+                        <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="Logo NTO National Plus Primary School"
+                            class="nto-logo-image" onerror="this.onerror=null;this.src='{{ asset('logo.png') }}?v={{ time() }}';">
 
                     </div>
 

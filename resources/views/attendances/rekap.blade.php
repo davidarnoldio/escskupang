@@ -71,8 +71,8 @@
                     Data presensi bulan <span class="font-bold text-white">{{ \Carbon\Carbon::parse($bulan . '-01')->locale('id')->isoFormat('MMMM Y') }}</span> tercatat secara transparan dan akurat.
                 </p>
             </div>
-            <div class="w-24 h-24 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl shrink-0 z-10 bg-white p-2 flex items-center justify-center">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo NTO National Plus" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
+            <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-white/20 shadow-2xl shrink-0 z-10 bg-white p-2 flex items-center justify-center">
+                <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="Logo NTO National Plus" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
             </div>
         </div>
 

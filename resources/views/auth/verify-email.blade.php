@@ -6,7 +6,7 @@
             
             <div class="text-center mb-6">
                 <div class="inline-flex items-center justify-center mb-3">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo NTO National Plus" class="h-20 w-auto object-contain drop-shadow-md" onerror="this.src='{{ asset('logo.png') }}'">
+                    <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="Logo NTO National Plus" class="h-20 w-20 rounded-full object-contain p-1 bg-white shadow-md" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
                 </div>
                 <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Verifikasi Alamat Email</h2>
                 <div class="inline-block mt-1.5 px-3 py-1 bg-red-50 text-red-700 rounded-full text-[11px] font-extrabold uppercase tracking-wider border border-red-100">

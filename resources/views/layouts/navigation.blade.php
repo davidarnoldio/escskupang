@@ -75,29 +75,16 @@
 <!-- Sidebar Desktop (lg:flex) -->
 <aside class="hidden lg:flex w-64 fixed inset-y-0 left-0 bg-[#7f1d1d] text-slate-100 z-40 flex-col border-r border-red-900/60 shadow-2xl overflow-hidden">
     
-    <!-- Background Tree Logo Watermark Shadow (Monochromatic Mint Matching Gambar 1) -->
-    <div class="absolute -bottom-16 -right-16 w-72 h-72 opacity-15 pointer-events-none z-0 select-none">
-        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-red-400">
-            <path d="M 30 350 Q 200 310 370 350" stroke="currentColor" stroke-width="8" opacity="0.5"/>
-            <path d="M 190 330 C 190 260 170 210 155 170 M 210 330 C 210 260 230 210 245 170" stroke="currentColor" stroke-width="14"/>
-            <path d="M 200 330 L 200 140" stroke="currentColor" stroke-width="16"/>
-            <path d="M 200 240 C 150 210 100 200 50 210" stroke="currentColor" stroke-width="8"/>
-            <path d="M 200 240 C 250 210 300 200 350 210" stroke="currentColor" stroke-width="8"/>
-            <circle cx="50" cy="210" r="25" fill="currentColor" opacity="0.35"/>
-            <circle cx="100" cy="190" r="32" fill="currentColor" opacity="0.4"/>
-            <circle cx="150" cy="160" r="38" fill="currentColor" opacity="0.45"/>
-            <circle cx="250" cy="160" r="38" fill="currentColor" opacity="0.45"/>
-            <circle cx="300" cy="190" r="32" fill="currentColor" opacity="0.4"/>
-            <circle cx="350" cy="210" r="25" fill="currentColor" opacity="0.35"/>
-            <circle cx="200" cy="55" r="42" fill="currentColor" opacity="0.5"/>
-        </svg>
+    <!-- Background Official Logo Watermark Shadow -->
+    <div class="absolute -bottom-10 -right-10 w-64 h-64 pointer-events-none z-0 select-none overflow-hidden" style="opacity: 0.12;">
+        <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="" class="w-full h-full rounded-full object-contain transform translate-x-4 translate-y-4" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
     </div>
     
     <!-- Top Header: Logo & Brand (Shrink 0 - Pinned at top) -->
     <div class="p-5 pb-4 relative z-10 shrink-0 border-b border-red-900/40">
         <div class="flex items-center gap-3.5">
-            <div class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/30 flex items-center justify-center p-1.5 shadow-lg shadow-red-500/10 shrink-0">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}'">
+            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-1 shadow-md shrink-0">
+                <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="Logo NTO" class="w-full h-full object-contain" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
             </div>
             <div>
                 <h1 class="text-xs font-black text-white tracking-tight uppercase">Portal NTO National Plus</h1>
@@ -407,7 +394,7 @@
 <!-- Mobile Navigation Header (< lg) -->
 <div class="lg:hidden bg-[#7f1d1d] text-white px-4 py-3 border-b border-red-900 flex items-center justify-between sticky top-0 z-50 shadow-md" x-data="{ mobileOpen: false }">
     <div class="flex items-center gap-3">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="h-8 w-auto" onerror="this.src='{{ asset('logo.png') }}'">
+        <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="Logo NTO" class="h-8 w-8 rounded-full object-contain bg-white p-0.5 shadow-sm" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
         <span class="text-xs font-black tracking-wider uppercase">NTO NATIONAL PLUS</span>
     </div>
 

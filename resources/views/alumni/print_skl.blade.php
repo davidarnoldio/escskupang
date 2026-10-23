@@ -164,7 +164,7 @@
     <table class="header-table">
         <tr>
             <td style="width: 90px; text-align: center;">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo NTO" class="logo-img" onerror="this.src='{{ asset('logo.png') }}'">
+                <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="Logo NTO" class="logo-img" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
             </td>
             <td class="school-title">
                 <h1>NTO NATIONAL PLUS PRIMARY SCHOOL KUPANG</h1>
