@@ -104,7 +104,7 @@ class AttendanceController extends Controller
 
         $classList = Student::getAllClasses();
 
-        $studentsQuery = Student::with(['attendances' => function ($q) use ($bulan) {
+        $studentsQuery = Student::aktif()->with(['attendances' => function ($q) use ($bulan) {
             $q->where('tanggal', 'like', "{$bulan}%");
         }])->orderBy('nama', 'asc');
 
@@ -254,7 +254,7 @@ class AttendanceController extends Controller
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $kelas = $assignedClass ?? $request->input('kelas');
 
-        $studentsQuery = Student::with(['attendances' => function ($q) use ($bulan) {
+        $studentsQuery = Student::aktif()->with(['attendances' => function ($q) use ($bulan) {
             $q->where('tanggal', 'like', "{$bulan}%");
         }])->orderBy('kelas', 'asc')->orderBy('nama', 'asc');
 

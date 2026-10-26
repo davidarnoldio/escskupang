@@ -32,14 +32,5 @@
                 @include('profile.partials.update-password-form')
             </div>
         </div>
-
-        @if(!Auth::user()->isAdmin())
-            <!-- Delete Account Card (Non-Admin only) -->
-            <div class="p-6 sm:p-8 bg-white shadow-sm border border-slate-100 rounded-3xl">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
-        @endif
     </div>
 </x-app-layout>

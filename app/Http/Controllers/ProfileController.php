@@ -48,9 +48,9 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        Auth::logout();
-
-        $user->delete();
+        if ($user->isTeacher() || $user->isAdmin()) {
+            abort(403, 'Akun guru/staf dan admin dikelola oleh sistem dan tidak dapat dihapus secara mandiri.');
+        }
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

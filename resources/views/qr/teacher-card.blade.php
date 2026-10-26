@@ -77,10 +77,6 @@
                 <div>
                     <h4 class="font-bold text-lg text-slate-900 leading-tight">{{ $teacher->name }}</h4>
                     <p class="text-xs font-mono text-red-600 font-bold mt-0.5">{{ $teacher->email }}</p>
-                    <span
-                        class="inline-block mt-1 px-3 py-0.5 bg-red-50 text-red-700 border border-red-200 rounded-full text-xs font-bold backdrop-blur-xs">
-                        {{ $teacher->getFormattedWaliClass() }}
-                    </span>
                 </div>
 
                 <!-- QR Code Section -->

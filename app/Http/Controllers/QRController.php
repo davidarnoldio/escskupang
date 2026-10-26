@@ -137,6 +137,13 @@ class QRController extends Controller
             ], 200);
         }
 
+        if ($student->isAlumni()) {
+            return response()->json([
+                'success' => false,
+                'message' => "Siswa {$student->nama} telah berstatus LULUS (Alumni) dan tidak dapat melakukan presensi.",
+            ], 200);
+        }
+
         return $this->processStudentAttendance($student);
     }
 

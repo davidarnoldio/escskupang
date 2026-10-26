@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
         $today = now()->format('Y-m-d');
 
-        $studentQuery = Student::query();
+        $studentQuery = Student::aktif();
         if ($assignedClass) {
             $studentQuery->where('kelas', $assignedClass);
         }
@@ -32,12 +32,13 @@ class DashboardController extends Controller
         $totalSiswa = (clone $studentQuery)->count();
         $recentStudents = (clone $studentQuery)->latest()->take(5)->get();
 
-        $attendanceQuery = Attendance::where('tanggal', $today);
-        if ($assignedClass) {
-            $attendanceQuery->whereHas('student', function ($q) use ($assignedClass) {
-                $q->where('kelas', $assignedClass);
+        $attendanceQuery = Attendance::where('tanggal', $today)
+            ->whereHas('student', function ($q) use ($assignedClass) {
+                $q->aktif();
+                if ($assignedClass) {
+                    $q->where('kelas', $assignedClass);
+                }
             });
-        }
 
         $hadirHariIni = (clone $attendanceQuery)->where('status', 'hadir')->count();
         $izinHariIni = (clone $attendanceQuery)->where('status', 'izin')->count();
@@ -57,12 +58,13 @@ class DashboardController extends Controller
             $dateStr = $date->format('Y-m-d');
             $weeklyDates[] = $date->translatedFormat('d M');
 
-            $dayAttQuery = Attendance::where('tanggal', $dateStr);
-            if ($assignedClass) {
-                $dayAttQuery->whereHas('student', function ($q) use ($assignedClass) {
-                    $q->where('kelas', $assignedClass);
+            $dayAttQuery = Attendance::where('tanggal', $dateStr)
+                ->whereHas('student', function ($q) use ($assignedClass) {
+                    $q->aktif();
+                    if ($assignedClass) {
+                        $q->where('kelas', $assignedClass);
+                    }
                 });
-            }
 
             $weeklyHadir[] = (clone $dayAttQuery)->where('status', 'hadir')->count();
             $weeklyIzinSakit[] = (clone $dayAttQuery)->whereIn('status', ['izin', 'sakit'])->count();
