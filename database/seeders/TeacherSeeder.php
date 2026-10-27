@@ -10,6 +10,9 @@ class TeacherSeeder extends Seeder
 {
     public function run(): void
     {
+        // Hapus akun dummy guru jika masih ada agar penugasan kelas bersih
+        User::where('email', 'riki@teacher.sch.id')->delete();
+
         $defaultPassword = 'ntokupang123';
         $hashedPassword = Hash::make($defaultPassword);
 
@@ -32,6 +35,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '085239808002',
                 'role'               => 'guru',
+                'assigned_class'     => null, // Kepsek
             ],
             [
                 'name'               => 'Apris Leky Manu, S.T',
@@ -51,6 +55,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '085238699927',
                 'role'               => 'guru',
+                'assigned_class'     => null, // Operator
             ],
             [
                 'name'               => 'Angelina Fitri Mali, S.Pd., Gr',
@@ -70,6 +75,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '087863567215',
                 'role'               => 'guru',
+                'assigned_class'     => 'Kelas 5', // Guru Kelas V
             ],
             [
                 'name'               => 'Framinus Deade Larisano, S.Pd., Gr',
@@ -89,6 +95,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '081338479391',
                 'role'               => 'guru',
+                'assigned_class'     => 'Kelas 1', // Guru Kelas I
             ],
             [
                 'name'               => 'Jorjelina Rantasia Da Costa, S.Pd., Gr',
@@ -108,6 +115,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '085280746492',
                 'role'               => 'guru',
+                'assigned_class'     => 'Kelas 6', // Guru Kelas VI
             ],
             [
                 'name'               => 'Linda Nara, S.Pd',
@@ -127,6 +135,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '082155383730',
                 'role'               => 'guru',
+                'assigned_class'     => 'Kelas 4', // Guru Kelas IV
             ],
             [
                 'name'               => 'Marselindah Oberty Kekado, S.Pd., Gr',
@@ -146,6 +155,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '081259263803',
                 'role'               => 'guru',
+                'assigned_class'     => null, // Guru Mapel
             ],
             [
                 'name'               => 'Rosita Da Costa, S.Pd., Gr',
@@ -165,6 +175,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '081338029377',
                 'role'               => 'guru',
+                'assigned_class'     => 'Kelas 2', // Guru Kelas II
             ],
             [
                 'name'               => 'Sancha Praecelya Buan, S.Pd., Gr',
@@ -184,6 +195,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '081236592043',
                 'role'               => 'guru',
+                'assigned_class'     => null, // Guru Mapel
             ],
             [
                 'name'               => 'Santi Yunita Naif, S.Pd., Gr',
@@ -203,6 +215,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '085253149331',
                 'role'               => 'guru',
+                'assigned_class'     => 'Kelas 3', // Guru Kelas III
             ],
             [
                 'name'               => 'Joice Yovika Tampani, S.Psi',
@@ -222,6 +235,7 @@ class TeacherSeeder extends Seeder
                 'sumber_gaji'        => 'Yayasan',
                 'no_hp'              => '082144473576',
                 'role'               => 'guru',
+                'assigned_class'     => null, // Guru Pendamping Inklusi
             ],
         ];
 
