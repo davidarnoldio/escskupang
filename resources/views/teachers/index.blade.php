@@ -100,7 +100,7 @@
                                 Belum ada akun guru yang ditugaskan di tingkat ini.
                             </div>
                         @else
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                                 @foreach($classTeachers as $teacher)
                                     <div
                                         class="bg-slate-50/80 rounded-2xl p-5 border border-slate-200/80 space-y-4 hover:border-red-300 hover:bg-red-50/30 transition duration-200 relative flex flex-col justify-between overflow-hidden">
@@ -109,53 +109,61 @@
                                             <img src="{{ asset('images/logo.png') }}?v={{ time() }}" alt="" class="w-32 h-32 object-contain" style="opacity: 0.07; mix-blend-mode: multiply;" onerror="this.src='{{ asset('logo.png') }}?v={{ time() }}'">
                                         </div>
                                         <div>
-                                            <div class="flex items-start justify-between gap-3">
-                                                <div class="flex items-center gap-3">
+                                            <div class="flex items-center justify-between gap-2.5">
+                                                <div class="flex items-center gap-2.5 min-w-0 flex-1">
                                                     <div
-                                                        class="w-10 h-10 rounded-full {{ $teacher->isActive() ? 'bg-red-600' : 'bg-slate-400' }} text-white font-black text-xs flex items-center justify-center shadow-xs">
+                                                        class="w-10 h-10 shrink-0 rounded-full {{ $teacher->isActive() ? 'bg-red-600' : 'bg-slate-400' }} text-white font-black text-xs flex items-center justify-center shadow-xs">
                                                         {{ strtoupper(substr($teacher->name, 0, 2)) }}
                                                     </div>
-                                                    <div>
-                                                        <h4 class="font-extrabold text-slate-900 text-xs leading-tight">
+                                                    <div class="min-w-0 flex-1">
+                                                        <h4 class="font-extrabold text-slate-900 text-xs leading-tight truncate" title="{{ $teacher->name }}">
                                                             {{ $teacher->name }}
                                                         </h4>
-                                                        <p class="text-[11px] text-slate-500 font-mono mt-0.5">
+                                                        <p class="text-[11px] text-slate-500 font-mono mt-0.5 truncate" title="{{ $teacher->email }}">
                                                             {{ $teacher->email }}
                                                         </p>
                                                     </div>
                                                 </div>
 
-                                                <!-- Button On/Off Akses Login -->
-                                                <form method="POST" action="{{ route('teachers.toggle-status', $teacher) }}" class="shrink-0">
+                                                <!-- Button On/Off Akses Login (Sleek Compact Toggle, Never Off The Box) -->
+                                                <form method="POST" action="{{ route('teachers.toggle-status', $teacher) }}" class="shrink-0 m-0">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" 
-                                                        title="Klik untuk {{ $teacher->isActive() ? 'Matikan Akses Login' : 'Aktifkan Akses Login' }}"
-                                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black tracking-wide transition cursor-pointer shadow-xs border {{ $teacher->isActive() ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100 hover:border-emerald-400' : 'bg-rose-50 text-rose-800 border-rose-300 hover:bg-rose-100 hover:border-rose-400' }}">
-                                                        <span class="w-2.5 h-2.5 rounded-full {{ $teacher->isActive() ? 'bg-emerald-500 animate-pulse' : 'bg-rose-600' }}"></span>
-                                                        <span>{{ $teacher->isActive() ? 'AKSES ON' : 'AKSES OFF' }}</span>
+                                                        title="Akses Login: {{ $teacher->isActive() ? 'Aktif (Klik untuk Matikan)' : 'Nonaktif (Klik untuk Aktifkan)' }}"
+                                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[10px] font-black tracking-wide transition cursor-pointer shadow-xs border shrink-0 {{ $teacher->isActive() ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100 hover:border-emerald-400' : 'bg-rose-50 text-rose-800 border-rose-300 hover:bg-rose-100 hover:border-rose-400' }}">
+                                                        <span class="w-2 h-2 rounded-full {{ $teacher->isActive() ? 'bg-emerald-500 animate-pulse' : 'bg-rose-600' }}"></span>
+                                                        <span>{{ $teacher->isActive() ? 'ON' : 'OFF' }}</span>
                                                     </button>
                                                 </form>
                                             </div>
 
                                             <div class="mt-4 pt-3 border-t border-slate-200/60 space-y-2">
                                                 <div class="flex items-center justify-between text-[11px]">
-                                                    <span class="font-semibold text-slate-500">Status Akses Login:</span>
-                                                    <span class="font-bold text-[10px] px-2 py-0.5 rounded-full {{ $teacher->isActive() ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900' }}">
-                                                        {{ $teacher->isActive() ? 'Bisa Login' : 'Akses Diblokir (OFF)' }}
-                                                    </span>
+                                                    <span class="font-semibold text-slate-500">Status Akses:</span>
+                                                    <form method="POST" action="{{ route('teachers.toggle-status', $teacher) }}" class="m-0">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" 
+                                                            title="Klik untuk mengubah status akses login"
+                                                            class="inline-flex items-center gap-1 font-bold text-[10px] px-2 py-0.5 rounded-full transition cursor-pointer {{ $teacher->isActive() ? 'bg-emerald-100 text-emerald-900 hover:bg-emerald-200' : 'bg-rose-100 text-rose-900 hover:bg-rose-200' }}">
+                                                            <span class="w-1.5 h-1.5 rounded-full {{ $teacher->isActive() ? 'bg-emerald-600' : 'bg-rose-600' }}"></span>
+                                                            <span>{{ $teacher->isActive() ? 'Bisa Login (ON)' : 'Akses Diblokir (OFF)' }}</span>
+                                                            <span class="text-[9px] underline opacity-75 ml-0.5">Ubah</span>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                                 <div class="flex items-center justify-between text-[11px]">
                                                     <span class="font-semibold text-slate-500">Kelas Binaan:</span>
                                                     <span
-                                                        class="font-extrabold text-red-700 bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+                                                        class="font-extrabold text-red-700 bg-red-50 px-2 py-0.5 rounded-full border border-red-200 truncate max-w-[150px]">
                                                         {{ $teacher->getAssignedClass() ? \App\Models\Student::formatClass($teacher->getAssignedClass()) : 'Belum Ditentukan' }}
                                                     </span>
                                                 </div>
                                                 <div class="flex items-center justify-between text-[11px]">
                                                     <span class="font-semibold text-slate-500">Status Pegawai:</span>
                                                     <span
-                                                        class="font-bold text-slate-800 bg-slate-200/70 px-2 py-0.5 rounded-full text-[10px]">
+                                                        class="font-bold text-slate-800 bg-slate-200/70 px-2 py-0.5 rounded-full text-[10px] truncate max-w-[150px]">
                                                         {{ $teacher->status_kepegawaian ?? 'Belum Diisi' }}
                                                     </span>
                                                 </div>
@@ -175,12 +183,12 @@
                                         </div>
 
                                         <!-- Action Buttons: Switch Akun + Detail + Edit + Delete -->
-                                        <div class="pt-3 border-t border-slate-200/60 flex items-center justify-between gap-1.5">
+                                        <div class="pt-3 border-t border-slate-200/60 flex items-center justify-between gap-1">
                                             <form method="POST" action="{{ route('impersonate.switch', $teacher) }}"
-                                                class="inline-block flex-1">
+                                                class="inline-block flex-1 min-w-0">
                                                 @csrf
                                                 <button type="submit"
-                                                    class="w-full py-1.5 px-2 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-xl text-xs transition cursor-pointer shadow-xs flex items-center justify-center gap-1">
+                                                    class="w-full py-1.5 px-2 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-xl text-xs transition cursor-pointer shadow-xs flex items-center justify-center gap-1 truncate">
                                                     <span>⚡ Switch</span>
                                                 </button>
                                             </form>
@@ -188,7 +196,7 @@
                                             <!-- Detail Biodata Button -->
                                             <button type="button"
                                                 @click="openDetail({{ json_encode($teacher) }})"
-                                                class="p-1.5 bg-blue-100 hover:bg-blue-200 text-blue-900 rounded-xl transition cursor-pointer"
+                                                class="p-1.5 shrink-0 bg-blue-100 hover:bg-blue-200 text-blue-900 rounded-xl transition cursor-pointer"
                                                 title="Lihat Biodata Lengkap Dapodik">
                                                 📋
                                             </button>
@@ -196,21 +204,21 @@
                                             <!-- Cetak QR -->
                                             <a href="{{ \Illuminate\Support\Facades\Route::has('teachers.qr-card') ? route('teachers.qr-card', $teacher) : url('/teachers/' . $teacher->id . '/qr-card') }}"
                                                 target="_blank"
-                                                class="p-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl transition"
+                                                class="p-1.5 shrink-0 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl transition"
                                                 title="Cetak Kartu QR Guru">
                                                 🪪
                                             </a>
 
                                             <!-- Edit Guru -->
                                             <a href="{{ route('teachers.edit', $teacher) }}"
-                                                class="p-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition"
+                                                class="p-1.5 shrink-0 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition"
                                                 title="Edit Biodata & Akun Guru">
                                                 ✏️
                                             </a>
 
                                             <!-- Hapus Guru -->
                                             <form method="POST" action="{{ route('teachers.destroy', $teacher) }}"
-                                                class="inline-block"
+                                                class="inline-block shrink-0"
                                                 onsubmit="return confirm('Yakin ingin menghapus data guru ini?');">
                                                 @csrf
                                                 @method('DELETE')
