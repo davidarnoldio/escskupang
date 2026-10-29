@@ -417,7 +417,7 @@
                             <span>Pengaturan Akun Orang Tua (Email & Password)</span>
                         </h3>
                         <p class="text-xs text-slate-500">Perbarui email login (wajib berakhiran <span
-                                class="font-mono text-red-600 font-bold">@student.sch.id</span>) dan kata sandi baru.</p>
+                                class="font-mono text-red-600 font-bold">@studentntokupang</span>) dan kata sandi baru.</p>
                     </div>
 
                     <form method="POST" action="{{ route('parent.update-account') }}"
@@ -426,8 +426,8 @@
                         <div>
                             <label for="email"
                                 class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Login
-                                (@student.sch.id)</label>
-                            <input type="email" id="email" name="email" value="{{ old('email', Auth::user()->email) }}"
+                                (@studentntokupang)</label>
+                            <input type="text" inputmode="email" id="email" name="email" value="{{ old('email', Auth::user()->email) }}"
                                 required
                                 class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-red-500 focus:bg-white transition">
                         </div>

@@ -2007,8 +2007,8 @@
                                     </svg>
 
 
-                                    <input id="email" type="email" name="email" value="{{ old('email') }}" required
-                                        autofocus autocomplete="username" placeholder="Masukkan alamat email"
+                                    <input id="email" type="text" inputmode="email" name="email" value="{{ old('email') }}" required
+                                        autofocus autocomplete="username" placeholder="Masukkan alamat email akun"
                                         class="nto-input">
 
                                 </div>

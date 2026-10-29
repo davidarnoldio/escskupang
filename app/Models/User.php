@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable([
-    'name', 'email', 'password', 'role', 'student_id', 'assigned_class',
+    'name', 'email', 'password', 'role', 'is_active', 'student_id', 'assigned_class',
     'nik', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'nama_ibu_kandung',
     'alamat', 'rt', 'rw', 'dusun', 'desa_kelurahan', 'kecamatan', 'lintang', 'bujur', 'kode_pos',
     'status_kepegawaian', 'niy_nigk', 'nuptk', 'sk_pengangkatan', 'tmt_pengangkatan', 'lembaga_pengangkat',
@@ -119,6 +119,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user account is active.
+     */
+    public function isActive(): bool
+    {
+        return (bool) ($this->is_active ?? true);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -128,6 +136,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 }

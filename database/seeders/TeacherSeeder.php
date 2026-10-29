@@ -19,7 +19,7 @@ class TeacherSeeder extends Seeder
         $teachers = [
             [
                 'name'               => 'Beatrice Kianindra, B.Art',
-                'email'              => 'B.kianindra@yahoo.com',
+                'email'              => 'beatrice.kianindra@teacherntokupang',
                 'nuptk'              => null,
                 'jenis_kelamin'      => 'P',
                 'tempat_lahir'       => 'Kupang',
@@ -36,10 +36,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '085239808002',
                 'role'               => 'guru',
                 'assigned_class'     => null, // Kepsek
+                'is_active'          => false, // Guru non-wali / mapel dinonaktifkan secara default
             ],
             [
                 'name'               => 'Apris Leky Manu, S.T',
-                'email'              => 'aprismanu14@gmail.com',
+                'email'              => 'apris.manu@teacherntokupang',
                 'nuptk'              => '1746771672130292',
                 'jenis_kelamin'      => 'L',
                 'tempat_lahir'       => 'Oeekam',
@@ -56,10 +57,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '085238699927',
                 'role'               => 'guru',
                 'assigned_class'     => null, // Operator
+                'is_active'          => false, // Non-wali dimatikan secara default
             ],
             [
                 'name'               => 'Angelina Fitri Mali, S.Pd., Gr',
-                'email'              => 'fitrimali01@gmail.com',
+                'email'              => 'angelina.mali@teacherntokupang',
                 'nuptk'              => '8451777678230132',
                 'jenis_kelamin'      => 'P',
                 'tempat_lahir'       => 'Kupang',
@@ -76,10 +78,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '087863567215',
                 'role'               => 'guru',
                 'assigned_class'     => 'Kelas 5', // Guru Kelas V
+                'is_active'          => true,
             ],
             [
                 'name'               => 'Framinus Deade Larisano, S.Pd., Gr',
-                'email'              => 'framinus26@gmail.com',
+                'email'              => 'framinus.larisano@teacherntokupang',
                 'nuptk'              => '5955776677130222',
                 'jenis_kelamin'      => 'L',
                 'tempat_lahir'       => 'Kopalando',
@@ -96,10 +99,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '081338479391',
                 'role'               => 'guru',
                 'assigned_class'     => 'Kelas 1', // Guru Kelas I
+                'is_active'          => true,
             ],
             [
                 'name'               => 'Jorjelina Rantasia Da Costa, S.Pd., Gr',
-                'email'              => 'jorjelinadacosta04@gmail.com',
+                'email'              => 'jorjelina.dacosta@teacherntokupang',
                 'nuptk'              => '8434770671230402',
                 'jenis_kelamin'      => 'P',
                 'tempat_lahir'       => 'Denpasar',
@@ -116,10 +120,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '085280746492',
                 'role'               => 'guru',
                 'assigned_class'     => 'Kelas 6', // Guru Kelas VI
+                'is_active'          => true,
             ],
             [
                 'name'               => 'Linda Nara, S.Pd',
-                'email'              => 'lindanara01121999@gmail.com',
+                'email'              => 'linda.nara@teacherntokupang',
                 'nuptk'              => null,
                 'jenis_kelamin'      => 'P',
                 'tempat_lahir'       => 'Tanajawa',
@@ -136,10 +141,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '082155383730',
                 'role'               => 'guru',
                 'assigned_class'     => 'Kelas 4', // Guru Kelas IV
+                'is_active'          => true,
             ],
             [
                 'name'               => 'Marselindah Oberty Kekado, S.Pd., Gr',
-                'email'              => 'indakekado@gmail.com',
+                'email'              => 'marselindah.kekado@teacherntokupang',
                 'nuptk'              => '9352776677230033',
                 'jenis_kelamin'      => 'P',
                 'tempat_lahir'       => 'Kupang',
@@ -156,10 +162,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '081259263803',
                 'role'               => 'guru',
                 'assigned_class'     => null, // Guru Mapel
+                'is_active'          => false, // Guru mapel dimatikan secara default
             ],
             [
                 'name'               => 'Rosita Da Costa, S.Pd., Gr',
-                'email'              => 'rositadacosta11@gmail.com',
+                'email'              => 'rosita.dacosta@teacherntokupang',
                 'nuptk'              => '7243772673230193',
                 'jenis_kelamin'      => 'P',
                 'tempat_lahir'       => 'Lospalos',
@@ -176,10 +183,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '081338029377',
                 'role'               => 'guru',
                 'assigned_class'     => 'Kelas 2', // Guru Kelas II
+                'is_active'          => true,
             ],
             [
                 'name'               => 'Sancha Praecelya Buan, S.Pd., Gr',
-                'email'              => 'sanpraecelyabuan@gmail.com',
+                'email'              => 'sancha.buan@teacherntokupang',
                 'nuptk'              => '8545776677230172',
                 'jenis_kelamin'      => 'P',
                 'tempat_lahir'       => 'Kupang',
@@ -196,10 +204,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '081236592043',
                 'role'               => 'guru',
                 'assigned_class'     => null, // Guru Mapel
+                'is_active'          => false, // Guru mapel dimatikan secara default
             ],
             [
                 'name'               => 'Santi Yunita Naif, S.Pd., Gr',
-                'email'              => 'chrisantiyunita@gmail.com',
+                'email'              => 'santi.naif@teacherntokupang',
                 'nuptk'              => '2460766667300012',
                 'jenis_kelamin'      => 'P',
                 'tempat_lahir'       => 'Koat',
@@ -216,10 +225,11 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '085253149331',
                 'role'               => 'guru',
                 'assigned_class'     => 'Kelas 3', // Guru Kelas III
+                'is_active'          => true,
             ],
             [
                 'name'               => 'Joice Yovika Tampani, S.Psi',
-                'email'              => 'Joicetampani20@gmail.com',
+                'email'              => 'joice.tampani@teacherntokupang',
                 'nuptk'              => null,
                 'jenis_kelamin'      => 'P',
                 'tempat_lahir'       => 'Kupang',
@@ -236,6 +246,7 @@ class TeacherSeeder extends Seeder
                 'no_hp'              => '082144473576',
                 'role'               => 'guru',
                 'assigned_class'     => null, // Guru Pendamping Inklusi
+                'is_active'          => false, // Non-wali dimatikan secara default
             ],
         ];
 
@@ -244,10 +255,19 @@ class TeacherSeeder extends Seeder
             $data['plain_password'] = $defaultPassword;
             $data['email_verified_at'] = now();
 
-            User::updateOrCreate(
-                ['email' => $data['email']],
-                $data
-            );
+            // Match by NIK or Name so existing accounts with old email format are properly updated
+            $existing = User::where('name', $data['name'])
+                ->orWhere(function ($q) use ($data) {
+                    if (!empty($data['nik'])) {
+                        $q->where('nik', $data['nik']);
+                    }
+                })->first();
+
+            if ($existing) {
+                $existing->update($data);
+            } else {
+                User::create($data);
+            }
         }
     }
 }

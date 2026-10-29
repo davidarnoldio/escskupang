@@ -101,6 +101,7 @@ Route::middleware('auth')->group(function () {
 
     // Teacher Management (Admin Only) & Teacher QR Card
     Route::resource('teachers', TeacherController::class);
+    Route::patch('/teachers/{teacher}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('teachers.toggle-status');
     Route::get('/teachers/{teacher}/qr-card', [QRController::class, 'teacherCard'])->name('teachers.qr-card');
 
     // Teacher Daily Attendance & Monthly Recap (Admin Only)

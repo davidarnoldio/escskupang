@@ -191,14 +191,13 @@ class ParentController extends Controller
             'email' => [
                 'required',
                 'string',
-                'email',
                 'max:255',
-                'regex:/@student\.sch\.id$/i',
+                'regex:/@studentntokupang$/i',
                 \Illuminate\Validation\Rule::unique('users')->ignore($user->id),
             ],
             'password' => ['nullable', 'string', 'min:6', 'confirmed'],
         ], [
-            'email.regex' => 'Alamat email wajib menggunakan domain berakhiran @student.sch.id',
+            'email.regex' => 'Alamat email wajib menggunakan domain berakhiran @studentntokupang',
         ]);
 
         $user->email = $request->input('email');

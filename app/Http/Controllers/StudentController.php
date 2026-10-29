@@ -28,7 +28,7 @@ class StudentController extends Controller
         $search = $request->input('search');
         $kelas = $assignedClass ?? $request->input('kelas');
 
-        $query = Student::aktif();
+        $query = Student::aktif()->with('user');
 
         if ($assignedClass) {
             $query->where('kelas', $assignedClass);
@@ -133,7 +133,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Generate parent email format (nama_depan.nama_belakang@student.sch.id).
+     * Generate parent/student email format (nama_depan.nama_belakang@studentntokupang).
      * $studentId = 0 means a brand-new student (not yet saved); pass the real ID when updating.
      */
     public static function generateParentEmail(string $nama, int $studentId = 0): string
@@ -142,7 +142,7 @@ class StudentController extends Controller
         $firstName = isset($words[0]) ? strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $words[0])) : 'siswa';
         $lastName = isset($words[count($words) - 1]) && count($words) > 1 ? strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $words[count($words) - 1])) : $firstName;
 
-        $baseEmail = "{$firstName}.{$lastName}@student.sch.id";
+        $baseEmail = "{$firstName}.{$lastName}@studentntokupang";
         $email     = $baseEmail;
         $counter   = 1;
 
@@ -163,7 +163,7 @@ class StudentController extends Controller
             }
 
             $counter++;
-            $email = "{$firstName}.{$lastName}{$counter}@student.sch.id";
+            $email = "{$firstName}.{$lastName}{$counter}@studentntokupang";
         }
 
         return $email;

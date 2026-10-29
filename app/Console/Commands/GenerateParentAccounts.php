@@ -22,7 +22,7 @@ class GenerateParentAccounts extends Command
      *
      * @var string
      */
-    protected $description = 'Generate missing parent user accounts (@student.sch.id) for all existing students';
+    protected $description = 'Generate & sync parent/student user accounts (@studentntokupang) for all students';
 
     /**
      * Execute the console command.
@@ -30,33 +30,35 @@ class GenerateParentAccounts extends Command
     public function handle()
     {
         $students = Student::orderBy('nama', 'asc')->get();
-        $createdCount = 0;
+        $syncedCount = 0;
 
         foreach ($students as $student) {
             $parentUser = User::where('student_id', $student->id)->where('role', 'orang_tua')->first();
+            $parentEmail = StudentController::generateParentEmail($student->nama, $student->id);
 
             if (!$parentUser) {
-                $parentEmail = StudentController::generateParentEmail($student->nama, $student->id);
-
                 User::create([
                     'name' => 'Orang Tua (' . $student->nama . ')',
                     'email' => $parentEmail,
                     'password' => Hash::make('password'),
+                    'plain_password' => 'password',
                     'role' => 'orang_tua',
                     'student_id' => $student->id,
                     'email_verified_at' => now(),
                 ]);
 
                 $this->info("Created parent account for student {$student->nama}: {$parentEmail}");
-                $createdCount++;
+                $syncedCount++;
+            } elseif ($parentUser->email !== $parentEmail) {
+                $parentUser->update([
+                    'email' => $parentEmail,
+                ]);
+                $this->info("Updated parent email for {$student->nama}: {$parentEmail}");
+                $syncedCount++;
             }
         }
 
-        if ($createdCount === 0) {
-            $this->info("All {$students->count()} students already have active parent accounts (@student.sch.id).");
-        } else {
-            $this->info("Successfully created {$createdCount} parent accounts.");
-        }
+        $this->info("Finished syncing parent accounts. Total {$syncedCount} accounts created/updated.");
 
         return Command::SUCCESS;
     }

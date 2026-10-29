@@ -79,7 +79,7 @@ class TeacherController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+$/', 'unique:users'],
             'password' => ['required', 'string', 'min:6'],
             'assigned_class' => ['nullable', 'string', 'max:100'],
             'nik' => ['nullable', 'string', 'max:30'],
@@ -164,7 +164,7 @@ class TeacherController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($teacher->id)],
+            'email' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+$/', Rule::unique('users')->ignore($teacher->id)],
             'password' => ['nullable', 'string', 'min:6'],
             'assigned_class' => ['nullable', 'string', 'max:100'],
             'nik' => ['nullable', 'string', 'max:30'],
@@ -254,5 +254,32 @@ class TeacherController extends Controller
         }
 
         return redirect()->route('teachers.index')->with('success', 'Akun Guru / Wali Kelas berhasil dihapus.');
+    }
+
+    /**
+     * Toggle active/inactive login status for a teacher.
+     */
+    public function toggleStatus(User $teacher)
+    {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        if (!$user->isAdmin()) {
+            abort(403, 'Akses khusus Administrator.');
+        }
+
+        $teacher->is_active = !$teacher->isActive();
+        $teacher->save();
+
+        $statusText = $teacher->isActive() ? 'diaktifkan' : 'dinonaktifkan';
+
+        if (request()->wantsJson() || request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'is_active' => $teacher->isActive(),
+                'message' => "Akses login untuk {$teacher->name} berhasil {$statusText}."
+            ]);
+        }
+
+        return back()->with('success', "Akses login untuk {$teacher->name} berhasil {$statusText}.");
     }
 }

@@ -112,7 +112,7 @@
                                             <div class="flex items-start justify-between gap-3">
                                                 <div class="flex items-center gap-3">
                                                     <div
-                                                        class="w-10 h-10 rounded-full bg-red-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+                                                        class="w-10 h-10 rounded-full {{ $teacher->isActive() ? 'bg-red-600' : 'bg-slate-400' }} text-white font-black text-xs flex items-center justify-center shadow-xs">
                                                         {{ strtoupper(substr($teacher->name, 0, 2)) }}
                                                     </div>
                                                     <div>
@@ -124,9 +124,27 @@
                                                         </p>
                                                     </div>
                                                 </div>
+
+                                                <!-- Button On/Off Akses Login -->
+                                                <form method="POST" action="{{ route('teachers.toggle-status', $teacher) }}" class="shrink-0">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" 
+                                                        title="Klik untuk {{ $teacher->isActive() ? 'Matikan Akses Login' : 'Aktifkan Akses Login' }}"
+                                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black tracking-wide transition cursor-pointer shadow-xs border {{ $teacher->isActive() ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100 hover:border-emerald-400' : 'bg-rose-50 text-rose-800 border-rose-300 hover:bg-rose-100 hover:border-rose-400' }}">
+                                                        <span class="w-2.5 h-2.5 rounded-full {{ $teacher->isActive() ? 'bg-emerald-500 animate-pulse' : 'bg-rose-600' }}"></span>
+                                                        <span>{{ $teacher->isActive() ? 'AKSES ON' : 'AKSES OFF' }}</span>
+                                                    </button>
+                                                </form>
                                             </div>
 
                                             <div class="mt-4 pt-3 border-t border-slate-200/60 space-y-2">
+                                                <div class="flex items-center justify-between text-[11px]">
+                                                    <span class="font-semibold text-slate-500">Status Akses Login:</span>
+                                                    <span class="font-bold text-[10px] px-2 py-0.5 rounded-full {{ $teacher->isActive() ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900' }}">
+                                                        {{ $teacher->isActive() ? 'Bisa Login' : 'Akses Diblokir (OFF)' }}
+                                                    </span>
+                                                </div>
                                                 <div class="flex items-center justify-between text-[11px]">
                                                     <span class="font-semibold text-slate-500">Kelas Binaan:</span>
                                                     <span
