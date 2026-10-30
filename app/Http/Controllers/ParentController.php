@@ -202,7 +202,9 @@ class ParentController extends Controller
 
         $user->email = $request->input('email');
         if ($request->filled('password')) {
-            $user->password = \Illuminate\Support\Facades\Hash::make($request->input('password'));
+            $newPassword = $request->input('password');
+            $user->password = \Illuminate\Support\Facades\Hash::make($newPassword);
+            $user->plain_password = $newPassword;
         }
         $user->save();
 

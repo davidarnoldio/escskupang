@@ -46,6 +46,7 @@ class AdminPasswordController extends Controller
 
         $user->update([
             'password' => Hash::make($newPass),
+            'plain_password' => $newPass,
         ]);
 
         // Resolve any pending reset requests for this user/email
@@ -94,8 +95,10 @@ class AdminPasswordController extends Controller
             'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.',
         ]);
 
+        $newPass = $request->input('new_password');
         $admin->update([
-            'password' => Hash::make($request->input('new_password')),
+            'password' => Hash::make($newPass),
+            'plain_password' => $newPass,
         ]);
 
         return redirect()->back()->with('success', 'Kata sandi Administrator berhasil diubah! Silakan gunakan password baru ini untuk login berikutnya.');
