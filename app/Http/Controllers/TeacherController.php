@@ -267,6 +267,13 @@ class TeacherController extends Controller
             abort(403, 'Akses khusus Administrator.');
         }
 
+        // Ensure is_active column exists dynamically if migration has not run yet
+        if (!\Illuminate\Support\Facades\Schema::hasColumn('users', 'is_active')) {
+            \Illuminate\Support\Facades\Schema::table('users', function (\Illuminate\Database\Schema\Blueprint $table) {
+                $table->boolean('is_active')->default(true)->after('role');
+            });
+        }
+
         $teacher->is_active = !$teacher->isActive();
         $teacher->save();
 

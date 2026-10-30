@@ -623,6 +623,7 @@ CREATE TABLE `users` (
     `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
     `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
     `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'guru',
+    `is_active` tinyint(1) NOT NULL DEFAULT '1',
     `assigned_class` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     `email_verified_at` timestamp NULL DEFAULT NULL,
     `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
