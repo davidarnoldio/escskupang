@@ -56,8 +56,8 @@ class AttendanceController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
-        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
-            abort(403, 'Akses simpan presensi khusus Guru dan Administrator.');
+        if (!$user || !$user->isAdmin()) {
+            abort(403, 'Akses simpan presensi manual khusus Administrator. Guru hanya berhak melihat daftar presensi.');
         }
 
         $request->validate([
