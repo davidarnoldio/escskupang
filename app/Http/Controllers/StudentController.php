@@ -78,6 +78,8 @@ class StudentController extends Controller
         $validated = $request->validate([
             'nisn'                   => ['required', 'string', 'max:50', 'unique:students,nisn'],
             'nama'                   => ['required', 'string', 'max:255'],
+            'password'               => ['required', 'string', 'min:6'],
+            'custom_email'           => ['nullable', 'string', 'max:255', 'unique:users,email'],
             'nik'                    => ['nullable', 'string', 'max:20'],
             'no_kk'                  => ['nullable', 'string', 'max:20'],
             'kelas'                  => ['required', 'string', 'max:50'],
@@ -116,20 +118,27 @@ class StudentController extends Controller
             $validated['foto'] = $request->file('foto')->store('students', 'public');
         }
 
-        $student = Student::create($validated);
+        $studentData = collect($validated)->except(['password', 'custom_email'])->toArray();
+        $student = Student::create($studentData);
 
-        // Auto-create parent user account with email @student.sch.id and password "password"
-        $parentEmail = self::generateParentEmail($student->nama, $student->id);
+        // Create parent user account with custom password specified by Admin
+        $parentEmail = $request->filled('custom_email')
+            ? trim($request->input('custom_email'))
+            : self::generateParentEmail($student->nama, $student->id);
+
+        $plainPassword = $request->input('password');
+
         \App\Models\User::create([
             'name' => 'Orang Tua (' . $student->nama . ')',
             'email' => $parentEmail,
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'password' => \Illuminate\Support\Facades\Hash::make($plainPassword),
+            'plain_password' => $plainPassword,
             'role' => 'orang_tua',
             'student_id' => $student->id,
             'email_verified_at' => now(),
         ]);
 
-        return redirect()->route('students.index')->with('success', "Data siswa berhasil ditambahkan dan akun Orang Tua ({$parentEmail}) telah dibuat.");
+        return redirect()->route('students.index')->with('success', "Data siswa {$student->nama} berhasil ditambahkan dan akun Orang Tua ({$parentEmail}) telah dibuat dengan kata sandi yang Anda tentukan.");
     }
 
     /**
@@ -220,6 +229,7 @@ class StudentController extends Controller
         $validated = $request->validate([
             'nisn'                   => ['required', 'string', 'max:50', Rule::unique('students', 'nisn')->ignore($student->id)],
             'nama'                   => ['required', 'string', 'max:255'],
+            'password'               => ['nullable', 'string', 'min:6'],
             'nik'                    => ['nullable', 'string', 'max:20'],
             'no_kk'                  => ['nullable', 'string', 'max:20'],
             'kelas'                  => ['required', 'string', 'max:50'],
@@ -261,7 +271,30 @@ class StudentController extends Controller
             $validated['foto'] = $request->file('foto')->store('students', 'public');
         }
 
-        $student->update($validated);
+        $studentData = collect($validated)->except(['password'])->toArray();
+        $student->update($studentData);
+
+        // Sync parent user account name & password if updated
+        $parentUser = \App\Models\User::where('student_id', $student->id)->first();
+        if ($parentUser) {
+            $userUpdates = ['name' => 'Orang Tua (' . $student->nama . ')'];
+            if ($request->filled('password')) {
+                $userUpdates['password'] = \Illuminate\Support\Facades\Hash::make($request->password);
+                $userUpdates['plain_password'] = $request->password;
+            }
+            $parentUser->update($userUpdates);
+        } elseif ($request->filled('password')) {
+            $parentEmail = self::generateParentEmail($student->nama, $student->id);
+            \App\Models\User::create([
+                'name' => 'Orang Tua (' . $student->nama . ')',
+                'email' => $parentEmail,
+                'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+                'plain_password' => $request->password,
+                'role' => 'orang_tua',
+                'student_id' => $student->id,
+                'email_verified_at' => now(),
+            ]);
+        }
 
         return redirect()->route('students.index')->with('success', 'Data siswa berhasil diperbarui.');
     }

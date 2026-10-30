@@ -76,15 +76,17 @@
                             <span class="block text-[10px] font-bold text-slate-400 uppercase">Telepon Orang Tua</span>
                             <span class="font-bold text-slate-800">{{ $student->telepon ?: '-' }}</span>
                         </div>
-                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 sm:col-span-2">
-                            <span class="block text-[10px] font-bold text-slate-400 uppercase">Email Akun Login Siswa</span>
-                            <div class="flex items-center gap-2 mt-0.5 flex-wrap">
-                                <span class="font-mono font-bold text-slate-900 bg-white px-2 py-1 rounded-lg border border-slate-200">{{ $student->user?->email ?? '-' }}</span>
-                                @if($student->user && $student->user->plain_password)
-                                    <span class="text-slate-400 font-mono text-[11px]">(Sandi Awal: <strong class="text-slate-700">{{ $student->user->plain_password }}</strong>)</span>
-                                @endif
+                        @if(auth()->user() && auth()->user()->isAdmin())
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 sm:col-span-2">
+                                <span class="block text-[10px] font-bold text-slate-400 uppercase">Email & Sandi Akun Siswa (Khusus Administrator)</span>
+                                <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                                    <span class="font-mono font-bold text-slate-900 bg-white px-2 py-1 rounded-lg border border-slate-200">{{ $student->user?->email ?? '-' }}</span>
+                                    @if($student->user && $student->user->plain_password)
+                                        <span class="text-slate-400 font-mono text-[11px]">(Sandi: <strong class="text-slate-700">{{ $student->user->plain_password }}</strong>)</span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
+                        @endif
                         <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 sm:col-span-2">
                             <span class="block text-[10px] font-bold text-slate-400 uppercase">Alamat Rumah</span>
                             <span class="font-bold text-slate-800">{{ $student->alamat ?: '-' }}</span>

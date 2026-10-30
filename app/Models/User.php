@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable([
-    'name', 'email', 'password', 'role', 'is_active', 'student_id', 'assigned_class',
+    'name', 'email', 'password', 'plain_password', 'role', 'is_active', 'student_id', 'assigned_class',
     'nik', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'nama_ibu_kandung',
     'alamat', 'rt', 'rw', 'dusun', 'desa_kelurahan', 'kecamatan', 'lintang', 'bujur', 'kode_pos',
     'status_kepegawaian', 'niy_nigk', 'nuptk', 'sk_pengangkatan', 'tmt_pengangkatan', 'lembaga_pengangkat',
