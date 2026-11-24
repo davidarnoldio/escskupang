@@ -71,10 +71,10 @@
         <!-- Grouped by Class Matrix View -->
         <div class="space-y-6">
             @php
-                $officialClasses = \App\Models\Student::OFFICIAL_CLASSES;
+                $classGroups = array_keys($teachersByClass);
             @endphp
 
-            @foreach(array_merge($officialClasses, ['Unassigned']) as $class)
+            @foreach($classGroups as $class)
                 @php
                     $classTeachers = $teachersByClass[$class] ?? [];
                 @endphp
