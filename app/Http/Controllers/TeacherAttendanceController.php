@@ -38,6 +38,10 @@ class TeacherAttendanceController extends Controller
             $q->where('tanggal', $tanggal);
         }])->orderBy('name')->get();
 
+        $jamMasukConfig = Setting::get('jam_masuk', '07:00');
+        $jamTerlambatConfig = Setting::get('jam_terlambat', '07:30');
+        $jamPulangConfig = Setting::get('jam_pulang', '14:00');
+
         // Calculate statistics for the selected date
         $totalGuru = $teachers->count();
         $totalHadir = 0;
@@ -45,6 +49,7 @@ class TeacherAttendanceController extends Controller
         $totalSakit = 0;
         $totalAlpa = 0;
         $totalTerlambat = 0;
+        $totalPulangAwal = 0;
         $totalBelumPresensi = 0;
 
         foreach ($teachers as $teacher) {
@@ -54,6 +59,9 @@ class TeacherAttendanceController extends Controller
                     $totalHadir++;
                     if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
                         $totalTerlambat++;
+                    }
+                    if (!empty($att->jam_pulang) && substr($att->jam_pulang, 0, 5) < $jamPulangConfig) {
+                        $totalPulangAwal++;
                     }
                 } elseif ($att->status === 'izin') {
                     $totalIzin++;
@@ -69,7 +77,7 @@ class TeacherAttendanceController extends Controller
 
         // Apply status filter if selected
         if ($statusFilter) {
-            $teachers = $teachers->filter(function ($teacher) use ($statusFilter) {
+            $teachers = $teachers->filter(function ($teacher) use ($statusFilter, $jamPulangConfig) {
                 $att = $teacher->teacherAttendances->first();
                 if ($statusFilter === 'belum_presensi') {
                     return $att === null;
@@ -77,13 +85,12 @@ class TeacherAttendanceController extends Controller
                 if ($statusFilter === 'terlambat') {
                     return $att && $att->status === 'hadir' && str_contains(strtolower($att->keterangan ?? ''), 'terlambat');
                 }
+                if ($statusFilter === 'pulang_awal') {
+                    return $att && $att->status === 'hadir' && !empty($att->jam_pulang) && substr($att->jam_pulang, 0, 5) < $jamPulangConfig;
+                }
                 return $att && $att->status === $statusFilter;
             });
         }
-
-        $jamMasukConfig = Setting::get('jam_masuk', '07:00');
-        $jamTerlambatConfig = Setting::get('jam_terlambat', '07:30');
-        $jamPulangConfig = Setting::get('jam_pulang', '14:00');
 
         return view('teachers.attendances.index', compact(
             'teachers',
@@ -96,6 +103,7 @@ class TeacherAttendanceController extends Controller
             'totalSakit',
             'totalAlpa',
             'totalTerlambat',
+            'totalPulangAwal',
             'totalBelumPresensi',
             'jamMasukConfig',
             'jamTerlambatConfig',
@@ -150,6 +158,19 @@ class TeacherAttendanceController extends Controller
 
             if (!empty($validated['jam_pulang'])) {
                 $attendance->jam_pulang = strlen($validated['jam_pulang']) === 5 ? $validated['jam_pulang'] . ':00' : $validated['jam_pulang'];
+
+                $jamPulangConfig = Setting::get('jam_pulang', '14:00');
+                if (substr($attendance->jam_pulang, 0, 5) < $jamPulangConfig) {
+                    $pulangScanCarbon = Carbon::parse($validated['tanggal'] . ' ' . $attendance->jam_pulang, 'Asia/Makassar');
+                    $pulangTargetCarbon = Carbon::parse($validated['tanggal'] . ' ' . $jamPulangConfig . ':00', 'Asia/Makassar');
+                    $earlyMinutes = max(1, abs((int) $pulangScanCarbon->diffInMinutes($pulangTargetCarbon)));
+
+                    $existingNote = $attendance->keterangan ?? '';
+                    if (!str_contains(strtolower($existingNote), 'pulang awal') && !str_contains(strtolower($existingNote), 'pulang duluan')) {
+                        $earlyNote = "Pulang Awal (Duluan {$earlyMinutes} menit): [{$attendance->jam_pulang}]";
+                        $attendance->keterangan = $existingNote ? "{$existingNote} | {$earlyNote}" : $earlyNote;
+                    }
+                }
             }
         } else {
             // For Izin, Sakit, Alpa: reset check-in/out times unless explicitly kept

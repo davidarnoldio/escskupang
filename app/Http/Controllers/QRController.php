@@ -470,9 +470,13 @@ class QRController extends Controller
             $isEarlyDeparture = $currentTimeHM < $jamPulangConfig;
 
             if ($isEarlyDeparture) {
-                $statusText = "PULANG AWAL (Jam {$time})";
-                $message = "Presensi PULANG Guru Berhasil! {$teacher->name} dicatat PULANG pada jam [{$time}] (Sebelum jam kepulangan resmi {$jamPulangConfig}). Jam Masuk: [{$teacherAttendance->jam_masuk}].";
-                $keteranganPulang = "Pulang Awal: [{$time}]";
+                $pulangScanCarbon = Carbon::parse($today . ' ' . $time, 'Asia/Makassar');
+                $pulangTargetCarbon = Carbon::parse($today . ' ' . $jamPulangConfig . ':00', 'Asia/Makassar');
+                $earlyMinutes = max(1, abs((int) $pulangScanCarbon->diffInMinutes($pulangTargetCarbon)));
+
+                $statusText = "PULANG AWAL ({$earlyMinutes}m Lebih Awal)";
+                $message = "Presensi PULANG Guru Dicatat! {$teacher->name} pulang DULUAN pada jam [{$time}] ({$earlyMinutes} menit sebelum jam pulang resmi {$jamPulangConfig} WITA). Jam Masuk: [{$teacherAttendance->jam_masuk}].";
+                $keteranganPulang = "Pulang Awal (Duluan {$earlyMinutes} menit): [{$time}]";
             } else {
                 $statusText = "PULANG (Jam {$time})";
                 $message = "Presensi PULANG Guru Berhasil! {$teacher->name} dicatat PULANG pada jam [{$time}]. Jam Masuk: [{$teacherAttendance->jam_masuk}].";

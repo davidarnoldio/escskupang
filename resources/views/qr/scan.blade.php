@@ -226,6 +226,7 @@
                                 @forelse($todayTeacherAttendances as $tAtt)
                                     @php
                                         $isTeacherLate = str_contains(strtolower($tAtt->keterangan ?? ''), 'terlambat');
+                                        $isTeacherEarlyOut = str_contains(strtolower($tAtt->keterangan ?? ''), 'pulang awal');
                                     @endphp
                                     <div class="py-2.5 flex items-center justify-between text-xs">
                                         <div class="flex items-center gap-2.5">
@@ -238,7 +239,11 @@
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            @if($tAtt->jam_pulang)
+                                            @if($tAtt->jam_pulang && $isTeacherEarlyOut)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-orange-100 text-orange-900 border border-orange-300">
+                                                    ⚠️ PULANG AWAL
+                                                </span>
+                                            @elseif($tAtt->jam_pulang)
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-indigo-50 text-indigo-800 border border-indigo-200">
                                                     🏠 PULANG
                                                 </span>

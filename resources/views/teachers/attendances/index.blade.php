@@ -105,6 +105,7 @@
                         <option value="">Semua Status</option>
                         <option value="hadir" {{ $statusFilter === 'hadir' ? 'selected' : '' }}>Hadir</option>
                         <option value="terlambat" {{ $statusFilter === 'terlambat' ? 'selected' : '' }}>Terlambat</option>
+                        <option value="pulang_awal" {{ $statusFilter === 'pulang_awal' ? 'selected' : '' }}>Pulang Awal / Duluan</option>
                         <option value="izin" {{ $statusFilter === 'izin' ? 'selected' : '' }}>Izin</option>
                         <option value="sakit" {{ $statusFilter === 'sakit' ? 'selected' : '' }}>Sakit</option>
                         <option value="alpa" {{ $statusFilter === 'alpa' ? 'selected' : '' }}>Alpa</option>
@@ -158,6 +159,7 @@
                             @php
                                 $att = $teacher->teacherAttendances->first();
                                 $isLate = $att && $att->status === 'hadir' && str_contains(strtolower($att->keterangan ?? ''), 'terlambat');
+                                $isEarlyOut = $att && $att->status === 'hadir' && !empty($att->jam_pulang) && substr($att->jam_pulang, 0, 5) < $jamPulangConfig;
                             @endphp
                             <tr class="hover:bg-slate-50/60 transition">
                                 <td class="py-3.5 px-4 text-center font-bold text-slate-400">
@@ -193,7 +195,12 @@
                                 </td>
                                 <td class="py-3.5 px-4 text-center font-mono text-xs font-bold text-slate-800">
                                     @if($att && $att->jam_pulang)
-                                        <span>{{ substr($att->jam_pulang, 0, 5) }}</span>
+                                        <div class="inline-flex flex-col items-center gap-0.5">
+                                            <span class="{{ $isEarlyOut ? 'text-orange-700 font-black' : '' }}">{{ substr($att->jam_pulang, 0, 5) }}</span>
+                                            @if($isEarlyOut)
+                                                <span class="text-[9px] font-sans font-extrabold text-orange-700 bg-orange-50 border border-orange-200 px-1.5 py-0.2 rounded-md">Pulang Duluan</span>
+                                            @endif
+                                        </div>
                                     @else
                                         <span class="text-slate-300">-</span>
                                     @endif
@@ -204,15 +211,22 @@
                                             ⏳ BELUM ABSEN
                                         </span>
                                     @elseif($att->status === 'hadir')
-                                        @if($isLate)
-                                            <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-[10px] font-black bg-amber-50 text-amber-800 border border-amber-300">
-                                                ⚠️ TERLAMBAT
-                                            </span>
-                                        @else
-                                            <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-[10px] font-black bg-emerald-50 text-emerald-800 border border-emerald-300">
-                                                ✓ HADIR
-                                            </span>
-                                        @endif
+                                        <div class="flex flex-col items-center gap-1">
+                                            @if($isLate)
+                                                <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-[10px] font-black bg-amber-50 text-amber-800 border border-amber-300">
+                                                    ⚠️ TERLAMBAT
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-[10px] font-black bg-emerald-50 text-emerald-800 border border-emerald-300">
+                                                    ✓ HADIR
+                                                </span>
+                                            @endif
+                                            @if($isEarlyOut)
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-xl text-[10px] font-black bg-orange-50 text-orange-800 border border-orange-300">
+                                                    🏃 PULANG AWAL
+                                                </span>
+                                            @endif
+                                        </div>
                                     @elseif($att->status === 'izin')
                                         <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-[10px] font-black bg-sky-50 text-sky-800 border border-sky-300">
                                             ℹ️ IZIN
@@ -228,9 +242,17 @@
                                     @endif
                                 </td>
                                 <td class="py-3.5 px-4 text-slate-500 text-xs">
-                                    <span class="line-clamp-2" title="{{ $att->keterangan ?? '-' }}">
-                                        {{ $att->keterangan ?? '-' }}
-                                    </span>
+                                    @if($att && $att->keterangan)
+                                        <span class="line-clamp-2 {{ $isEarlyOut ? 'text-orange-900 font-semibold' : '' }}" title="{{ $att->keterangan }}">
+                                            {{ $att->keterangan }}
+                                        </span>
+                                    @elseif($isEarlyOut)
+                                        <span class="text-orange-700 font-bold text-[11px]">
+                                            ⚠️ Pulang lebih awal dari jam pulang resmi ({{ $jamPulangConfig }} WITA)
+                                        </span>
+                                    @else
+                                        <span>-</span>
+                                    @endif
                                 </td>
                                 <td class="py-3.5 px-4 text-center">
                                     <button type="button" 
