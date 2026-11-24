@@ -19,8 +19,8 @@ class QRController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = auth()->user();
-        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
-            abort(403, 'Akses scanner khusus Guru dan Administrator.');
+        if (!$user || !$user->isAdmin()) {
+            abort(403, 'Akses scanner presensi QR khusus Administrator.');
         }
 
         $today = now()->format('Y-m-d');
@@ -49,10 +49,10 @@ class QRController extends Controller
     {
         /** @var \App\Models\User|null $user */
         $user = auth()->user();
-        if (!$user || (!$user->isAdmin() && !$user->isTeacher())) {
+        if (!$user || !$user->isAdmin()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Akses scanner presensi khusus Guru dan Administrator.',
+                'message' => 'Akses scanner presensi QR khusus Administrator.',
             ], 403);
         }
 

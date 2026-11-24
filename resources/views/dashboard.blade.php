@@ -141,32 +141,38 @@
                 </div>
 
                 <div class="space-y-3.5 mt-6">
-                    <!-- Tile 1: Scan QR Code Presensi -->
-                    <a href="{{ route('qr.scan') }}" class="block p-4 rounded-2xl bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 hover:shadow-xl hover:scale-[1.01] transition duration-200">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3.5">
-                                <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl">
-                                    📷
+                    @if(Auth::user() && Auth::user()->isAdmin())
+                        <!-- Tile 1: Scan QR Code Presensi (Admin Only) -->
+                        <a href="{{ route('qr.scan') }}" class="block p-4 rounded-2xl bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-600/30 hover:shadow-xl hover:scale-[1.01] transition duration-200">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl">
+                                        📷
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-extrabold">Scan QR Code Presensi</div>
+                                        <div class="text-xs text-red-100/90 font-medium mt-0.5">Scan QR untuk presensi cepat</div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div class="text-sm font-extrabold">Scan QR Code Presensi</div>
-                                    <div class="text-xs text-red-100/90 font-medium mt-0.5">Scan QR untuk presensi cepat</div>
-                                </div>
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                             </div>
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </div>
-                    </a>
+                        </a>
+                    @endif
 
-                    <!-- Tile 2: Input Presensi Manual -->
+                    <!-- Tile 2: Presensi Harian -->
                     <a href="{{ route('attendances.index') }}" class="block p-4 rounded-2xl bg-slate-50/80 hover:bg-red-50/60 border border-slate-200/80 hover:border-red-200 transition duration-200 group">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3.5">
                                 <div class="w-10 h-10 rounded-xl bg-red-600/10 text-red-600 flex items-center justify-center text-xl group-hover:scale-110 transition">
-                                    ✍️
+                                    {{ Auth::user() && Auth::user()->isAdmin() ? '✍️' : '📋' }}
                                 </div>
                                 <div>
-                                    <div class="text-sm font-extrabold text-slate-900 group-hover:text-red-600 transition">Input Presensi Manual</div>
-                                    <div class="text-xs text-slate-500 font-medium mt-0.5">Input presensi secara manual</div>
+                                    <div class="text-sm font-extrabold text-slate-900 group-hover:text-red-600 transition">
+                                        {{ Auth::user() && Auth::user()->isAdmin() ? 'Input Presensi Manual' : 'Lihat Presensi Harian' }}
+                                    </div>
+                                    <div class="text-xs text-slate-500 font-medium mt-0.5">
+                                        {{ Auth::user() && Auth::user()->isAdmin() ? 'Input presensi secara manual' : 'Pantau kehadiran siswa hari ini' }}
+                                    </div>
                                 </div>
                             </div>
                             <svg class="w-5 h-5 text-slate-400 group-hover:text-red-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
