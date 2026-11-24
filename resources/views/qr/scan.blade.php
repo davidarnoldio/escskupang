@@ -40,6 +40,22 @@
                             </button>
                         </div>
 
+                        <!-- Mode Selector: Scan Masuk vs Scan Pulang -->
+                        <div class="mb-4 p-1.5 bg-slate-100 rounded-2xl grid grid-cols-2 gap-1.5 border border-slate-200/80">
+                            <button type="button" @click="setScanMode('masuk')"
+                                class="py-2.5 px-4 rounded-xl text-xs font-black transition cursor-pointer flex items-center justify-center gap-2"
+                                :class="scanMode === 'masuk' ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'">
+                                <span>☀️</span>
+                                <span>Scan Absen Masuk</span>
+                            </button>
+                            <button type="button" @click="setScanMode('pulang')"
+                                class="py-2.5 px-4 rounded-xl text-xs font-black transition cursor-pointer flex items-center justify-center gap-2"
+                                :class="scanMode === 'pulang' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'">
+                                <span>🏠</span>
+                                <span>Scan Absen Pulang</span>
+                            </button>
+                        </div>
+
                         <!-- Camera Preview Box -->
                         <div class="relative w-full bg-slate-950 rounded-2xl overflow-hidden min-h-[320px] flex items-center justify-center border border-slate-800">
                             <div id="reader" class="w-full"></div>
@@ -89,7 +105,7 @@
 
                                     <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider"
                                           :class="!lastResult?.success ? 'bg-rose-100 text-rose-900 border border-rose-300 font-extrabold' : (lastResult?.scan_type === 'pulang' ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' : (lastResult?.attendance?.is_late ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'bg-emerald-100 text-emerald-900 border border-emerald-200'))"
-                                          x-text="!lastResult?.success ? (lastResult?.already_completed ? 'TIDAK VALID (>2x SCAN)' : (lastResult?.outside_hours ? 'DI LUAR JAM' : 'DITOLAK')) : (lastResult?.scan_type === 'pulang' ? 'SCAN 2: PULANG' : 'SCAN 1: MASUK')"></span>
+                                          x-text="!lastResult?.success ? (lastResult?.already_checked_in ? 'SUDAH ABSEN MASUK' : (lastResult?.not_checked_in ? 'BELUM ABSEN MASUK' : (lastResult?.already_completed ? 'TIDAK VALID (>2x SCAN)' : (lastResult?.outside_hours ? 'DI LUAR JAM' : 'DITOLAK')))) : (lastResult?.scan_type === 'pulang' ? 'SCAN 2: PULANG' : 'SCAN 1: MASUK')"></span>
                                 </div>
 
                                 <h4 class="font-extrabold text-sm mt-1"
@@ -255,10 +271,19 @@
             return {
                 cameraActive: false,
                 manualNis: '',
+                scanMode: 'masuk',
                 loading: false,
                 lastResult: null,
+                lastScannedCode: '',
+                lastScannedAt: 0,
                 html5QrCode: null,
                 audioCtx: null,
+
+                setScanMode(mode) {
+                    this.scanMode = mode;
+                    this.lastScannedCode = '';
+                    this.lastScannedAt = 0;
+                },
 
                 init() {
                     try {
@@ -299,7 +324,15 @@
                         { facingMode: "environment" },
                         config,
                         (decodedText) => {
-                            this.processNis(decodedText);
+                            const trimmed = decodedText.trim();
+                            const now = Date.now();
+                            // Prevent rapid duplicate camera reads for the same QR code within 5 seconds
+                            if (this.loading || (trimmed === this.lastScannedCode && (now - this.lastScannedAt) < 5000)) {
+                                return;
+                            }
+                            this.lastScannedCode = trimmed;
+                            this.lastScannedAt = now;
+                            this.processNis(trimmed);
                         },
                         (errorMessage) => {}
                     ).then(() => {
@@ -335,7 +368,7 @@
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}",
                                 "Accept": "application/json"
                             },
-                            body: JSON.stringify({ code: code, nis: code })
+                            body: JSON.stringify({ code: code, nis: code, mode: this.scanMode })
                         });
 
                         let data;

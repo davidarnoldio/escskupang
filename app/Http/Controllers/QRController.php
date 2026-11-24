@@ -64,8 +64,10 @@ class QRController extends Controller
             'nis'  => ['nullable', 'string', 'max:100'],
             'nisn' => ['nullable', 'string', 'max:100'],
             'code' => ['nullable', 'string', 'max:100'],
+            'mode' => ['nullable', 'string', 'in:masuk,pulang'],
         ]);
 
+        $scanMode = $request->input('mode', 'masuk');
         $rawInput = trim($request->input('code') ?? $request->input('nisn') ?? $request->input('nis') ?? '');
 
         if (empty($rawInput)) {
@@ -111,7 +113,7 @@ class QRController extends Controller
 
         // If it's a teacher scan, process teacher attendance
         if ($isTeacherScan) {
-            return $this->processTeacherAttendance($teacherId, $teacherEmail, $rawInput);
+            return $this->processTeacherAttendance($teacherId, $teacherEmail, $rawInput, $scanMode);
         }
 
         // Normalize student input prefix e.g. "NISN: 0003.26.0236" or "NIS: 0003.26.0236"
@@ -124,7 +126,7 @@ class QRController extends Controller
             ->where('email', $rawInput)
             ->first();
         if ($possibleTeacher) {
-            return $this->processTeacherAttendance($possibleTeacher->id, null, $rawInput);
+            return $this->processTeacherAttendance($possibleTeacher->id, null, $rawInput, $scanMode);
         }
 
         // Look up student by NISN
@@ -144,13 +146,13 @@ class QRController extends Controller
             ], 200);
         }
 
-        return $this->processStudentAttendance($student);
+        return $this->processStudentAttendance($student, $scanMode);
     }
 
     /**
-     * Process student 2-phase attendance (Scan 1: Masuk, Scan 2: Pulang).
+     * Process student 2-phase attendance based on explicit scan mode ('masuk' or 'pulang').
      */
-    protected function processStudentAttendance(Student $student)
+    protected function processStudentAttendance(Student $student, string $scanMode = 'masuk')
     {
         $today = now()->format('Y-m-d');
         $time = now()->format('H:i:s');
@@ -172,11 +174,60 @@ class QRController extends Controller
             ->where('tanggal', $today)
             ->first();
 
+        $personData = [
+            'id' => $student->id,
+            'nama' => $student->nama,
+            'nisn' => $student->nisn ?? $student->nis,
+            'kelas' => $student->kelas,
+            'foto_url' => $student->foto_url,
+            'is_abk' => $student->is_abk,
+        ];
+
         // -------------------------------------------------------------
-        // SCAN 2: ALREADY CHECKED IN -> PROCESS CHECK-OUT (ABSEN PULANG)
+        // SCAN 3+: SUDAH MASUK & SUDAH PULANG -> TIDAK VALID / DITOLAK
         // -------------------------------------------------------------
-        if ($attendance && !empty($attendance->jam_masuk) && empty($attendance->jam_pulang)) {
-            $jamMasukFormatted = substr($attendance->jam_masuk, 0, 5);
+        if ($attendance && !empty($attendance->jam_masuk) && !empty($attendance->jam_pulang)) {
+            $message = "Presensi TIDAK VALID! Siswa {$student->nama} ({$student->kelas}) SUDAH melakukan scan masuk jam [{$attendance->jam_masuk}] dan scan pulang jam [{$attendance->jam_pulang}]. Batas scan presensi hari ini maksimal 2 kali (1x Masuk & 1x Keluar). Silakan hadir kembali besok.";
+
+            return response()->json([
+                'success' => false,
+                'already_completed' => true,
+                'scan_type' => 'invalid',
+                'title' => 'Presensi Tidak Valid (Batas Scan Habis)!',
+                'role_type' => 'student',
+                'message' => $message,
+                'person' => $personData,
+                'attendance' => [
+                    'tanggal' => $today,
+                    'jam_masuk' => $attendance->jam_masuk,
+                    'jam_pulang' => $attendance->jam_pulang,
+                    'status_text' => 'TIDAK VALID (Batas 2x Scan)',
+                ],
+            ], 200);
+        }
+
+        // -------------------------------------------------------------
+        // MODE PULANG: HANYA PROSES ABSEN PULANG
+        // -------------------------------------------------------------
+        if ($scanMode === 'pulang') {
+            if (!$attendance || empty($attendance->jam_masuk)) {
+                return response()->json([
+                    'success' => false,
+                    'not_checked_in' => true,
+                    'scan_type' => 'not_checked_in',
+                    'title' => 'Belum Absen Masuk!',
+                    'role_type' => 'student',
+                    'message' => "Siswa {$student->nama} ({$student->kelas}) belum tercatat ABSEN MASUK hari ini. Silakan pilih mode 'Scan Absen Masuk' terlebih dahulu.",
+                    'person' => $personData,
+                    'attendance' => [
+                        'tanggal' => $today,
+                        'jam_masuk' => null,
+                        'jam_pulang' => null,
+                        'status_text' => 'BELUM ABSEN MASUK',
+                    ],
+                ], 200);
+            }
+
             $isEarlyDeparture = $currentTimeHM < $jamPulangConfig;
 
             if ($isEarlyDeparture) {
@@ -189,7 +240,7 @@ class QRController extends Controller
                 $keteranganPulang = "Pulang: [{$time}]";
             }
 
-            $newKeterangan = $attendance->keterangan 
+            $newKeterangan = $attendance->keterangan
                 ? $attendance->keterangan . " | " . $keteranganPulang
                 : $keteranganPulang;
 
@@ -203,14 +254,7 @@ class QRController extends Controller
                 'scan_type' => 'pulang',
                 'role_type' => 'student',
                 'message' => $message,
-                'person' => [
-                    'id' => $student->id,
-                    'nama' => $student->nama,
-                    'nisn' => $student->nisn ?? $student->nis,
-                    'kelas' => $student->kelas,
-                    'foto_url' => $student->foto_url,
-                    'is_abk' => $student->is_abk,
-                ],
+                'person' => $personData,
                 'attendance' => [
                     'tanggal' => $today,
                     'jam_masuk' => $attendance->jam_masuk,
@@ -224,31 +268,22 @@ class QRController extends Controller
         }
 
         // -------------------------------------------------------------
-        // SCAN 3+: SCAN LEBIH DARI 2 KALI -> TIDAK VALID / DITOLAK
+        // MODE MASUK: TOLAK JIKA SUDAH ABSEN MASUK HARI INI
         // -------------------------------------------------------------
-        if ($attendance && !empty($attendance->jam_masuk) && !empty($attendance->jam_pulang)) {
-            $message = "Presensi TIDAK VALID! Siswa {$student->nama} ({$student->kelas}) SUDAH melakukan scan masuk jam [{$attendance->jam_masuk}] dan scan pulang jam [{$attendance->jam_pulang}]. Batas scan presensi hari ini maksimal 2 kali (1x Masuk & 1x Keluar). Silakan hadir kembali besok.";
-
+        if ($attendance && !empty($attendance->jam_masuk)) {
             return response()->json([
                 'success' => false,
-                'already_completed' => true,
-                'scan_type' => 'invalid',
-                'title' => 'Presensi Tidak Valid (Batas Scan Habis)!',
+                'already_checked_in' => true,
+                'scan_type' => 'already_checked_in',
+                'title' => 'Sudah Absen Masuk!',
                 'role_type' => 'student',
-                'message' => $message,
-                'person' => [
-                    'id' => $student->id,
-                    'nama' => $student->nama,
-                    'nisn' => $student->nisn ?? $student->nis,
-                    'kelas' => $student->kelas,
-                    'foto_url' => $student->foto_url,
-                    'is_abk' => $student->is_abk,
-                ],
+                'message' => "Siswa {$student->nama} ({$student->kelas}) sudah tercatat ABSEN MASUK hari ini pada jam [{$attendance->jam_masuk}]. Untuk mencatat kepulangan, silakan ubah mode ke 'Scan Absen Pulang'.",
+                'person' => $personData,
                 'attendance' => [
                     'tanggal' => $today,
                     'jam_masuk' => $attendance->jam_masuk,
-                    'jam_pulang' => $attendance->jam_pulang,
-                    'status_text' => 'TIDAK VALID (Batas 2x Scan)',
+                    'jam_pulang' => null,
+                    'status_text' => 'SUDAH ABSEN MASUK',
                 ],
             ], 200);
         }
@@ -343,9 +378,9 @@ class QRController extends Controller
     }
 
     /**
-     * Process teacher 2-phase attendance (Scan 1: Masuk, Scan 2: Pulang).
+     * Process teacher 2-phase attendance based on explicit scan mode ('masuk' or 'pulang').
      */
-    protected function processTeacherAttendance($teacherId, $teacherEmail, $rawInput)
+    protected function processTeacherAttendance($teacherId, $teacherEmail, $rawInput, string $scanMode = 'masuk')
     {
         $query = User::whereIn('role', ['guru', 'wali_kelas']);
         if ($teacherId) {
@@ -379,10 +414,59 @@ class QRController extends Controller
             ->where('tanggal', $today)
             ->first();
 
+        $personData = [
+            'id' => $teacher->id,
+            'nama' => $teacher->name,
+            'email' => $teacher->email,
+            'kelas' => $teacher->getAssignedClass() ?? 'Guru Pengajar',
+            'is_guru' => true,
+        ];
+
         // -------------------------------------------------------------
-        // SCAN 2: ALREADY CHECKED IN -> PROCESS CHECK-OUT (ABSEN PULANG GURU)
+        // SCAN 3+: SUDAH MASUK & SUDAH PULANG -> TIDAK VALID / DITOLAK
         // -------------------------------------------------------------
-        if ($teacherAttendance && !empty($teacherAttendance->jam_masuk) && empty($teacherAttendance->jam_pulang)) {
+        if ($teacherAttendance && !empty($teacherAttendance->jam_masuk) && !empty($teacherAttendance->jam_pulang)) {
+            $message = "Presensi TIDAK VALID! Guru {$teacher->name} SUDAH melakukan scan masuk jam [{$teacherAttendance->jam_masuk}] dan scan pulang jam [{$teacherAttendance->jam_pulang}]. Batas scan presensi hari ini maksimal 2 kali (1x Masuk & 1x Keluar). Silakan hadir kembali besok.";
+
+            return response()->json([
+                'success' => false,
+                'already_completed' => true,
+                'scan_type' => 'invalid',
+                'title' => 'Presensi Tidak Valid (Batas Scan Habis)!',
+                'role_type' => 'teacher',
+                'message' => $message,
+                'person' => $personData,
+                'attendance' => [
+                    'tanggal' => $today,
+                    'jam_masuk' => $teacherAttendance->jam_masuk,
+                    'jam_pulang' => $teacherAttendance->jam_pulang,
+                    'status_text' => 'TIDAK VALID (Batas 2x Scan)',
+                ],
+            ], 200);
+        }
+
+        // -------------------------------------------------------------
+        // MODE PULANG: HANYA PROSES ABSEN PULANG GURU
+        // -------------------------------------------------------------
+        if ($scanMode === 'pulang') {
+            if (!$teacherAttendance || empty($teacherAttendance->jam_masuk)) {
+                return response()->json([
+                    'success' => false,
+                    'not_checked_in' => true,
+                    'scan_type' => 'not_checked_in',
+                    'title' => 'Belum Absen Masuk!',
+                    'role_type' => 'teacher',
+                    'message' => "Guru {$teacher->name} belum tercatat ABSEN MASUK hari ini. Silakan pilih mode 'Scan Absen Masuk' terlebih dahulu.",
+                    'person' => $personData,
+                    'attendance' => [
+                        'tanggal' => $today,
+                        'jam_masuk' => null,
+                        'jam_pulang' => null,
+                        'status_text' => 'BELUM ABSEN MASUK',
+                    ],
+                ], 200);
+            }
+
             $isEarlyDeparture = $currentTimeHM < $jamPulangConfig;
 
             if ($isEarlyDeparture) {
@@ -395,7 +479,7 @@ class QRController extends Controller
                 $keteranganPulang = "Pulang: [{$time}]";
             }
 
-            $newKeterangan = $teacherAttendance->keterangan 
+            $newKeterangan = $teacherAttendance->keterangan
                 ? $teacherAttendance->keterangan . " | " . $keteranganPulang
                 : $keteranganPulang;
 
@@ -409,13 +493,7 @@ class QRController extends Controller
                 'scan_type' => 'pulang',
                 'role_type' => 'teacher',
                 'message' => $message,
-                'person' => [
-                    'id' => $teacher->id,
-                    'nama' => $teacher->name,
-                    'email' => $teacher->email,
-                    'kelas' => $teacher->getAssignedClass() ?? 'Guru Pengajar',
-                    'is_guru' => true,
-                ],
+                'person' => $personData,
                 'attendance' => [
                     'tanggal' => $today,
                     'jam_masuk' => $teacherAttendance->jam_masuk,
@@ -429,30 +507,22 @@ class QRController extends Controller
         }
 
         // -------------------------------------------------------------
-        // SCAN 3+: SCAN LEBIH DARI 2 KALI -> TIDAK VALID / DITOLAK
+        // MODE MASUK: TOLAK JIKA SUDAH ABSEN MASUK HARI INI
         // -------------------------------------------------------------
-        if ($teacherAttendance && !empty($teacherAttendance->jam_masuk) && !empty($teacherAttendance->jam_pulang)) {
-            $message = "Presensi TIDAK VALID! Guru {$teacher->name} SUDAH melakukan scan masuk jam [{$teacherAttendance->jam_masuk}] dan scan pulang jam [{$teacherAttendance->jam_pulang}]. Batas scan presensi hari ini maksimal 2 kali (1x Masuk & 1x Keluar). Silakan hadir kembali besok.";
-
+        if ($teacherAttendance && !empty($teacherAttendance->jam_masuk)) {
             return response()->json([
                 'success' => false,
-                'already_completed' => true,
-                'scan_type' => 'invalid',
-                'title' => 'Presensi Tidak Valid (Batas Scan Habis)!',
+                'already_checked_in' => true,
+                'scan_type' => 'already_checked_in',
+                'title' => 'Sudah Absen Masuk!',
                 'role_type' => 'teacher',
-                'message' => $message,
-                'person' => [
-                    'id' => $teacher->id,
-                    'nama' => $teacher->name,
-                    'email' => $teacher->email,
-                    'kelas' => $teacher->getAssignedClass() ?? 'Guru Pengajar',
-                    'is_guru' => true,
-                ],
+                'message' => "Guru {$teacher->name} sudah tercatat ABSEN MASUK hari ini pada jam [{$teacherAttendance->jam_masuk}]. Untuk mencatat kepulangan, silakan ubah mode ke 'Scan Absen Pulang'.",
+                'person' => $personData,
                 'attendance' => [
                     'tanggal' => $today,
                     'jam_masuk' => $teacherAttendance->jam_masuk,
-                    'jam_pulang' => $teacherAttendance->jam_pulang,
-                    'status_text' => 'TIDAK VALID (Batas 2x Scan)',
+                    'jam_pulang' => null,
+                    'status_text' => 'SUDAH ABSEN MASUK',
                 ],
             ], 200);
         }
