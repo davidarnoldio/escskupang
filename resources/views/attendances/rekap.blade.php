@@ -19,7 +19,7 @@
     <!-- Include Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div class="space-y-6" x-data="{ init() { setInterval(() => window.location.reload(), 12000); } }">
+    <div class="space-y-6">
         
         <!-- Filter & Live Sync Status Bar Card -->
         <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -54,7 +54,10 @@
                 </div>
             </form>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="window.location.reload()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold rounded-2xl text-xs transition cursor-pointer flex items-center gap-1.5">
+                    <span>🔄 Refresh</span>
+                </button>
                 <!-- Print Action Button -->
                 <a href="{{ route('attendances.print-rekap', ['bulan' => $bulan, 'kelas' => $kelas]) }}" target="_blank" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-2xl text-xs shadow-md transition cursor-pointer flex items-center gap-1.5">
                     <span>🖨️ Cetak A4</span>
@@ -119,12 +122,23 @@
             </div>
         </div>
 
-        <!-- Monthly Attendance Matrix Table -->
+        <!-- Monthly Attendance Matrix Table (5 Hari Kerja: Senin - Jumat) -->
         <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-            <div class="px-6 py-4 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
-                <h3 class="font-black text-slate-900 text-xs uppercase tracking-wider">
-                    Matriks Presensi Siswa (Bulan: {{ \Carbon\Carbon::parse($bulan . '-01')->locale('id')->isoFormat('MMMM Y') }})
-                </h3>
+            <div class="px-6 py-4 bg-slate-50/50 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                    <h3 class="font-black text-slate-900 text-xs uppercase tracking-wider">
+                        Matriks Presensi Siswa (Bulan: {{ \Carbon\Carbon::parse($bulan . '-01')->locale('id')->isoFormat('MMMM Y') }})
+                    </h3>
+                    <p class="text-[11px] text-slate-500 font-semibold mt-0.5">
+                        Kalender 5 Hari Kerja (Senin–Jumat • {{ count($effectiveDays) }} Hari Efektif) &bull; Menampilkan status serta jam masuk &amp; pulang
+                    </p>
+                </div>
+                <div class="flex flex-wrap items-center gap-1.5 text-[10px] font-black">
+                    <span class="px-2 py-0.5 rounded bg-emerald-600 text-white">H = Hadir</span>
+                    <span class="px-2 py-0.5 rounded bg-amber-400 text-amber-950">T = Terlambat</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-700 text-white">I/S = Izin/Sakit</span>
+                    <span class="px-2 py-0.5 rounded bg-red-600 text-white">A = Alpa</span>
+                </div>
             </div>
 
             <div class="overflow-x-auto">
@@ -134,10 +148,17 @@
                             <th class="px-4 py-3 sticky left-0 bg-slate-50 z-10">NIS</th>
                             <th class="px-4 py-3 sticky left-16 bg-slate-50 z-10">Nama Siswa</th>
                             <th class="px-4 py-3">Kelas</th>
-                            @for($d = 1; $d <= $daysInMonth; $d++)
-                                <th class="px-2 py-3 text-center min-w-[28px]">{{ $d }}</th>
-                            @endfor
-                            <th class="px-3 py-3 text-center bg-red-50 text-red-800">H</th>
+                            @foreach($effectiveDays as $d)
+                                @php
+                                    $curDate = \Carbon\Carbon::parse(sprintf('%s-%02d', $bulan, $d));
+                                @endphp
+                                <th class="px-1.5 py-2.5 text-center min-w-[46px] border-r border-slate-100">
+                                    <span>{{ $d }}</span>
+                                    <span class="block text-[8px] font-bold text-slate-400">{{ substr($curDate->locale('id')->minDayName, 0, 2) }}</span>
+                                </th>
+                            @endforeach
+                            <th class="px-3 py-3 text-center bg-emerald-50 text-emerald-800">H</th>
+                            <th class="px-3 py-3 text-center bg-amber-50 text-amber-900">T</th>
                             <th class="px-3 py-3 text-center bg-teal-50 text-red-900">I</th>
                             <th class="px-3 py-3 text-center bg-red-100/60 text-red-900">S</th>
                             <th class="px-3 py-3 text-center bg-rose-50 text-rose-800">A</th>
@@ -146,24 +167,31 @@
                     <tbody class="divide-y divide-slate-100">
                         @forelse($students as $student)
                             @php
-                                $hCount = 0; $iCount = 0; $sCount = 0; $aCount = 0;
+                                $hCount = 0; $tCount = 0; $iCount = 0; $sCount = 0; $aCount = 0;
+                                $targetTerlambat = $student->is_abk ? $jamTerlambatAbk : $jamTerlambatReguler;
+                                $targetPulang = $student->is_abk ? $jamPulangAbk : $jamPulangReguler;
                             @endphp
                             <tr class="hover:bg-slate-50/80 transition">
-                                <td class="px-4 py-3 font-mono font-bold text-slate-600 sticky left-0 bg-white z-10">{{ $student->nis }}</td>
+                                <td class="px-4 py-3 font-mono font-bold text-slate-600 sticky left-0 bg-white z-10">{{ $student->nisn ?? $student->nis }}</td>
                                 <td class="px-4 py-3 font-bold text-slate-900 sticky left-16 bg-white z-10 whitespace-nowrap">{{ $student->nama }}</td>
                                 <td class="px-4 py-3 font-semibold text-slate-500 whitespace-nowrap">{{ $student->kelas }}</td>
-                                @for($d = 1; $d <= $daysInMonth; $d++)
+                                @foreach($effectiveDays as $d)
                                     @php
                                         $dateKey = $bulan . '-' . str_pad($d, 2, '0', STR_PAD_LEFT);
                                         $attRecord = $matrix[$student->id][$dateKey] ?? null;
                                         $st = $attRecord ? $attRecord->status : '-';
-                                        
-                                        if ($st === 'hadir') $hCount++;
-                                        elseif ($st === 'izin') $iCount++;
+
+                                        $jamIn = ($attRecord && $attRecord->jam_masuk) ? substr($attRecord->jam_masuk, 0, 5) : null;
+                                        $jamOut = ($attRecord && $attRecord->jam_pulang) ? substr($attRecord->jam_pulang, 0, 5) : null;
+                                        $isLate = !$student->is_abk && ($st === 'hadir') && (($jamIn && $jamIn > $targetTerlambat) || str_contains(strtolower($attRecord->keterangan ?? ''), 'terlambat'));
+                                        $isEarlyOut = ($st === 'hadir') && $jamOut && ($jamOut < $targetPulang || str_contains(strtolower($attRecord->keterangan ?? ''), 'pulang awal'));
+
+                                        if ($st === 'hadir') {
+                                            if ($isLate) $tCount++;
+                                            else $hCount++;
+                                        } elseif ($st === 'izin') $iCount++;
                                         elseif ($st === 'sakit') $sCount++;
                                         elseif ($st === 'alpa') $aCount++;
-
-                                        $isLate = ($st === 'hadir') && str_contains(strtolower($attRecord->keterangan ?? ''), 'terlambat');
 
                                         $badgeBg = match(true) {
                                             $isLate => 'bg-amber-400 text-amber-950 font-black border border-amber-500 shadow-2xs',
@@ -175,21 +203,115 @@
                                             default => 'text-slate-300',
                                         };
                                     @endphp
-                                    <td class="px-1 py-3 text-center text-[10px]">
-                                        <span class="inline-block w-5 h-5 leading-5 rounded-md text-center {{ $badgeBg }}" title="{{ $isLate ? ($attRecord->keterangan ?? 'Hadir Terlambat') : strtoupper($st) }}">
-                                            {{ strtoupper(substr($st, 0, 1)) }}
-                                        </span>
+                                    <td class="px-1 py-2 text-center text-[10px] border-r border-slate-100 align-top">
+                                        <div class="inline-flex flex-col items-center gap-0.5">
+                                            <span class="inline-block w-5 h-5 leading-5 rounded-md text-center {{ $badgeBg }}" title="{{ $attRecord ? ($attRecord->keterangan ?? strtoupper($st)) : 'Belum ada data' }}">
+                                                {{ $st === '-' ? '-' : ($isLate ? 'T' : strtoupper(substr($st, 0, 1))) }}
+                                            </span>
+                                            @if($jamIn || $jamOut)
+                                                <span class="font-mono text-[8px] leading-tight text-slate-600 font-bold whitespace-nowrap" title="Masuk: {{ $jamIn ?? '-' }} | Pulang: {{ $jamOut ?? '-' }}">
+                                                    {{ $jamIn ?? '--:--' }}
+                                                </span>
+                                                <span class="font-mono text-[8px] leading-tight whitespace-nowrap {{ $isEarlyOut ? 'text-orange-600 font-black' : 'text-indigo-600 font-semibold' }}">
+                                                    {{ $jamOut ?? '--:--' }}
+                                                </span>
+                                            @endif
+                                        </div>
                                     </td>
-                                @endfor
+                                @endforeach
                                 <td class="px-3 py-3 text-center font-extrabold text-emerald-700 bg-emerald-50/50">{{ $hCount }}</td>
+                                <td class="px-3 py-3 text-center font-extrabold text-amber-800 bg-amber-50/60">{{ $tCount }}</td>
                                 <td class="px-3 py-3 text-center font-extrabold text-slate-800 bg-slate-100/50">{{ $iCount }}</td>
                                 <td class="px-3 py-3 text-center font-extrabold text-slate-800 bg-slate-100/50">{{ $sCount }}</td>
                                 <td class="px-3 py-3 text-center font-extrabold text-red-700 bg-red-50/50">{{ $aCount }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ $daysInMonth + 8 }}" class="px-6 py-8 text-center text-xs font-semibold text-slate-400 italic">
+                                <td colspan="{{ count($effectiveDays) + 8 }}" class="px-6 py-8 text-center text-xs font-semibold text-slate-400 italic">
                                     Tidak ada data siswa untuk ditampilkan pada rekap ini.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Detailed Check-In & Check-Out Time Log Table -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-base">🕒</span>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-xs uppercase tracking-wider">
+                            Detail Jam Masuk &amp; Jam Pulang Siswa (Bulan: {{ \Carbon\Carbon::parse($bulan . '-01')->locale('id')->isoFormat('MMMM Y') }})
+                        </h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Rincian waktu scan masuk, waktu scan pulang, status, dan keterangan lengkap setiap siswa</p>
+                    </div>
+                </div>
+                <span class="px-3 py-1 bg-slate-200/70 text-slate-800 text-[11px] font-black rounded-full">
+                    {{ $detailLogs->count() }} Catatan
+                </span>
+            </div>
+
+            <div class="overflow-x-auto max-h-[420px] overflow-y-auto">
+                <table class="w-full text-left text-xs text-slate-700">
+                    <thead class="bg-slate-50 text-slate-500 text-[10px] uppercase font-black tracking-wider border-b border-slate-100 sticky top-0 z-10">
+                        <tr>
+                            <th class="px-5 py-3">No</th>
+                            <th class="px-5 py-3">Tanggal &amp; Hari</th>
+                            <th class="px-5 py-3">NIS</th>
+                            <th class="px-5 py-3">Nama Siswa</th>
+                            <th class="px-5 py-3">Kelas</th>
+                            <th class="px-5 py-3 text-center">Jam Masuk</th>
+                            <th class="px-5 py-3 text-center">Jam Pulang</th>
+                            <th class="px-5 py-3 text-center">Status</th>
+                            <th class="px-5 py-3">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse($detailLogs as $idx => $log)
+                            <tr class="hover:bg-slate-50/80 transition">
+                                <td class="px-5 py-3 font-bold text-slate-400">{{ $idx + 1 }}</td>
+                                <td class="px-5 py-3 font-semibold text-slate-800 whitespace-nowrap">
+                                    {{ \Carbon\Carbon::parse($log->tanggal)->locale('id')->isoFormat('dddd, D MMM Y') }}
+                                </td>
+                                <td class="px-5 py-3 font-mono font-bold text-slate-600">{{ $log->student->nisn ?? $log->student->nis }}</td>
+                                <td class="px-5 py-3 font-bold text-slate-900 whitespace-nowrap">
+                                    {{ $log->student->nama }}
+                                    @if($log->student->is_abk)
+                                        <span class="ml-1 px-1.5 py-0.5 text-[9px] font-black rounded bg-amber-100 text-amber-900 border border-amber-300">ABK</span>
+                                    @endif
+                                </td>
+                                <td class="px-5 py-3 font-semibold text-slate-600 whitespace-nowrap">{{ $log->student->formatted_kelas }}</td>
+                                <td class="px-5 py-3 text-center font-mono font-extrabold text-emerald-700">
+                                    {{ $log->jam_masuk ? $log->jam_masuk . ' WITA' : '-' }}
+                                </td>
+                                <td class="px-5 py-3 text-center font-mono font-extrabold {{ $log->is_early_out ? 'text-orange-700' : 'text-indigo-700' }}">
+                                    {{ $log->jam_pulang ? $log->jam_pulang . ' WITA' : '-' }}
+                                </td>
+                                <td class="px-5 py-3 text-center whitespace-nowrap">
+                                    @if($log->status === 'hadir')
+                                        <div class="inline-flex items-center gap-1">
+                                            @if($log->is_late)
+                                                <span class="px-2 py-0.5 rounded-lg text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300">TERLAMBAT</span>
+                                            @else
+                                                <span class="px-2 py-0.5 rounded-lg text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300">HADIR</span>
+                                            @endif
+                                            @if($log->is_early_out)
+                                                <span class="px-2 py-0.5 rounded-lg text-[10px] font-black bg-orange-100 text-orange-900 border border-orange-300">PULANG AWAL</span>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <span class="px-2 py-0.5 rounded-lg text-[10px] font-black bg-slate-100 text-slate-800 border border-slate-300 uppercase">{{ $log->status }}</span>
+                                    @endif
+                                </td>
+                                <td class="px-5 py-3 text-slate-600">{{ $log->keterangan ?? '-' }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="9" class="px-6 py-8 text-center text-xs font-semibold text-slate-400 italic">
+                                    Belum ada riwayat presensi siswa pada bulan ini.
                                 </td>
                             </tr>
                         @endforelse

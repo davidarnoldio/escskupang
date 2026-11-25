@@ -17,6 +17,17 @@
 
     <div class="py-8">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+            @if ($errors->any())
+                <div class="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-900 rounded-2xl text-xs shadow-xs">
+                    <p class="font-extrabold mb-1">⚠️ Gagal memperbarui data guru. Periksa isian berikut:</p>
+                    <ul class="list-disc list-inside space-y-0.5 font-medium">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('teachers.update', $teacher) }}" class="space-y-8">
                 @csrf
                 @method('PUT')

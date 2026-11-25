@@ -231,9 +231,13 @@ class QRController extends Controller
             $isEarlyDeparture = $currentTimeHM < $jamPulangConfig;
 
             if ($isEarlyDeparture) {
-                $statusText = "PULANG AWAL (Jam {$time})";
-                $message = "Presensi PULANG Berhasil! Siswa {$student->nama} ({$student->kelas}) dicatat PULANG pada jam [{$time}] (Lebih awal dari jam pulang resmi {$jamPulangConfig}). Jam Masuk: [{$attendance->jam_masuk}].";
-                $keteranganPulang = "Pulang Awal: [{$time}]";
+                $pulangScanCarbon = Carbon::parse($today . ' ' . $time, 'Asia/Makassar');
+                $pulangTargetCarbon = Carbon::parse($today . ' ' . $jamPulangConfig . ':00', 'Asia/Makassar');
+                $earlyMinutes = max(1, abs((int) $pulangScanCarbon->diffInMinutes($pulangTargetCarbon)));
+
+                $statusText = "PULANG AWAL ({$earlyMinutes}m Lebih Awal)";
+                $message = "Presensi PULANG Siswa Dicatat! {$student->nama} ({$student->kelas}) pulang DULUAN pada jam [{$time}] ({$earlyMinutes} menit sebelum jam pulang resmi {$jamPulangConfig} WITA). Jam Masuk: [{$attendance->jam_masuk}].";
+                $keteranganPulang = "Pulang Awal (Duluan {$earlyMinutes} menit): [{$time}]";
             } else {
                 $statusText = "PULANG TEPAT WAKTU (Jam {$time})";
                 $message = "Presensi PULANG Berhasil! Siswa {$student->nama} ({$student->kelas}) dicatat PULANG TEPAT WAKTU pada jam [{$time}]. Jam Masuk: [{$attendance->jam_masuk}].";
@@ -319,9 +323,9 @@ class QRController extends Controller
         }
 
         // -------------------------------------------------------------
-        // SCAN 1: CHECK-IN (ABSEN MASUK SISWA)
+        // SCAN 1: CHECK-IN (ABSEN MASUK SISWA) - Kecuali ABK tidak dihitung terlambat
         // -------------------------------------------------------------
-        $isLate = $currentTimeHM > $jamTerlambatConfig;
+        $isLate = !$student->is_abk && ($currentTimeHM > $jamTerlambatConfig);
         $lateMinutes = 0;
 
         if ($isLate) {
@@ -331,14 +335,14 @@ class QRController extends Controller
         }
 
         $abkLabel = $student->is_abk ? ' (ABK)' : '';
-        $statusNote = $isLate 
-            ? "Masuk: [{$time}] - Terlambat {$lateMinutes} menit{$abkLabel}" 
-            : "Masuk: [{$time}] - Tepat Waktu{$abkLabel}";
+        $statusNote = $isLate
+            ? "Masuk: [{$time}] - Terlambat {$lateMinutes} menit{$abkLabel}"
+            : "Masuk: [{$time}] - " . ($student->is_abk ? 'Hadir (ABK)' : 'Tepat Waktu');
 
-        $statusText = $isLate ? "HADIR (Terlambat {$lateMinutes}m)" : "HADIR (Tepat Waktu)";
+        $statusText = $isLate ? "TERLAMBAT ({$lateMinutes}m)" : ($student->is_abk ? "HADIR (ABK)" : "HADIR (Tepat Waktu)");
         $message = $isLate
-            ? "Presensi MASUK Berhasil! Siswa {$student->nama} ({$student->kelas}) dicatat HADIR pada jam [{$time}] - TERLAMBAT {$lateMinutes} menit (Batas Masuk: {$jamTerlambatConfig})."
-            : "Presensi MASUK Berhasil! Siswa {$student->nama} ({$student->kelas}) dicatat HADIR TEPAT WAKTU pada jam [{$time}].";
+            ? "Presensi MASUK Dicatat! Siswa {$student->nama} ({$student->kelas}) dicatat TERLAMBAT {$lateMinutes} menit pada jam [{$time}] (Batas Masuk: {$jamTerlambatConfig})."
+            : "Presensi MASUK Berhasil! Siswa {$student->nama} ({$student->kelas}) dicatat HADIR" . ($student->is_abk ? ' (ABK)' : ' TEPAT WAKTU') . " pada jam [{$time}].";
 
         $attendance = Attendance::updateOrCreate(
             [
@@ -576,9 +580,9 @@ class QRController extends Controller
             ? "Masuk: [{$time}] - Terlambat {$lateMinutes} menit" 
             : "Masuk: [{$time}] - Tepat Waktu";
 
-        $statusText = $isLate ? "HADIR (Terlambat {$lateMinutes}m)" : "HADIR (Tepat Waktu)";
+        $statusText = $isLate ? "TERLAMBAT ({$lateMinutes}m)" : "HADIR (Tepat Waktu)";
         $message = $isLate
-            ? "Presensi MASUK Guru Berhasil! {$teacher->name} dicatat HADIR pada jam [{$time}] - TERLAMBAT {$lateMinutes} menit (Batas: {$jamTerlambatConfig})."
+            ? "Presensi MASUK Guru Dicatat! {$teacher->name} dicatat TERLAMBAT {$lateMinutes} menit pada jam [{$time}] (Batas: {$jamTerlambatConfig})."
             : "Presensi MASUK Guru Berhasil! {$teacher->name} dicatat HADIR TEPAT WAKTU pada jam [{$time}].";
 
         TeacherAttendance::updateOrCreate(

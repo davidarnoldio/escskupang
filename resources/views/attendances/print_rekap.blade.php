@@ -106,7 +106,7 @@
             border-collapse: collapse;
         }
         .signature-table td {
-            width: 50%;
+            width: 33.33%;
             text-align: center;
             vertical-align: top;
             font-size: 11px;
@@ -162,7 +162,7 @@
 
     <!-- Title Section -->
     <div class="title-section">
-        <h1>REKAP ABSENSI SISWA</h1>
+        <h1>REKAP ABSENSI SISWA (5 HARI KERJA: SENIN - JUMAT)</h1>
         <p>Bulan: <strong>{{ \Carbon\Carbon::parse($bulan.'-01')->isoFormat('MMMM YYYY') }}</strong> | Kelas: <strong>{{ $displayKelas }}</strong></p>
         <p>Hari Efektif: <strong>{{ count($effectiveDays) }} hari</strong></p>
     </div>
@@ -172,12 +172,18 @@
         <thead>
             <tr>
                 <th style="width: 28px;">No</th>
-                <th style="width: 170px;">Nama</th>
+                <th style="width: 155px;">Nama</th>
                 @if(empty($kelas))
-                    <th style="width: 75px;">Kelas</th>
+                    <th style="width: 70px;">Kelas</th>
                 @endif
                 @foreach($effectiveDays as $day)
-                    <th style="width: 20px;">{{ $day }}</th>
+                    @php
+                        $curDate = \Carbon\Carbon::parse(sprintf('%s-%02d', $bulan, $day));
+                    @endphp
+                    <th style="width: 30px;">
+                        <div>{{ $day }}</div>
+                        <div style="font-size: 7px; font-weight: normal;">{{ substr($curDate->locale('id')->minDayName, 0, 2) }}</div>
+                    </th>
                 @endforeach
                 <th style="width: 22px;">H</th>
                 <th style="width: 22px;">A</th>
@@ -201,6 +207,7 @@
                     $iCount = 0;
                     $lCount = 0;
                     $tlCount = 0;
+                    $targetTerlambat = $student->is_abk ? $jamTerlambatAbk : $jamTerlambatReguler;
                 @endphp
                 <tr>
                     <td>{{ $index + 1 }}</td>
@@ -213,15 +220,18 @@
                             $att = $attMap->get($day);
                             $code = '-';
                             $cellClass = '';
+                            $jamIn = ($att && $att->jam_masuk) ? substr($att->jam_masuk, 0, 5) : null;
+                            $jamOut = ($att && $att->jam_pulang) ? substr($att->jam_pulang, 0, 5) : null;
                             if ($att) {
                                 switch ($att->status) {
                                     case 'hadir':
-                                        $code = 'H';
-                                        $hCount++;
-                                        if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
+                                        if (!$student->is_abk && (($jamIn && $jamIn > $targetTerlambat) || str_contains(strtolower($att->keterangan ?? ''), 'terlambat'))) {
+                                            $code = 'T';
                                             $tlCount++;
                                             $cellClass = 'cell-terlambat';
                                         } else {
+                                            $code = 'H';
+                                            $hCount++;
                                             $cellClass = 'cell-hadir';
                                         }
                                         break;
@@ -245,7 +255,13 @@
                                 }
                             }
                         @endphp
-                        <td class="{{ $cellClass }}">{{ $code }}</td>
+                        <td class="{{ $cellClass }}" style="line-height: 1.15;">
+                            <div>{{ $code }}</div>
+                            @if($jamIn || $jamOut)
+                                <div style="font-size: 6.5px; font-weight: normal; font-family: monospace;">{{ $jamIn ?? '--:--' }}</div>
+                                <div style="font-size: 6.5px; font-weight: normal; font-family: monospace;">{{ $jamOut ?? '--:--' }}</div>
+                            @endif
+                        </td>
                     @endforeach
                     @php
                         $totEff = count($effectiveDays);
@@ -261,7 +277,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="{{ count($effectiveDays) + (empty($kelas) ? 9 : 8) }}">Tidak ada data siswa untuk {{ $displayKelas }}.</td>
+                    <td colspan="{{ count($effectiveDays) + (empty($kelas) ? 10 : 9) }}">Tidak ada data siswa untuk {{ $displayKelas }}.</td>
                 </tr>
             @endforelse
             
@@ -285,21 +301,68 @@
         Total Hadir: {{ $totalHadir }} | Alpa: {{ $totalAlpa }} | Sakit: {{ $totalSakit }} | Izin: {{ $totalIzin }} | Libur: {{ $totalLibur }} | Terlambat: {{ $totalTerlambat }}
     </div>
 
+    <!-- Detailed Check-in / Check-out Log Table for Print -->
+    <div style="margin-bottom: 20px;">
+        <h3 style="font-size: 11px; font-weight: 800; text-transform: uppercase; margin: 0 0 6px 0; color: #0f172a;">
+            Log Detail Jam Masuk &amp; Jam Pulang Siswa
+        </h3>
+        <table class="rekap-table" style="margin-bottom: 0;">
+            <thead>
+                <tr>
+                    <th style="width: 26px;">No</th>
+                    <th style="width: 115px;">Tanggal</th>
+                    <th style="width: 160px;">Nama Siswa</th>
+                    <th style="width: 70px;">Kelas</th>
+                    <th style="width: 70px;">Jam Masuk</th>
+                    <th style="width: 70px;">Jam Pulang</th>
+                    <th style="width: 90px;">Status</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($detailLogs as $idx => $log)
+                    <tr>
+                        <td>{{ $idx + 1 }}</td>
+                        <td>{{ \Carbon\Carbon::parse($log->tanggal)->locale('id')->isoFormat('ddd, D MMM Y') }}</td>
+                        <td class="student-name">{{ $log->student->nama }}</td>
+                        <td>{{ $log->student->formatted_kelas }}</td>
+                        <td style="font-family: monospace; font-weight: bold;">{{ $log->jam_masuk ?? '-' }}</td>
+                        <td style="font-family: monospace; font-weight: bold;">{{ $log->jam_pulang ?? '-' }}</td>
+                        <td style="font-weight: bold; text-transform: uppercase;">
+                            {{ $log->is_late ? 'TERLAMBAT' : strtoupper($log->status) }}{{ $log->is_early_out ? ' / PULANG AWAL' : '' }}
+                        </td>
+                        <td style="text-align: left; padding-left: 5px;">{{ $log->keterangan ?? '-' }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="8">Belum ada catatan jam masuk &amp; pulang pada bulan ini.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
     <!-- Signature Section -->
     <div class="signature-section">
         <table class="signature-table">
             <tr>
                 <td>
                     Mengetahui,<br>
-                    <strong>Kepala Sekolah</strong>
+                    <strong>Kepala Sekolah NTO National Plus</strong>
                     <div class="signature-space"></div>
-                    ___________________________
+                    <strong style="text-decoration: underline;">Beatrice Kianindra, B.Art</strong>
                 </td>
                 <td>
-                    {{ \Carbon\Carbon::parse($bulan.'-01')->isoFormat('MMMM YYYY') }},<br>
+                    <br>
+                    <strong>Administrator Sekolah</strong>
+                    <div class="signature-space"></div>
+                    <strong style="text-decoration: underline;">Apris Leky Manu, S.T</strong>
+                </td>
+                <td>
+                    Kupang, {{ \Carbon\Carbon::parse($bulan.'-01')->isoFormat('MMMM YYYY') }}<br>
                     <strong>Wali Kelas / Guru Pengajar</strong>
                     <div class="signature-space"></div>
-                    <strong>{{ $teacherName }}</strong>
+                    <strong style="text-decoration: underline;">{{ $teacherName }}</strong>
                 </td>
             </tr>
         </table>

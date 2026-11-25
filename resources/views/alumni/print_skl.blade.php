@@ -280,8 +280,8 @@
                 Kupang, {{ $tanggalCetak }}<br>
                 Kepala Sekolah NTO National Plus,<br>
                 <div class="sign-space"></div>
-                <strong style="text-decoration: underline; font-size: 12pt;">( .................................................... )</strong><br>
-                <span>NIP / NIY: .......................................</span>
+                <strong style="text-decoration: underline; font-size: 12pt;">Beatrice Kianindra, B.Art</strong><br>
+                <span style="font-size: 9.5pt; color: #475569;">Kepala Sekolah</span>
             </td>
         </tr>
     </table>

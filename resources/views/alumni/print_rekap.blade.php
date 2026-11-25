@@ -209,13 +209,17 @@
     <!-- Signature Section -->
     <table class="signature-table">
         <tr>
-            <td></td>
+            <td>
+                <br>
+                <strong>Administrator Sekolah</strong>
+                <div class="signature-space"></div>
+                <strong style="text-decoration: underline;">Apris Leky Manu, S.T</strong>
+            </td>
             <td>
                 Kupang, {{ $tanggalCetak }}<br>
                 <strong>Mengetahui,<br>Kepala Sekolah NTO National Plus</strong>
                 <div class="signature-space"></div>
-                <strong style="text-decoration: underline;">( .................................................... )</strong><br>
-                <span>NIP / NIY: .......................................</span>
+                <strong style="text-decoration: underline;">Beatrice Kianindra, B.Art</strong>
             </td>
         </tr>
     </table>

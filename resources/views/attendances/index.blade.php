@@ -168,21 +168,25 @@
                                     $lateMinutesDisplay = 0;
                                     $lateFormatted = '';
 
-                                    if ($att && $currentStatus === 'hadir') {
+                                    if ($att && $currentStatus === 'hadir' && !$student->is_abk) {
                                         $ket = $att->keterangan ?? '';
-                                        if (str_contains(strtolower($ket), 'terlambat')) {
+                                        $jamTerlambatConfig = \App\Models\Setting::get('jam_terlambat', '07:30');
+                                        $jamMasukShort = !empty($att->jam_masuk) ? substr($att->jam_masuk, 0, 5) : null;
+                                        if (($jamMasukShort && $jamMasukShort > $jamTerlambatConfig) || str_contains(strtolower($ket), 'terlambat')) {
                                             $isLateStudent = true;
 
-                                            $jamTerlambatConfig = $student->is_abk
-                                                ? \App\Models\Setting::get('jam_terlambat_abk', '08:30')
-                                                : \App\Models\Setting::get('jam_terlambat', '07:30');
-
-                                            // 1. Priority: Extract exact scan timestamp [HH:MM:SS] from keterangan
-                                            if (preg_match('/\[(\d{2}:\d{2}:\d{2})\]/', $ket, $timeMatches)) {
+                                            // 1. Priority: Extract exact scan timestamp from jam_masuk or keterangan
+                                            if (!empty($att->jam_masuk)) {
+                                                $scanCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $att->jam_masuk, 'Asia/Makassar');
+                                                $thresholdCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
+                                                if ($scanCarbon->greaterThan($thresholdCarbon)) {
+                                                    $lateMinutesDisplay = max(1, abs((int) $scanCarbon->diffInMinutes($thresholdCarbon)));
+                                                }
+                                            } elseif (preg_match('/\[(\d{2}:\d{2}:\d{2})\]/', $ket, $timeMatches)) {
                                                 $scanCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $timeMatches[1], 'Asia/Makassar');
                                                 $thresholdCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
                                                 if ($scanCarbon->greaterThan($thresholdCarbon)) {
-                                                    $lateMinutesDisplay = abs((int) $scanCarbon->diffInMinutes($thresholdCarbon));
+                                                    $lateMinutesDisplay = max(1, abs((int) $scanCarbon->diffInMinutes($thresholdCarbon)));
                                                 }
                                             }
                                             // 2. Priority: Extract explicit "Terlambat X menit" string
@@ -194,7 +198,7 @@
                                                 $scanTime = \Carbon\Carbon::parse($att->updated_at)->timezone('Asia/Makassar');
                                                 $threshold = \Carbon\Carbon::parse($att->tanggal . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
                                                 if ($scanTime->greaterThan($threshold)) {
-                                                    $lateMinutesDisplay = abs((int) $scanTime->diffInMinutes($threshold));
+                                                    $lateMinutesDisplay = max(1, abs((int) $scanTime->diffInMinutes($threshold)));
                                                 }
                                             }
 
@@ -318,10 +322,12 @@
                                                 @elseif($currentStatus === 'hadir')
                                                     @if($isLateStudent)
                                                         <span class="inline-flex items-center gap-1.5 text-xs font-black text-amber-950 bg-amber-100 px-3 py-1 rounded-xl border border-amber-300 shadow-2xs">
-                                                            <span>✔ Hadir</span>
-                                                            <span class="text-[10px] bg-amber-200 text-amber-950 px-1.5 py-0.5 rounded-md font-extrabold">
-                                                                (Terlambat {{ $lateFormatted ?: ($lateMinutesDisplay . 'm') }})
-                                                            </span>
+                                                            <span>⏰ Terlambat</span>
+                                                            @if($lateFormatted || $lateMinutesDisplay > 0)
+                                                                <span class="text-[10px] bg-amber-200 text-amber-950 px-1.5 py-0.5 rounded-md font-extrabold">
+                                                                    {{ $lateFormatted ?: ($lateMinutesDisplay . 'm') }}
+                                                                </span>
+                                                            @endif
                                                         </span>
                                                     @else
                                                         <span class="inline-flex items-center gap-1 text-xs font-extrabold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200 shadow-2xs">

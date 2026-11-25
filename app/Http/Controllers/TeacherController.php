@@ -35,17 +35,22 @@ class TeacherController extends Controller
 
         $teachers = $query->orderBy('name')->get();
 
-        // Map teachers to their assigned class
+        // Map teachers to their assigned class (keep 'Unassigned' last even when custom classes exist)
         $teachersByClass = [];
         foreach (Student::getAllClasses() as $class) {
             $teachersByClass[$class] = [];
         }
-        $teachersByClass['Unassigned'] = [];
 
+        $unassigned = [];
         foreach ($teachers as $teacher) {
-            $class = $teacher->getAssignedClass() ?? 'Unassigned';
-            $teachersByClass[$class][] = $teacher;
+            $class = $teacher->getAssignedClass();
+            if ($class) {
+                $teachersByClass[$class][] = $teacher;
+            } else {
+                $unassigned[] = $teacher;
+            }
         }
+        $teachersByClass['Unassigned'] = $unassigned;
 
         return view('teachers.index', compact('teachers', 'teachersByClass', 'search', 'selectedClass'));
     }

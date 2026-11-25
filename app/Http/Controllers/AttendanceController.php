@@ -117,13 +117,54 @@ class AttendanceController extends Controller
         $students = $studentsQuery->get();
 
         $daysInMonth = \Carbon\Carbon::parse($bulan . '-01')->daysInMonth;
+        $year = (int) substr($bulan, 0, 4);
+        $monthNum = (int) substr($bulan, 5, 2);
 
-        $matrix = [];
-        foreach ($students as $student) {
-            foreach ($student->attendances as $att) {
-                $matrix[$student->id][$att->tanggal] = $att;
+        // Kalender Siswa: 5 Hari Kerja (Senin - Jumat)
+        $effectiveDays = [];
+        for ($d = 1; $d <= $daysInMonth; $d++) {
+            $dateObj = \Carbon\Carbon::createFromDate($year, $monthNum, $d);
+            if ($dateObj->isWeekday()) {
+                $effectiveDays[] = $d;
             }
         }
+
+        $jamTerlambatReguler = \App\Models\Setting::get('jam_terlambat', '07:30');
+        $jamTerlambatAbk = \App\Models\Setting::get('jam_terlambat_abk', '08:30');
+        $jamPulangReguler = \App\Models\Setting::get('jam_pulang', '14:00');
+        $jamPulangAbk = \App\Models\Setting::get('jam_pulang_abk', '13:00');
+
+        $matrix = [];
+        $detailLogs = collect();
+        foreach ($students as $student) {
+            $targetTerlambat = $student->is_abk ? $jamTerlambatAbk : $jamTerlambatReguler;
+            $targetPulang = $student->is_abk ? $jamPulangAbk : $jamPulangReguler;
+            foreach ($student->attendances as $att) {
+                $matrix[$student->id][$att->tanggal] = $att;
+
+                // Kecuali siswa ABK: hadir lewat jam pada siswa reguler masuk kategori Terlambat (bukan Hadir + Terlambat)
+                $isLate = !$student->is_abk && $att->status === 'hadir' && (
+                    (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > $targetTerlambat)
+                    || str_contains(strtolower($att->keterangan ?? ''), 'terlambat')
+                );
+                $isEarlyOut = $att->status === 'hadir' && !empty($att->jam_pulang) && (
+                    substr($att->jam_pulang, 0, 5) < $targetPulang
+                    || str_contains(strtolower($att->keterangan ?? ''), 'pulang awal')
+                );
+
+                $detailLogs->push((object) [
+                    'student' => $student,
+                    'tanggal' => $att->tanggal,
+                    'jam_masuk' => $att->jam_masuk ? substr($att->jam_masuk, 0, 5) : null,
+                    'jam_pulang' => $att->jam_pulang ? substr($att->jam_pulang, 0, 5) : null,
+                    'status' => $att->status,
+                    'is_late' => $isLate,
+                    'is_early_out' => $isEarlyOut,
+                    'keterangan' => $att->keterangan,
+                ]);
+            }
+        }
+        $detailLogs = $detailLogs->sortBy([['tanggal', 'desc'], ['student.nama', 'asc']])->values();
 
         // Determine active date for indicator summary cards (latest date in selected month with attendance data, or today)
         $latestDateInMonth = Attendance::where('tanggal', 'like', "{$bulan}%")
@@ -148,7 +189,13 @@ class AttendanceController extends Controller
             $att = $summaryAttendances->get($student->id);
             if ($att) {
                 if ($att->status === 'hadir') {
-                    $totalHadir++;
+                    $isLateOnSummary = !$student->is_abk && (
+                        (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > $jamTerlambatReguler)
+                        || str_contains(strtolower($att->keterangan ?? ''), 'terlambat')
+                    );
+                    if (!$isLateOnSummary) {
+                        $totalHadir++;
+                    }
                 } elseif ($att->status === 'izin') {
                     $totalIzin++;
                 } elseif ($att->status === 'sakit') {
@@ -164,26 +211,36 @@ class AttendanceController extends Controller
             }
         }
 
-        // Calculate late students list across selected month
+        // Calculate late students list across selected month (kecuali siswa ABK)
         $lateStudentsList = collect();
         foreach ($students as $student) {
+            if ($student->is_abk) {
+                continue;
+            }
+            $jamTerlambatConfig = $jamTerlambatReguler;
             foreach ($student->attendances as $att) {
-                if ($att->status === 'hadir' && str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
-                    $jamTerlambatConfig = $student->is_abk
-                        ? \App\Models\Setting::get('jam_terlambat_abk', '08:30')
-                        : \App\Models\Setting::get('jam_terlambat', '07:30');
-
-                    $scanTimeStr = '-';
+                $isLateEntry = $att->status === 'hadir' && (
+                    (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > $jamTerlambatConfig)
+                    || str_contains(strtolower($att->keterangan ?? ''), 'terlambat')
+                );
+                if ($isLateEntry) {
+                    $scanTimeStr = $att->jam_masuk ?: '-';
                     $lateMins = 0;
 
-                    if (preg_match('/\[(\d{2}:\d{2}:\d{2})\]/', $att->keterangan, $timeMatches)) {
+                    if (!empty($att->jam_masuk)) {
+                        $scanCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $att->jam_masuk, 'Asia/Makassar');
+                        $thresholdCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
+                        if ($scanCarbon->greaterThan($thresholdCarbon)) {
+                            $lateMins = max(1, abs((int) $scanCarbon->diffInMinutes($thresholdCarbon)));
+                        }
+                    } elseif (preg_match('/\[(\d{2}:\d{2}:\d{2})\]/', $att->keterangan ?? '', $timeMatches)) {
                         $scanTimeStr = $timeMatches[1];
                         $scanCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $scanTimeStr, 'Asia/Makassar');
                         $thresholdCarbon = \Carbon\Carbon::parse($att->tanggal . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
                         if ($scanCarbon->greaterThan($thresholdCarbon)) {
-                            $lateMins = abs((int) $scanCarbon->diffInMinutes($thresholdCarbon));
+                            $lateMins = max(1, abs((int) $scanCarbon->diffInMinutes($thresholdCarbon)));
                         }
-                    } elseif (preg_match('/Terlambat\s+(\d+)\s+menit/i', $att->keterangan, $m)) {
+                    } elseif (preg_match('/Terlambat\s+(\d+)\s+menit/i', $att->keterangan ?? '', $m)) {
                         $lateMins = (int) $m[1];
                     }
 
@@ -221,7 +278,13 @@ class AttendanceController extends Controller
             'kelas',
             'classList',
             'daysInMonth',
+            'effectiveDays',
             'matrix',
+            'detailLogs',
+            'jamTerlambatReguler',
+            'jamTerlambatAbk',
+            'jamPulangReguler',
+            'jamPulangAbk',
             'totalHadir',
             'totalTerlambat',
             'lateStudentsList',
@@ -279,7 +342,13 @@ class AttendanceController extends Controller
             }
         }
 
-        // Totals
+        // Totals & Detail Logs (Jam Masuk & Jam Pulang)
+        $jamTerlambatReguler = \App\Models\Setting::get('jam_terlambat', '07:30');
+        $jamTerlambatAbk = \App\Models\Setting::get('jam_terlambat_abk', '08:30');
+        $jamPulangReguler = \App\Models\Setting::get('jam_pulang', '14:00');
+        $jamPulangAbk = \App\Models\Setting::get('jam_pulang_abk', '13:00');
+        $detailLogs = collect();
+
         $totalHadir = 0;
         $totalAlpa = 0;
         $totalSakit = 0;
@@ -288,11 +357,20 @@ class AttendanceController extends Controller
         $totalTerlambat = 0;
 
         foreach ($students as $student) {
+            $targetTerlambat = $student->is_abk ? $jamTerlambatAbk : $jamTerlambatReguler;
+            $targetPulang = $student->is_abk ? $jamPulangAbk : $jamPulangReguler;
             foreach ($student->attendances as $att) {
+                $isLate = false;
                 if ($att->status === 'hadir') {
-                    $totalHadir++;
-                    if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
+                    $isLateEntry = !$student->is_abk && (
+                        (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > $targetTerlambat)
+                        || str_contains(strtolower($att->keterangan ?? ''), 'terlambat')
+                    );
+                    if ($isLateEntry) {
                         $totalTerlambat++;
+                        $isLate = true;
+                    } else {
+                        $totalHadir++;
                     }
                 } elseif ($att->status === 'alpa') {
                     $totalAlpa++;
@@ -303,8 +381,25 @@ class AttendanceController extends Controller
                 } elseif ($att->status === 'libur') {
                     $totalLibur++;
                 }
+
+                $isEarlyOut = $att->status === 'hadir' && !empty($att->jam_pulang) && (
+                    substr($att->jam_pulang, 0, 5) < $targetPulang
+                    || str_contains(strtolower($att->keterangan ?? ''), 'pulang awal')
+                );
+
+                $detailLogs->push((object) [
+                    'student' => $student,
+                    'tanggal' => $att->tanggal,
+                    'jam_masuk' => $att->jam_masuk ? substr($att->jam_masuk, 0, 5) : null,
+                    'jam_pulang' => $att->jam_pulang ? substr($att->jam_pulang, 0, 5) : null,
+                    'status' => $att->status,
+                    'is_late' => $isLate,
+                    'is_early_out' => $isEarlyOut,
+                    'keterangan' => $att->keterangan,
+                ]);
             }
         }
+        $detailLogs = $detailLogs->sortBy([['tanggal', 'asc'], ['student.nama', 'asc']])->values();
 
         $displayKelas = !empty($kelas) ? $kelas : 'Semua Kelas';
 
@@ -328,6 +423,11 @@ class AttendanceController extends Controller
             'kelas',
             'displayKelas',
             'effectiveDays',
+            'detailLogs',
+            'jamTerlambatReguler',
+            'jamTerlambatAbk',
+            'jamPulangReguler',
+            'jamPulangAbk',
             'totalHadir',
             'totalAlpa',
             'totalSakit',

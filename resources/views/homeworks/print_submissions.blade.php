@@ -269,17 +269,23 @@
     <div class="signature-section">
         <table class="signature-table">
             <tr>
-                <td>
+                <td style="width: 33.33%;">
                     Mengetahui,<br>
-                    <strong>Kepala Sekolah</strong>
+                    <strong>Kepala Sekolah NTO National Plus</strong>
                     <div class="signature-space"></div>
-                    ___________________________
+                    <strong style="text-decoration: underline;">Beatrice Kianindra, B.Art</strong>
                 </td>
-                <td>
+                <td style="width: 33.33%;">
+                    <br>
+                    <strong>Administrator Sekolah</strong>
+                    <div class="signature-space"></div>
+                    <strong style="text-decoration: underline;">Apris Leky Manu, S.T</strong>
+                </td>
+                <td style="width: 33.33%;">
                     Kupang, {{ \Carbon\Carbon::now()->isoFormat('D MMMM YYYY') }}<br>
                     <strong>Wali Kelas / Guru Pengajar</strong>
                     <div class="signature-space"></div>
-                    <strong>{{ $teacherName }}</strong>
+                    <strong style="text-decoration: underline;">{{ $teacherName }}</strong>
                 </td>
             </tr>
         </table>

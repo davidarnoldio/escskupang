@@ -56,9 +56,12 @@ class TeacherAttendanceController extends Controller
             $att = $teacher->teacherAttendances->first();
             if ($att) {
                 if ($att->status === 'hadir') {
-                    $totalHadir++;
-                    if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
+                    $isLate = (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > $jamTerlambatConfig)
+                        || str_contains(strtolower($att->keterangan ?? ''), 'terlambat');
+                    if ($isLate) {
                         $totalTerlambat++;
+                    } else {
+                        $totalHadir++;
                     }
                     if (!empty($att->jam_pulang) && substr($att->jam_pulang, 0, 5) < $jamPulangConfig) {
                         $totalPulangAwal++;
@@ -77,13 +80,16 @@ class TeacherAttendanceController extends Controller
 
         // Apply status filter if selected
         if ($statusFilter) {
-            $teachers = $teachers->filter(function ($teacher) use ($statusFilter, $jamPulangConfig) {
+            $teachers = $teachers->filter(function ($teacher) use ($statusFilter, $jamTerlambatConfig, $jamPulangConfig) {
                 $att = $teacher->teacherAttendances->first();
                 if ($statusFilter === 'belum_presensi') {
                     return $att === null;
                 }
                 if ($statusFilter === 'terlambat') {
-                    return $att && $att->status === 'hadir' && str_contains(strtolower($att->keterangan ?? ''), 'terlambat');
+                    return $att && $att->status === 'hadir' && (
+                        (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > $jamTerlambatConfig)
+                        || str_contains(strtolower($att->keterangan ?? ''), 'terlambat')
+                    );
                 }
                 if ($statusFilter === 'pulang_awal') {
                     return $att && $att->status === 'hadir' && !empty($att->jam_pulang) && substr($att->jam_pulang, 0, 5) < $jamPulangConfig;
@@ -150,16 +156,31 @@ class TeacherAttendanceController extends Controller
         $attendance->keterangan = $validated['keterangan'] ?? ($validated['status'] === 'alpa' ? 'Tanpa Keterangan (Ditetapkan Admin)' : null);
 
         if ($validated['status'] === 'hadir') {
+            $jamTerlambatConfig = Setting::get('jam_terlambat', '07:30');
+            $jamPulangConfig = Setting::get('jam_pulang', '14:00');
+
             if (!empty($validated['jam_masuk'])) {
                 $attendance->jam_masuk = strlen($validated['jam_masuk']) === 5 ? $validated['jam_masuk'] . ':00' : $validated['jam_masuk'];
             } elseif (empty($attendance->jam_masuk)) {
                 $attendance->jam_masuk = now()->format('H:i:s');
             }
 
+            // Auto-append Terlambat note if jam_masuk exceeds threshold and note is missing
+            if (!empty($attendance->jam_masuk) && substr($attendance->jam_masuk, 0, 5) > $jamTerlambatConfig) {
+                $masukCarbon = Carbon::parse($validated['tanggal'] . ' ' . $attendance->jam_masuk, 'Asia/Makassar');
+                $lateTargetCarbon = Carbon::parse($validated['tanggal'] . ' ' . $jamTerlambatConfig . ':00', 'Asia/Makassar');
+                $lateMinutes = max(1, abs((int) $masukCarbon->diffInMinutes($lateTargetCarbon)));
+                $existingNote = $attendance->keterangan ?? '';
+
+                if (!str_contains(strtolower($existingNote), 'terlambat')) {
+                    $lateNote = "Masuk: [{$attendance->jam_masuk}] - Terlambat {$lateMinutes} menit";
+                    $attendance->keterangan = $existingNote ? "{$lateNote} | {$existingNote}" : $lateNote;
+                }
+            }
+
             if (!empty($validated['jam_pulang'])) {
                 $attendance->jam_pulang = strlen($validated['jam_pulang']) === 5 ? $validated['jam_pulang'] . ':00' : $validated['jam_pulang'];
 
-                $jamPulangConfig = Setting::get('jam_pulang', '14:00');
                 if (substr($attendance->jam_pulang, 0, 5) < $jamPulangConfig) {
                     $pulangScanCarbon = Carbon::parse($validated['tanggal'] . ' ' . $attendance->jam_pulang, 'Asia/Makassar');
                     $pulangTargetCarbon = Carbon::parse($validated['tanggal'] . ' ' . $jamPulangConfig . ':00', 'Asia/Makassar');
@@ -171,6 +192,8 @@ class TeacherAttendanceController extends Controller
                         $attendance->keterangan = $existingNote ? "{$existingNote} | {$earlyNote}" : $earlyNote;
                     }
                 }
+            } elseif ($request->has('jam_pulang')) {
+                $attendance->jam_pulang = null;
             }
         } else {
             // For Izin, Sakit, Alpa: reset check-in/out times unless explicitly kept
@@ -197,6 +220,7 @@ class TeacherAttendanceController extends Controller
 
     /**
      * Display Monthly Recap Matrix for all Teachers (Admin Only).
+     * Kalender Guru: 7 Hari Penuh (Senin - Minggu) dengan detail jam masuk & jam pulang.
      */
     public function rekap(Request $request)
     {
@@ -209,79 +233,10 @@ class TeacherAttendanceController extends Controller
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $search = $request->input('search');
 
-        $carbonMonth = Carbon::parse($bulan . '-01');
-        $daysInMonth = $carbonMonth->daysInMonth;
+        $data = $this->buildMonthlyRecapData($bulan, $search);
+        $data['search'] = $search;
 
-        $query = User::whereIn('role', ['guru', 'wali_kelas']);
-
-        if ($search) {
-            $query->where('name', 'like', "%{$search}%");
-        }
-
-        $teachers = $query->with(['teacherAttendances' => function ($q) use ($bulan) {
-            $q->where('tanggal', 'like', "{$bulan}%");
-        }])->orderBy('name')->get();
-
-        // Build 2D matrix: [teacher_id][YYYY-MM-DD] = TeacherAttendance
-        $matrix = [];
-        $teacherTotals = [];
-
-        $grandHadir = 0;
-        $grandIzin = 0;
-        $grandSakit = 0;
-        $grandAlpa = 0;
-        $grandTerlambat = 0;
-
-        foreach ($teachers as $teacher) {
-            $totals = [
-                'hadir'     => 0,
-                'izin'      => 0,
-                'sakit'     => 0,
-                'alpa'      => 0,
-                'terlambat' => 0,
-            ];
-
-            foreach ($teacher->teacherAttendances as $att) {
-                $tanggalStr = $att->tanggal instanceof Carbon ? $att->tanggal->format('Y-m-d') : substr((string)$att->tanggal, 0, 10);
-                $matrix[$teacher->id][$tanggalStr] = $att;
-
-                if ($att->status === 'hadir') {
-                    $totals['hadir']++;
-                    if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
-                        $totals['terlambat']++;
-                    }
-                } elseif ($att->status === 'izin') {
-                    $totals['izin']++;
-                } elseif ($att->status === 'sakit') {
-                    $totals['sakit']++;
-                } elseif ($att->status === 'alpa') {
-                    $totals['alpa']++;
-                }
-            }
-
-            $grandHadir += $totals['hadir'];
-            $grandIzin += $totals['izin'];
-            $grandSakit += $totals['sakit'];
-            $grandAlpa += $totals['alpa'];
-            $grandTerlambat += $totals['terlambat'];
-
-            $teacherTotals[$teacher->id] = $totals;
-        }
-
-        return view('teachers.attendances.rekap', compact(
-            'teachers',
-            'matrix',
-            'teacherTotals',
-            'bulan',
-            'daysInMonth',
-            'carbonMonth',
-            'search',
-            'grandHadir',
-            'grandIzin',
-            'grandSakit',
-            'grandAlpa',
-            'grandTerlambat'
-        ));
+        return view('teachers.attendances.rekap', $data);
     }
 
     /**
@@ -296,43 +251,75 @@ class TeacherAttendanceController extends Controller
         }
 
         $bulan = $request->input('bulan', now()->format('Y-m'));
+        $data = $this->buildMonthlyRecapData($bulan);
 
+        return view('teachers.attendances.print_rekap', $data);
+    }
+
+    /**
+     * Build shared 7-day monthly matrix, totals, and detailed check-in/check-out logs for teachers.
+     */
+    private function buildMonthlyRecapData(string $bulan, ?string $search = null): array
+    {
         $carbonMonth = Carbon::parse($bulan . '-01');
         $daysInMonth = $carbonMonth->daysInMonth;
+        $jamTerlambatConfig = Setting::get('jam_terlambat', '07:30');
+        $jamPulangConfig = Setting::get('jam_pulang', '14:00');
 
-        $teachers = User::whereIn('role', ['guru', 'wali_kelas'])
-            ->with(['teacherAttendances' => function ($q) use ($bulan) {
-                $q->where('tanggal', 'like', "{$bulan}%");
-            }])
-            ->orderBy('name')
-            ->get();
+        $query = User::whereIn('role', ['guru', 'wali_kelas']);
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $teachers = $query->with(['teacherAttendances' => function ($q) use ($bulan) {
+            $q->where('tanggal', 'like', "{$bulan}%");
+        }])->orderBy('name')->get();
 
         $matrix = [];
         $teacherTotals = [];
+        $detailLogs = collect();
 
         $grandHadir = 0;
         $grandIzin = 0;
         $grandSakit = 0;
         $grandAlpa = 0;
         $grandTerlambat = 0;
+        $grandPulangAwal = 0;
 
         foreach ($teachers as $teacher) {
             $totals = [
-                'hadir'     => 0,
-                'izin'      => 0,
-                'sakit'     => 0,
-                'alpa'      => 0,
-                'terlambat' => 0,
+                'hadir'       => 0,
+                'izin'        => 0,
+                'sakit'       => 0,
+                'alpa'        => 0,
+                'terlambat'   => 0,
+                'pulang_awal' => 0,
             ];
 
             foreach ($teacher->teacherAttendances as $att) {
                 $tanggalStr = $att->tanggal instanceof Carbon ? $att->tanggal->format('Y-m-d') : substr((string)$att->tanggal, 0, 10);
                 $matrix[$teacher->id][$tanggalStr] = $att;
 
+                $isLate = false;
+                $isEarlyOut = false;
+
                 if ($att->status === 'hadir') {
-                    $totals['hadir']++;
-                    if (str_contains(strtolower($att->keterangan ?? ''), 'terlambat')) {
+                    if (
+                        (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > $jamTerlambatConfig)
+                        || str_contains(strtolower($att->keterangan ?? ''), 'terlambat')
+                    ) {
                         $totals['terlambat']++;
+                        $isLate = true;
+                    } else {
+                        $totals['hadir']++;
+                    }
+                    if (!empty($att->jam_pulang) && (
+                        substr($att->jam_pulang, 0, 5) < $jamPulangConfig
+                        || str_contains(strtolower($att->keterangan ?? ''), 'pulang awal')
+                    )) {
+                        $totals['pulang_awal']++;
+                        $isEarlyOut = true;
                     }
                 } elseif ($att->status === 'izin') {
                     $totals['izin']++;
@@ -341,6 +328,17 @@ class TeacherAttendanceController extends Controller
                 } elseif ($att->status === 'alpa') {
                     $totals['alpa']++;
                 }
+
+                $detailLogs->push((object) [
+                    'teacher' => $teacher,
+                    'tanggal' => $tanggalStr,
+                    'jam_masuk' => $att->jam_masuk ? substr($att->jam_masuk, 0, 5) : null,
+                    'jam_pulang' => $att->jam_pulang ? substr($att->jam_pulang, 0, 5) : null,
+                    'status' => $att->status,
+                    'is_late' => $isLate,
+                    'is_early_out' => $isEarlyOut,
+                    'keterangan' => $att->keterangan,
+                ]);
             }
 
             $grandHadir += $totals['hadir'];
@@ -348,22 +346,29 @@ class TeacherAttendanceController extends Controller
             $grandSakit += $totals['sakit'];
             $grandAlpa += $totals['alpa'];
             $grandTerlambat += $totals['terlambat'];
+            $grandPulangAwal += $totals['pulang_awal'];
 
             $teacherTotals[$teacher->id] = $totals;
         }
 
-        return view('teachers.attendances.print_rekap', compact(
+        $detailLogs = $detailLogs->sortBy([['tanggal', 'desc'], ['teacher.name', 'asc']])->values();
+
+        return compact(
             'teachers',
             'matrix',
             'teacherTotals',
+            'detailLogs',
             'bulan',
             'daysInMonth',
             'carbonMonth',
+            'jamTerlambatConfig',
+            'jamPulangConfig',
             'grandHadir',
             'grandIzin',
             'grandSakit',
             'grandAlpa',
-            'grandTerlambat'
-        ));
+            'grandTerlambat',
+            'grandPulangAwal'
+        );
     }
 }

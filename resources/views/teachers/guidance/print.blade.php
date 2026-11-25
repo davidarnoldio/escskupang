@@ -381,19 +381,26 @@
     <div class="signature-section">
         <table class="signature-table">
             <tr>
-                <td style="text-align: left; padding-left: 20px;">
+                <td style="text-align: center; width: 33.33%;">
                     <p>Mengetahui,</p>
-                    <p style="font-weight: bold; margin-top: 2px;">Kepala Sekolah ESCS / NTO Kupang</p>
+                    <p style="font-weight: bold; margin-top: 2px;">Kepala Sekolah NTO National Plus</p>
                     <div class="signature-space"></div>
-                    <p style="font-weight: bold; text-decoration: underline;">( .................................................... )</p>
-                    <p style="font-size: 9pt; margin-top: 2px;">NIP. -</p>
+                    <p style="font-weight: bold; text-decoration: underline;">Beatrice Kianindra, B.Art</p>
+                    <p style="font-size: 8.5pt; margin-top: 2px;">Kepala Sekolah</p>
                 </td>
-                <td style="text-align: left; padding-left: 60px;">
+                <td style="text-align: center; width: 33.33%;">
+                    <p>&nbsp;</p>
+                    <p style="font-weight: bold; margin-top: 2px;">Administrator Sekolah</p>
+                    <div class="signature-space"></div>
+                    <p style="font-weight: bold; text-decoration: underline;">Apris Leky Manu, S.T</p>
+                    <p style="font-size: 8.5pt; margin-top: 2px;">Administrator</p>
+                </td>
+                <td style="text-align: center; width: 33.33%;">
                     <p>{{ $tanggalCetak }}</p>
                     <p style="font-weight: bold; margin-top: 2px;">{{ \App\Models\Student::formatWaliClass($selectedClass) }}</p>
                     <div class="signature-space"></div>
                     <p style="font-weight: bold; text-decoration: underline;">{{ $waliKelas->name ?? 'Wali Kelas' }}</p>
-                    <p style="font-size: 9pt; margin-top: 2px;">NIP/NUPTK. {{ $waliKelas->nip ?? '-' }}</p>
+                    <p style="font-size: 8.5pt; margin-top: 2px;">NIP/NUPTK. {{ $waliKelas->nip ?? '-' }}</p>
                 </td>
             </tr>
         </table>

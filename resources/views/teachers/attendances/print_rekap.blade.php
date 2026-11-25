@@ -26,7 +26,7 @@
         .logo-img {
             height: 48px;
             width: auto;
-            object-contain: contain;
+            object-fit: contain;
         }
         .title-section {
             text-align: center;
@@ -47,12 +47,15 @@
         .rekap-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 8.5px;
+            font-size: 7.5px;
+            table-layout: fixed;
         }
         .rekap-table th, .rekap-table td {
             border: 1px solid #94a3b8;
-            padding: 4px 2px;
+            padding: 3px 1px;
             text-align: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .rekap-table th {
             background-color: #f1f5f9;
@@ -61,15 +64,15 @@
         }
         .rekap-table td.name-col {
             text-align: left;
-            padding-left: 6px;
+            padding-left: 4px;
             font-weight: 700;
-            white-space: nowrap;
+            line-height: 1.15;
         }
         .rekap-table td.class-col {
             text-align: left;
-            padding-left: 4px;
+            padding-left: 3px;
             color: #475569;
-            white-space: nowrap;
+            line-height: 1.15;
         }
         .sunday-col {
             background-color: #fee2e2 !important;
@@ -158,32 +161,31 @@
 
     <!-- Title Section -->
     <div class="title-section">
-        <h1>REKAPITULASI PRESENSI DEWAN GURU & STAF</h1>
-        <p>Bulan: <strong>{{ $carbonMonth->locale('id')->isoFormat('MMMM YYYY') }}</strong> | Total Hari: <strong>{{ $daysInMonth }} Hari</strong></p>
+        <h1>REKAPITULASI PRESENSI DEWAN GURU &amp; STAF (7 HARI AKTIF: SENIN - MINGGU)</h1>
+        <p>Bulan: <strong>{{ $carbonMonth->locale('id')->isoFormat('MMMM YYYY') }}</strong> | Total Hari: <strong>{{ $daysInMonth }} Hari (7 Hari/Minggu)</strong></p>
     </div>
 
     <!-- Matrix Table -->
     <table class="rekap-table">
         <thead>
             <tr>
-                <th style="width: 24px;">No</th>
-                <th style="width: 140px; text-align: left; padding-left: 6px;">Nama Guru</th>
-                <th style="width: 80px; text-align: left; padding-left: 4px;">Penugasan</th>
+                <th style="width: 18px;">No</th>
+                <th style="width: 105px; text-align: left; padding-left: 4px;">Nama Guru</th>
+                <th style="width: 55px; text-align: left; padding-left: 3px;">Tugas</th>
                 @for($d = 1; $d <= $daysInMonth; $d++)
                     @php
                         $curDate = \Carbon\Carbon::parse(sprintf('%s-%02d', $bulan, $d));
-                        $isSunday = $curDate->isSunday();
                     @endphp
-                    <th style="width: 18px;" class="{{ $isSunday ? 'sunday-col' : '' }}">
+                    <th>
                         <div>{{ $d }}</div>
-                        <div style="font-size: 7px; font-weight: normal;">{{ substr($curDate->locale('id')->minDayName, 0, 1) }}</div>
+                        <div style="font-size: 6.5px; font-weight: normal;">{{ substr($curDate->locale('id')->minDayName, 0, 1) }}</div>
                     </th>
                 @endfor
-                <th style="width: 24px; background: #e2e8f0;">H</th>
-                <th style="width: 24px; background: #fef3c7;">T</th>
-                <th style="width: 24px; background: #e0f2fe;">I</th>
-                <th style="width: 24px; background: #e0e7ff;">S</th>
-                <th style="width: 24px; background: #ffe4e6;">A</th>
+                <th style="width: 18px; background: #e2e8f0;">H</th>
+                <th style="width: 18px; background: #fef3c7;">T</th>
+                <th style="width: 18px; background: #e0f2fe;">I</th>
+                <th style="width: 18px; background: #e0e7ff;">S</th>
+                <th style="width: 18px; background: #ffe4e6;">A</th>
             </tr>
         </thead>
         <tbody>
@@ -198,26 +200,32 @@
                     @for($d = 1; $d <= $daysInMonth; $d++)
                         @php
                             $dStr = sprintf('%s-%02d', $bulan, $d);
-                            $curDate = \Carbon\Carbon::parse($dStr);
-                            $isSunday = $curDate->isSunday();
                             $att = $matrix[$teacher->id][$dStr] ?? null;
-                            $isLate = $att && $att->status === 'hadir' && str_contains(strtolower($att->keterangan ?? ''), 'terlambat');
+                            $jamIn = ($att && $att->jam_masuk) ? substr($att->jam_masuk, 0, 5) : null;
+                            $jamOut = ($att && $att->jam_pulang) ? substr($att->jam_pulang, 0, 5) : null;
+                            $isLate = $att && $att->status === 'hadir' && (($jamIn && $jamIn > $jamTerlambatConfig) || str_contains(strtolower($att->keterangan ?? ''), 'terlambat'));
                         @endphp
-                        <td class="{{ $isSunday ? 'sunday-col' : '' }}">
+                        <td style="line-height: 1.15;">
                             @if(!$att)
                                 <span style="color: #cbd5e1;">-</span>
-                            @elseif($att->status === 'hadir')
-                                @if($isLate)
-                                    <span class="badge-t">T</span>
-                                @else
-                                    <span class="badge-h">H</span>
+                            @else
+                                @if($att->status === 'hadir')
+                                    @if($isLate)
+                                        <span class="badge-t">T</span>
+                                    @else
+                                        <span class="badge-h">H</span>
+                                    @endif
+                                @elseif($att->status === 'izin')
+                                    <span class="badge-i">I</span>
+                                @elseif($att->status === 'sakit')
+                                    <span class="badge-s">S</span>
+                                @elseif($att->status === 'alpa')
+                                    <span class="badge-a">A</span>
                                 @endif
-                            @elseif($att->status === 'izin')
-                                <span class="badge-i">I</span>
-                            @elseif($att->status === 'sakit')
-                                <span class="badge-s">S</span>
-                            @elseif($att->status === 'alpa')
-                                <span class="badge-a">A</span>
+                                @if($jamIn || $jamOut)
+                                    <div style="font-size: 6px; font-family: monospace; color: #334155;">{{ $jamIn ?? '--:--' }}</div>
+                                    <div style="font-size: 6px; font-family: monospace; color: #4338ca;">{{ $jamOut ?? '--:--' }}</div>
+                                @endif
                             @endif
                         </td>
                     @endfor
@@ -256,6 +264,47 @@
         </div>
     </div>
 
+    <!-- Detailed Teacher Check-in / Check-out Log Table for Print -->
+    <div style="margin-top: 14px; margin-bottom: 10px;">
+        <h3 style="font-size: 10.5px; font-weight: 800; text-transform: uppercase; margin: 0 0 6px 0; color: #0f172a;">
+            Log Detail Jam Masuk &amp; Jam Pulang Guru
+        </h3>
+        <table class="rekap-table" style="margin-bottom: 0;">
+            <thead>
+                <tr>
+                    <th style="width: 24px;">No</th>
+                    <th style="width: 105px;">Tanggal</th>
+                    <th style="width: 150px; text-align: left; padding-left: 6px;">Nama Guru</th>
+                    <th style="width: 85px; text-align: left; padding-left: 4px;">Penugasan</th>
+                    <th style="width: 65px;">Jam Masuk</th>
+                    <th style="width: 65px;">Jam Pulang</th>
+                    <th style="width: 90px;">Status</th>
+                    <th style="text-align: left; padding-left: 5px;">Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($detailLogs->sortBy([['tanggal', 'asc'], ['teacher.name', 'asc']]) as $idx => $log)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ \Carbon\Carbon::parse($log->tanggal)->locale('id')->isoFormat('ddd, D MMM Y') }}</td>
+                        <td class="name-col">{{ $log->teacher->name }}</td>
+                        <td class="class-col">{{ $log->teacher->getAssignedClass() ?? 'Guru Pengajar' }}</td>
+                        <td style="font-family: monospace; font-weight: bold;">{{ $log->jam_masuk ?? '-' }}</td>
+                        <td style="font-family: monospace; font-weight: bold;">{{ $log->jam_pulang ?? '-' }}</td>
+                        <td style="font-weight: bold; text-transform: uppercase;">
+                            {{ $log->is_late ? 'TERLAMBAT' : strtoupper($log->status) }}{{ $log->is_early_out ? ' / PULANG AWAL' : '' }}
+                        </td>
+                        <td style="text-align: left; padding-left: 5px;">{{ $log->keterangan ?? '-' }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="8" style="padding: 10px; color: #94a3b8;">Belum ada catatan jam masuk &amp; pulang guru pada bulan ini.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
     <!-- Signatures -->
     <div class="signatures">
         <table>
@@ -264,15 +313,15 @@
                     <p>Mengetahui,</p>
                     <p style="font-weight: bold; margin-top: 2px;">Kepala Sekolah NTO National Plus</p>
                     <div style="height: 50px;"></div>
-                    <p style="font-weight: 800; text-decoration: underline;">( .................................................... )</p>
-                    <p style="color: #64748b; font-size: 9px; margin-top: 2px;">NIP. -</p>
+                    <p style="font-weight: 800; text-decoration: underline;">Beatrice Kianindra, B.Art</p>
+                    <p style="color: #64748b; font-size: 9px; margin-top: 2px;">Kepala Sekolah</p>
                 </td>
                 <td>
                     <p>Kupang, {{ now()->locale('id')->isoFormat('D MMMM YYYY') }}</p>
-                    <p style="font-weight: bold; margin-top: 2px;">Administrator / Tata Usaha</p>
+                    <p style="font-weight: bold; margin-top: 2px;">Administrator Sekolah</p>
                     <div style="height: 50px;"></div>
-                    <p style="font-weight: 800; text-decoration: underline;">{{ auth()->user()->name }}</p>
-                    <p style="color: #64748b; font-size: 9px; margin-top: 2px;">Petugas Presensi</p>
+                    <p style="font-weight: 800; text-decoration: underline;">Apris Leky Manu, S.T</p>
+                    <p style="color: #64748b; font-size: 9px; margin-top: 2px;">Administrator / Tata Usaha</p>
                 </td>
             </tr>
         </table>

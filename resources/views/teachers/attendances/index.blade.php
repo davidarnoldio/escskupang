@@ -50,7 +50,7 @@
         @endif
 
         <!-- Summary Statistics Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
             <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xs">
                 <p class="text-[10px] font-black uppercase tracking-wider text-slate-400">Total Guru</p>
                 <p class="text-2xl font-black text-slate-900 mt-1">{{ $totalGuru }}</p>
@@ -59,7 +59,12 @@
             <div class="bg-white p-4 rounded-3xl border border-emerald-100 shadow-xs">
                 <p class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Hadir</p>
                 <p class="text-2xl font-black text-emerald-700 mt-1">{{ $totalHadir }}</p>
-                <p class="text-[10px] font-semibold text-emerald-600/80 mt-0.5">{{ $totalTerlambat }} Terlambat</p>
+                <p class="text-[10px] font-semibold text-emerald-600/80 mt-0.5">Tepat Waktu</p>
+            </div>
+            <div class="bg-white p-4 rounded-3xl border border-amber-200 shadow-xs">
+                <p class="text-[10px] font-black uppercase tracking-wider text-amber-600">Terlambat</p>
+                <p class="text-2xl font-black text-amber-700 mt-1">{{ $totalTerlambat }}</p>
+                <p class="text-[10px] font-semibold text-amber-600/80 mt-0.5">Masuk Lewat Jam</p>
             </div>
             <div class="bg-white p-4 rounded-3xl border border-sky-100 shadow-xs">
                 <p class="text-[10px] font-black uppercase tracking-wider text-sky-600">Izin</p>
@@ -158,7 +163,10 @@
                         @forelse($teachers as $index => $teacher)
                             @php
                                 $att = $teacher->teacherAttendances->first();
-                                $isLate = $att && $att->status === 'hadir' && str_contains(strtolower($att->keterangan ?? ''), 'terlambat');
+                                $isLate = $att && $att->status === 'hadir' && (
+                                    (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > $jamTerlambatConfig)
+                                    || str_contains(strtolower($att->keterangan ?? ''), 'terlambat')
+                                );
                                 $isEarlyOut = $att && $att->status === 'hadir' && !empty($att->jam_pulang) && substr($att->jam_pulang, 0, 5) < $jamPulangConfig;
                             @endphp
                             <tr class="hover:bg-slate-50/60 transition">

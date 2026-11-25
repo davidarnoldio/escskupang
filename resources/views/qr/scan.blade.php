@@ -88,12 +88,12 @@
                 <div class="space-y-6">
                     <!-- Scan Result Feedback Alert -->
                     <div x-show="lastResult" x-transition class="bg-white p-6 rounded-3xl shadow-md border"
-                         :class="!lastResult?.success ? 'border-rose-300 bg-rose-50/70' : (lastResult?.scan_type === 'pulang' ? 'border-indigo-200 bg-indigo-50/40' : (lastResult?.attendance?.is_late ? 'border-amber-300 bg-amber-50/80' : 'border-emerald-200 bg-emerald-50/50'))">
+                         :class="!lastResult?.success ? 'border-rose-300 bg-rose-50/70' : (lastResult?.scan_type === 'pulang' && lastResult?.attendance?.is_early ? 'border-orange-300 bg-orange-50/70' : (lastResult?.scan_type === 'pulang' ? 'border-indigo-200 bg-indigo-50/40' : (lastResult?.attendance?.is_late ? 'border-amber-300 bg-amber-50/80' : 'border-emerald-200 bg-emerald-50/50')))">
                         
                         <div class="flex items-start gap-3 mb-3">
                             <div class="w-10 h-10 rounded-2xl flex items-center justify-center text-lg font-black shrink-0 shadow-sm"
-                                 :class="!lastResult?.success ? 'bg-rose-600 text-white' : (lastResult?.scan_type === 'pulang' ? 'bg-indigo-600 text-white' : (lastResult?.attendance?.is_late ? 'bg-amber-500 text-white' : 'bg-emerald-600 text-white'))">
-                                <span x-text="!lastResult?.success ? '✕' : (lastResult?.scan_type === 'pulang' ? '🏠' : (lastResult?.attendance?.is_late ? '⚠️' : '✓'))"></span>
+                                 :class="!lastResult?.success ? 'bg-rose-600 text-white' : (lastResult?.scan_type === 'pulang' && lastResult?.attendance?.is_early ? 'bg-orange-500 text-white' : (lastResult?.scan_type === 'pulang' ? 'bg-indigo-600 text-white' : (lastResult?.attendance?.is_late ? 'bg-amber-500 text-white' : 'bg-emerald-600 text-white')))">
+                                <span x-text="!lastResult?.success ? '✕' : (lastResult?.scan_type === 'pulang' && lastResult?.attendance?.is_early ? '🏃' : (lastResult?.scan_type === 'pulang' ? '🏠' : (lastResult?.attendance?.is_late ? '⚠️' : '✓')))"></span>
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center gap-2">
@@ -104,16 +104,16 @@
                                     </template>
 
                                     <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider"
-                                          :class="!lastResult?.success ? 'bg-rose-100 text-rose-900 border border-rose-300 font-extrabold' : (lastResult?.scan_type === 'pulang' ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' : (lastResult?.attendance?.is_late ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'bg-emerald-100 text-emerald-900 border border-emerald-200'))"
-                                          x-text="!lastResult?.success ? (lastResult?.already_checked_in ? 'SUDAH ABSEN MASUK' : (lastResult?.not_checked_in ? 'BELUM ABSEN MASUK' : (lastResult?.already_completed ? 'TIDAK VALID (>2x SCAN)' : (lastResult?.outside_hours ? 'DI LUAR JAM' : 'DITOLAK')))) : (lastResult?.scan_type === 'pulang' ? 'SCAN 2: PULANG' : 'SCAN 1: MASUK')"></span>
+                                          :class="!lastResult?.success ? 'bg-rose-100 text-rose-900 border border-rose-300 font-extrabold' : (lastResult?.scan_type === 'pulang' && lastResult?.attendance?.is_early ? 'bg-orange-100 text-orange-900 border border-orange-300 font-extrabold' : (lastResult?.scan_type === 'pulang' ? 'bg-indigo-100 text-indigo-900 border border-indigo-200' : (lastResult?.attendance?.is_late ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'bg-emerald-100 text-emerald-900 border border-emerald-200')))"
+                                          x-text="!lastResult?.success ? (lastResult?.already_checked_in ? 'SUDAH ABSEN MASUK' : (lastResult?.not_checked_in ? 'BELUM ABSEN MASUK' : (lastResult?.already_completed ? 'TIDAK VALID (>2x SCAN)' : (lastResult?.outside_hours ? 'DI LUAR JAM' : 'DITOLAK')))) : (lastResult?.scan_type === 'pulang' && lastResult?.attendance?.is_early ? '⚠️ PULANG AWAL' : (lastResult?.scan_type === 'pulang' ? 'SCAN 2: PULANG' : 'SCAN 1: MASUK'))"></span>
                                 </div>
 
                                 <h4 class="font-extrabold text-sm mt-1"
-                                    :class="!lastResult?.success ? 'text-rose-900 font-black' : (lastResult?.scan_type === 'pulang' ? 'text-indigo-950' : (lastResult?.attendance?.is_late ? 'text-amber-950' : 'text-emerald-950'))"
-                                    x-text="lastResult?.title || (!lastResult?.success ? 'Presensi Ditolak!' : (lastResult?.scan_type === 'pulang' ? 'Presensi PULANG Berhasil!' : (lastResult?.attendance?.is_late ? 'Presensi MASUK (TERLAMBAT)!' : 'Presensi MASUK (Tepat Waktu)!')))"></h4>
+                                    :class="!lastResult?.success ? 'text-rose-900 font-black' : (lastResult?.scan_type === 'pulang' && lastResult?.attendance?.is_early ? 'text-orange-950' : (lastResult?.scan_type === 'pulang' ? 'text-indigo-950' : (lastResult?.attendance?.is_late ? 'text-amber-950' : 'text-emerald-950')))"
+                                    x-text="lastResult?.title || (!lastResult?.success ? 'Presensi Ditolak!' : (lastResult?.scan_type === 'pulang' && lastResult?.attendance?.is_early ? 'Presensi PULANG AWAL Dicatat!' : (lastResult?.scan_type === 'pulang' ? 'Presensi PULANG Berhasil!' : (lastResult?.attendance?.is_late ? 'Presensi MASUK (TERLAMBAT)!' : 'Presensi MASUK (Tepat Waktu)!'))))"></h4>
                                 
                                 <p class="text-xs mt-0.5 font-semibold leading-relaxed"
-                                   :class="!lastResult?.success ? 'text-rose-800' : (lastResult?.scan_type === 'pulang' ? 'text-indigo-900' : (lastResult?.attendance?.is_late ? 'text-amber-900' : 'text-emerald-900'))"
+                                   :class="!lastResult?.success ? 'text-rose-800' : (lastResult?.scan_type === 'pulang' && lastResult?.attendance?.is_early ? 'text-orange-900' : (lastResult?.scan_type === 'pulang' ? 'text-indigo-900' : (lastResult?.attendance?.is_late ? 'text-amber-900' : 'text-emerald-900')))"
                                    x-text="lastResult?.message"></p>
                             </div>
                         </div>
