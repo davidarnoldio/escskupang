@@ -26,7 +26,13 @@
     </x-slot>
 
     <div class="space-y-6"
-        x-data="{ setAllHadir() { document.querySelectorAll('.radio-hadir').forEach(el => el.checked = true); }, setAllLibur() { document.querySelectorAll('.radio-libur').forEach(el => el.checked = true); } }">
+        x-data="{
+            setAllHadir() { document.querySelectorAll('.radio-hadir').forEach(el => el.checked = true); },
+            setAllLibur() { document.querySelectorAll('.radio-libur').forEach(el => el.checked = true); },
+            clearStudentStatus(studentId) {
+                document.querySelectorAll(`input[name='attendances[${studentId}][status]']`).forEach(el => el.checked = false);
+            }
+        }">
 
         <!-- Flash Alert -->
         @if(session('success'))
@@ -162,7 +168,7 @@
                             @forelse($students as $student)
                                 @php
                                     $att = $attendances->get($student->id);
-                                    $currentStatus = $att ? $att->status : 'hadir';
+                                    $currentStatus = $att ? $att->status : null;
 
                                     $isLateStudent = false;
                                     $lateMinutesDisplay = 0;
@@ -214,7 +220,7 @@
                                 @endphp
                                 <tr class="hover:bg-red-50/30 transition duration-150">
                                     <td class="px-6 py-4 font-mono font-bold text-xs text-slate-600">
-                                        {{ $student->nis }}
+                                        {{ $student->nisn ?? $student->nis }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
@@ -310,7 +316,18 @@
                                                     <span
                                                         class="text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-300">Libur</span>
                                                 </label>
+
+                                                @if(!$att)
+                                                    <button type="button" @click="clearStudentStatus({{ $student->id }})"
+                                                        title="Kosongkan pilihan (biarkan belum absen)"
+                                                        class="text-[10px] font-bold text-slate-400 hover:text-rose-600 px-1.5 py-0.5 rounded border border-transparent hover:border-rose-200 transition cursor-pointer">
+                                                        ↺ Batal
+                                                    </button>
+                                                @endif
                                             </div>
+                                            @if(!$att)
+                                                <p class="text-[10px] text-slate-400 font-semibold mt-1">⏳ Belum absen (tidak ikut tersimpan jika tidak dipilih)</p>
+                                            @endif
                                         @else
                                             <!-- Mode Guru: Hanya Melihat Status Badge (Read-Only) -->
                                             <div class="flex items-center gap-2 flex-wrap">
@@ -359,11 +376,25 @@
                                             </div>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 space-y-2">
                                         @if(Auth::user()->isAdmin())
                                             <input type="text" name="attendances[{{ $student->id }}][keterangan]"
                                                 value="{{ $att ? $att->keterangan : '' }}" placeholder="Catatan tambahan..."
                                                 class="w-full px-3 py-1.5 border rounded-xl text-xs font-medium focus:ring-2 focus:ring-red-600 transition {{ $isLateStudent ? 'bg-amber-50/70 border-amber-300 text-amber-950 font-bold' : 'bg-slate-50 border-slate-200' }}">
+                                            <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                                                <label class="flex items-center gap-1">
+                                                    <span class="font-bold">In:</span>
+                                                    <input type="time" name="attendances[{{ $student->id }}][jam_masuk]"
+                                                        value="{{ $att && $att->jam_masuk ? substr($att->jam_masuk, 0, 5) : '' }}"
+                                                        class="px-2 py-0.5 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-mono">
+                                                </label>
+                                                <label class="flex items-center gap-1">
+                                                    <span class="font-bold">Out:</span>
+                                                    <input type="time" name="attendances[{{ $student->id }}][jam_pulang]"
+                                                        value="{{ $att && $att->jam_pulang ? substr($att->jam_pulang, 0, 5) : '' }}"
+                                                        class="px-2 py-0.5 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-mono">
+                                                </label>
+                                            </div>
                                         @else
                                             <div class="text-xs font-medium text-slate-700">
                                                 @if($att && $att->keterangan)

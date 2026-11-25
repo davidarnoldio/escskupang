@@ -196,13 +196,9 @@ class TeacherAttendanceController extends Controller
                 $attendance->jam_pulang = null;
             }
         } else {
-            // For Izin, Sakit, Alpa: reset check-in/out times unless explicitly kept
-            if (empty($validated['jam_masuk'])) {
-                $attendance->jam_masuk = null;
-            }
-            if (empty($validated['jam_pulang'])) {
-                $attendance->jam_pulang = null;
-            }
+            // For Izin, Sakit, Alpa: always clear check-in/out times so they remain cleanly separated from Hadir
+            $attendance->jam_masuk = null;
+            $attendance->jam_pulang = null;
         }
 
         $attendance->save();

@@ -32,20 +32,45 @@ class DashboardController extends Controller
         $totalSiswa = (clone $studentQuery)->count();
         $recentStudents = (clone $studentQuery)->latest()->take(5)->get();
 
-        $attendanceQuery = Attendance::where('tanggal', $today)
+        $jamTerlambatReguler = \App\Models\Setting::get('jam_terlambat', '07:30');
+
+        $todayAttendances = Attendance::with('student')
+            ->where('tanggal', $today)
             ->whereHas('student', function ($q) use ($assignedClass) {
                 $q->aktif();
                 if ($assignedClass) {
                     $q->where('kelas', $assignedClass);
                 }
-            });
+            })->get();
 
-        $hadirHariIni = (clone $attendanceQuery)->where('status', 'hadir')->count();
-        $izinHariIni = (clone $attendanceQuery)->where('status', 'izin')->count();
-        $sakitHariIni = (clone $attendanceQuery)->where('status', 'sakit')->count();
-        $alpaHariIni = (clone $attendanceQuery)->where('status', 'alpa')->count();
+        $hadirHariIni = 0;
+        $terlambatHariIni = 0;
+        $izinHariIni = 0;
+        $sakitHariIni = 0;
+        $alpaHariIni = 0;
+
+        foreach ($todayAttendances as $att) {
+            if ($att->status === 'hadir') {
+                $isLate = $att->student && !$att->student->is_abk && (
+                    (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > $jamTerlambatReguler)
+                    || str_contains(strtolower($att->keterangan ?? ''), 'terlambat')
+                );
+                if ($isLate) {
+                    $terlambatHariIni++;
+                } else {
+                    $hadirHariIni++;
+                }
+            } elseif ($att->status === 'izin') {
+                $izinHariIni++;
+            } elseif ($att->status === 'sakit') {
+                $sakitHariIni++;
+            } elseif ($att->status === 'alpa') {
+                $alpaHariIni++;
+            }
+        }
+
         $izinSakitHariIni = $izinHariIni + $sakitHariIni;
-        $belumPresensiHariIni = max(0, $totalSiswa - ($hadirHariIni + $izinSakitHariIni + $alpaHariIni));
+        $belumPresensiHariIni = max(0, $totalSiswa - ($hadirHariIni + $terlambatHariIni + $izinSakitHariIni + $alpaHariIni));
 
         // 7-day attendance trend data for chart
         $weeklyDates = [];
@@ -74,6 +99,7 @@ class DashboardController extends Controller
         return view('dashboard', compact(
             'totalSiswa',
             'hadirHariIni',
+            'terlambatHariIni',
             'izinHariIni',
             'sakitHariIni',
             'izinSakitHariIni',

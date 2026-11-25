@@ -28,7 +28,10 @@ class StudentController extends Controller
         $search = $request->input('search');
         $kelas = $assignedClass ?? $request->input('kelas');
 
-        $query = Student::aktif()->with('user');
+        $query = Student::aktif();
+        if ($user && $user->isAdmin()) {
+            $query->with('user');
+        }
 
         if ($assignedClass) {
             $query->where('kelas', $assignedClass);
@@ -45,7 +48,7 @@ class StudentController extends Controller
         }
 
         $students = $query->orderBy('nama', 'asc')->paginate(10)->withQueryString();
-        $classList = Student::OFFICIAL_CLASSES;
+        $classList = Student::getAllClasses();
 
         return view('students.index', compact('students', 'classList', 'search', 'kelas', 'assignedClass'));
     }

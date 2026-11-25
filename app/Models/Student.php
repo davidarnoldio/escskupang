@@ -132,6 +132,10 @@ class Student extends Model
      */
     public function setNisAttribute(?string $value): void
     {
+        if (($value === null || $value === '') && !empty($this->attributes['nisn'])) {
+            return;
+        }
+
         $this->attributes['nisn'] = $value;
     }
 

@@ -63,27 +63,92 @@ class AttendanceController extends Controller
         $request->validate([
             'tanggal' => ['required', 'date'],
             'attendances' => ['required', 'array'],
-            'attendances.*.status' => ['required', Rule::in(['hadir', 'izin', 'sakit', 'alpa', 'libur'])],
+            'attendances.*.status' => ['nullable', Rule::in(['hadir', 'izin', 'sakit', 'alpa', 'libur'])],
             'attendances.*.keterangan' => ['nullable', 'string', 'max:255'],
+            'attendances.*.jam_masuk' => ['nullable', 'string', 'max:10'],
+            'attendances.*.jam_pulang' => ['nullable', 'string', 'max:10'],
         ]);
 
         $tanggal = $request->input('tanggal');
         $attendanceInputs = $request->input('attendances', []);
+        $savedCount = 0;
+
+        $jamTerlambatReguler = \App\Models\Setting::get('jam_terlambat', '07:30');
+        $jamPulangReguler = \App\Models\Setting::get('jam_pulang', '14:00');
+        $jamPulangAbk = \App\Models\Setting::get('jam_pulang_abk', '13:00');
+        $studentsMap = Student::whereIn('id', array_keys($attendanceInputs))->get()->keyBy('id');
 
         foreach ($attendanceInputs as $studentId => $data) {
+            if (empty($data['status'])) {
+                continue;
+            }
+
+            $payload = [
+                'status' => $data['status'],
+                'keterangan' => $data['keterangan'] ?? null,
+            ];
+
+            if ($data['status'] === 'hadir') {
+                $student = $studentsMap->get($studentId);
+                $jamMasukInput = !empty($data['jam_masuk'])
+                    ? (strlen($data['jam_masuk']) === 5 ? $data['jam_masuk'] . ':00' : $data['jam_masuk'])
+                    : null;
+                $jamPulangInput = !empty($data['jam_pulang'])
+                    ? (strlen($data['jam_pulang']) === 5 ? $data['jam_pulang'] . ':00' : $data['jam_pulang'])
+                    : null;
+
+                if ($jamMasukInput !== null) {
+                    $payload['jam_masuk'] = $jamMasukInput;
+                    if ($student && !$student->is_abk && substr($jamMasukInput, 0, 5) > $jamTerlambatReguler) {
+                        $masukCarbon = \Carbon\Carbon::parse($tanggal . ' ' . $jamMasukInput, 'Asia/Makassar');
+                        $targetCarbon = \Carbon\Carbon::parse($tanggal . ' ' . $jamTerlambatReguler . ':00', 'Asia/Makassar');
+                        $lateMinutes = max(1, abs((int) $masukCarbon->diffInMinutes($targetCarbon)));
+                        $ket = $payload['keterangan'] ?? '';
+                        if (!str_contains(strtolower($ket), 'terlambat')) {
+                            $lateNote = "Masuk: [{$jamMasukInput}] - Terlambat {$lateMinutes} menit";
+                            $payload['keterangan'] = $ket ? "{$lateNote} | {$ket}" : $lateNote;
+                        }
+                    }
+                } elseif (array_key_exists('jam_masuk', $data)) {
+                    $payload['jam_masuk'] = null;
+                }
+
+                if ($jamPulangInput !== null) {
+                    $payload['jam_pulang'] = $jamPulangInput;
+                    $targetPulang = ($student && $student->is_abk) ? $jamPulangAbk : $jamPulangReguler;
+                    if (substr($jamPulangInput, 0, 5) < $targetPulang) {
+                        $pulangCarbon = \Carbon\Carbon::parse($tanggal . ' ' . $jamPulangInput, 'Asia/Makassar');
+                        $pulangTargetCarbon = \Carbon\Carbon::parse($tanggal . ' ' . $targetPulang . ':00', 'Asia/Makassar');
+                        $earlyMinutes = max(1, abs((int) $pulangCarbon->diffInMinutes($pulangTargetCarbon)));
+                        $ket = $payload['keterangan'] ?? '';
+                        if (!str_contains(strtolower($ket), 'pulang awal') && !str_contains(strtolower($ket), 'pulang duluan')) {
+                            $earlyNote = "Pulang Awal (Duluan {$earlyMinutes} menit): [{$jamPulangInput}]";
+                            $payload['keterangan'] = $ket ? "{$ket} | {$earlyNote}" : $earlyNote;
+                        }
+                    }
+                } elseif (array_key_exists('jam_pulang', $data)) {
+                    $payload['jam_pulang'] = null;
+                }
+            } else {
+                $payload['jam_masuk'] = null;
+                $payload['jam_pulang'] = null;
+            }
+
             Attendance::updateOrCreate(
                 [
                     'student_id' => $studentId,
                     'tanggal' => $tanggal,
                 ],
-                [
-                    'status' => $data['status'],
-                    'keterangan' => $data['keterangan'] ?? null,
-                ]
+                $payload
             );
+            $savedCount++;
         }
 
-        return redirect()->back()->with('success', 'Presensi siswa berhasil disimpan.');
+        if ($savedCount === 0) {
+            return redirect()->back()->with('error', 'Belum ada siswa yang dipilih status presensinya.');
+        }
+
+        return redirect()->back()->with('success', "Presensi untuk {$savedCount} siswa berhasil disimpan.");
     }
 
     /**
@@ -205,9 +270,6 @@ class AttendanceController extends Controller
                 } elseif ($att->status === 'libur') {
                     $totalLibur++;
                 }
-            } else {
-                // If no record on summary date yet, student is counted under Hadir by default
-                $totalHadir++;
             }
         }
 

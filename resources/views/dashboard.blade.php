@@ -33,7 +33,12 @@
                     <div>
                         <div class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Hadir Hari Ini</div>
                         <div class="text-3xl font-black text-slate-900 mt-1">{{ $hadirHariIni }}</div>
-                        <div class="text-xs font-semibold text-emerald-600 mt-1">{{ $hadirPercentage }}% dari total siswa</div>
+                        <div class="text-xs font-semibold text-emerald-600 mt-1">
+                            {{ $hadirPercentage }}% tepat waktu
+                            @if(($terlambatHariIni ?? 0) > 0)
+                                <span class="ml-1 inline-block px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-black">⏰ {{ $terlambatHariIni }} Terlambat</span>
+                            @endif
+                        </div>
                     </div>
                     <div class="w-12 h-12 rounded-2xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center text-xl font-bold shadow-xs">
                         ✓

@@ -198,8 +198,9 @@
                         <div>
                             <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Kartu Digital & QR Code</p>
                             <div class="mt-3 p-3 bg-slate-50 rounded-2xl border border-slate-200 inline-block shadow-2xs">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode($student->nis) }}"
-                                    alt="QR Code {{ $student->nis }}" class="w-32 h-32 mx-auto rounded-xl">
+                                @php $qrIdentifier = $student->nisn ?? $student->nis; @endphp
+                                <img data-qr-value="{{ $qrIdentifier }}"
+                                    alt="QR Code {{ $qrIdentifier }}" class="w-32 h-32 mx-auto rounded-xl bg-white">
                             </div>
                         </div>
 

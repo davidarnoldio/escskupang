@@ -167,19 +167,23 @@
                             <div class="flex gap-2 mb-3">
                                 <button @click="activeTab = 'students'" type="button" class="flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition"
                                         :class="activeTab === 'students' ? 'bg-slate-900 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'">
-                                    🎒 Siswa ({{ count($todayAttendances) }})
+                                    🎒 Siswa (<span id="today-activity-count-students">{{ count($todayAttendances) }}</span>)
                                 </button>
                                 <button @click="activeTab = 'teachers'" type="button" class="flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition"
                                         :class="activeTab === 'teachers' ? 'bg-slate-900 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'">
-                                    👨‍🏫 Guru ({{ count($todayTeacherAttendances) }})
+                                    👨‍🏫 Guru (<span id="today-activity-count-teachers">{{ count($todayTeacherAttendances) }}</span>)
                                 </button>
                             </div>
 
                             <!-- Student List -->
-                            <div x-show="activeTab === 'students'" class="divide-y divide-slate-100 max-h-[350px] overflow-y-auto space-y-1">
+                            <div id="today-activity-list-students" x-show="activeTab === 'students'" class="divide-y divide-slate-100 max-h-[350px] overflow-y-auto space-y-1">
                                 @forelse($todayAttendances as $att)
                                     @php
-                                        $isLateHistory = str_contains(strtolower($att->keterangan ?? ''), 'terlambat');
+                                        $isLateHistory = $att->status === 'hadir' && $att->student && !$att->student->is_abk && (
+                                            (!empty($att->jam_masuk) && substr($att->jam_masuk, 0, 5) > ($jamTerlambatReguler ?? '07:30'))
+                                            || str_contains(strtolower($att->keterangan ?? ''), 'terlambat')
+                                        );
+                                        $isEarlyOutHistory = str_contains(strtolower($att->keterangan ?? ''), 'pulang awal');
                                     @endphp
                                     <div class="py-2.5 flex items-center justify-between text-xs">
                                         <div class="flex items-center gap-2.5">
@@ -201,7 +205,23 @@
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            @if($att->jam_pulang)
+                                            @if($att->status === 'izin')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-sky-50 text-sky-800 border border-sky-200">
+                                                    📝 IZIN
+                                                </span>
+                                            @elseif($att->status === 'sakit')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-purple-50 text-purple-800 border border-purple-200">
+                                                    🏥 SAKIT
+                                                </span>
+                                            @elseif($att->status === 'alpa')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-rose-50 text-rose-800 border border-rose-200">
+                                                    ❌ ALPA
+                                                </span>
+                                            @elseif($att->jam_pulang && $isEarlyOutHistory)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-orange-100 text-orange-900 border border-orange-300">
+                                                    ⚠️ PULANG AWAL
+                                                </span>
+                                            @elseif($att->jam_pulang)
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-indigo-50 text-indigo-800 border border-indigo-200">
                                                     🏠 PULANG
                                                 </span>
@@ -222,10 +242,13 @@
                             </div>
 
                             <!-- Teacher List -->
-                            <div x-show="activeTab === 'teachers'" class="divide-y divide-slate-100 max-h-[350px] overflow-y-auto space-y-1">
+                            <div id="today-activity-list-teachers" x-show="activeTab === 'teachers'" class="divide-y divide-slate-100 max-h-[350px] overflow-y-auto space-y-1">
                                 @forelse($todayTeacherAttendances as $tAtt)
                                     @php
-                                        $isTeacherLate = str_contains(strtolower($tAtt->keterangan ?? ''), 'terlambat');
+                                        $isTeacherLate = $tAtt->status === 'hadir' && (
+                                            (!empty($tAtt->jam_masuk) && substr($tAtt->jam_masuk, 0, 5) > ($jamTerlambatGuru ?? '07:30'))
+                                            || str_contains(strtolower($tAtt->keterangan ?? ''), 'terlambat')
+                                        );
                                         $isTeacherEarlyOut = str_contains(strtolower($tAtt->keterangan ?? ''), 'pulang awal');
                                     @endphp
                                     <div class="py-2.5 flex items-center justify-between text-xs">
@@ -239,7 +262,19 @@
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            @if($tAtt->jam_pulang && $isTeacherEarlyOut)
+                                            @if($tAtt->status === 'izin')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-sky-50 text-sky-800 border border-sky-200">
+                                                    📝 IZIN
+                                                </span>
+                                            @elseif($tAtt->status === 'sakit')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-purple-50 text-purple-800 border border-purple-200">
+                                                    🏥 SAKIT
+                                                </span>
+                                            @elseif($tAtt->status === 'alpa')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-rose-50 text-rose-800 border border-rose-200">
+                                                    ❌ ALPA
+                                                </span>
+                                            @elseif($tAtt->jam_pulang && $isTeacherEarlyOut)
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-black bg-orange-100 text-orange-900 border border-orange-300">
                                                     ⚠️ PULANG AWAL
                                                 </span>
@@ -388,6 +423,9 @@
                         }
                         this.lastResult = data;
                         this.playBeep(data.success);
+                        if (data.success) {
+                            this.refreshTodayActivity();
+                        }
                     } catch (error) {
                         this.lastResult = {
                             success: false,
@@ -397,6 +435,28 @@
                     } finally {
                         this.loading = false;
                     }
+                },
+
+                async refreshTodayActivity() {
+                    try {
+                        const res = await fetch(window.location.href, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                        if (!res.ok) return;
+                        const html = await res.text();
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        const ids = [
+                            'today-activity-count-students',
+                            'today-activity-count-teachers',
+                            'today-activity-list-students',
+                            'today-activity-list-teachers',
+                        ];
+                        for (const id of ids) {
+                            const fresh = doc.getElementById(id);
+                            const current = document.getElementById(id);
+                            if (fresh && current) {
+                                current.innerHTML = fresh.innerHTML;
+                            }
+                        }
+                    } catch (e) {}
                 }
             }
         }

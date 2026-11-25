@@ -213,7 +213,7 @@
                                     <a href="{{ route('students.show', $student) }}" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
                                         👁️ Detail
                                     </a>
-                                    <button type="button" @click="openQrModal({{ json_encode($student) }})" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold transition cursor-pointer">
+                                    <button type="button" @click="openQrModal({{ json_encode(['id' => $student->id, 'nama' => $student->nama, 'nisn' => $student->nisn, 'nis' => $student->nis, 'kelas' => $student->kelas]) }})" class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold transition cursor-pointer">
                                         📷 QR
                                     </button>
 
@@ -264,7 +264,7 @@
                         <p class="text-xs text-slate-500 font-semibold mt-0.5" x-text="'NISN: ' + (selectedStudent.nisn || selectedStudent.nis) + ' | Kelas ' + selectedStudent.kelas"></p>
                         
                         <div class="my-5 p-4 bg-slate-50 rounded-2xl border border-slate-200 inline-block shadow-xs">
-                            <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(selectedStudent.nisn || selectedStudent.nis)" alt="QR Code" class="w-40 h-40 mx-auto rounded-xl">
+                            <img :data-qr-value="selectedStudent.nisn || selectedStudent.nis" x-effect="if (qrModalOpen && selectedStudent) $nextTick(() => window.renderLocalQRCodes && window.renderLocalQRCodes())" alt="QR Code" class="w-40 h-40 mx-auto rounded-xl bg-white">
                         </div>
 
                         <div class="flex items-center justify-center gap-3">

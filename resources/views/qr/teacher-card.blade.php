@@ -84,9 +84,8 @@
                     $qrCodeData = $teacher->qr_code_value; // e.g. GURU-1
                 @endphp
                 <div class="p-3 bg-white/95 rounded-xl border border-slate-200 inline-block shadow-2xs backdrop-blur-xs">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode($qrCodeData) }}"
-                        onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + encodeURIComponent('{{ $qrCodeData }}');"
-                        alt="QR Code Guru {{ $teacher->name }}" class="w-32 h-32 mx-auto rounded-lg">
+                    <img data-qr-value="{{ $qrCodeData }}"
+                        alt="QR Code Guru {{ $teacher->name }}" class="w-32 h-32 mx-auto rounded-lg bg-white">
                     <p class="text-[10px] font-mono text-slate-500 mt-1 font-bold">{{ $qrCodeData }}</p>
                 </div>
             </div>

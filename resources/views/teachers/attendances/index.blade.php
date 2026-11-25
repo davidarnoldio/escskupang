@@ -31,7 +31,7 @@
         openEdit(teacher, att) {
             this.selectedTeacher = teacher;
             this.selectedAtt = att;
-            this.formStatus = att ? att.status : 'hadir';
+            this.formStatus = att ? att.status : '';
             this.formKeterangan = att && att.keterangan ? att.keterangan : '';
             this.formJamMasuk = att && att.jam_masuk ? att.jam_masuk.substring(0, 5) : '';
             this.formJamPulang = att && att.jam_pulang ? att.jam_pulang.substring(0, 5) : '';
@@ -308,35 +308,37 @@
                         @csrf
                         <input type="hidden" name="teacher_id" :value="selectedTeacher ? selectedTeacher.id : ''">
                         <input type="hidden" name="tanggal" value="{{ $tanggal }}">
+                        <input type="hidden" name="status" :value="formStatus">
 
                         <div>
                             <label class="block text-xs font-black uppercase tracking-wider text-slate-500 mb-2">Pilih Status Kehadiran</label>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                                 <label class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 cursor-pointer transition"
                                        :class="formStatus === 'hadir' ? 'border-emerald-500 bg-emerald-50/50 text-emerald-900 font-extrabold shadow-xs' : 'border-slate-200 hover:bg-slate-50 text-slate-600'">
-                                    <input type="radio" name="status" value="hadir" x-model="formStatus" class="sr-only">
+                                    <input type="radio" value="hadir" x-model="formStatus" class="sr-only">
                                     <span class="text-lg mb-1">✓</span>
                                     <span class="text-xs font-bold">Hadir</span>
                                 </label>
                                 <label class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 cursor-pointer transition"
                                        :class="formStatus === 'izin' ? 'border-sky-500 bg-sky-50/50 text-sky-900 font-extrabold shadow-xs' : 'border-slate-200 hover:bg-slate-50 text-slate-600'">
-                                    <input type="radio" name="status" value="izin" x-model="formStatus" class="sr-only">
+                                    <input type="radio" value="izin" x-model="formStatus" class="sr-only">
                                     <span class="text-lg mb-1">ℹ️</span>
                                     <span class="text-xs font-bold">Izin</span>
                                 </label>
                                 <label class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 cursor-pointer transition"
                                        :class="formStatus === 'sakit' ? 'border-indigo-500 bg-indigo-50/50 text-indigo-900 font-extrabold shadow-xs' : 'border-slate-200 hover:bg-slate-50 text-slate-600'">
-                                    <input type="radio" name="status" value="sakit" x-model="formStatus" class="sr-only">
+                                    <input type="radio" value="sakit" x-model="formStatus" class="sr-only">
                                     <span class="text-lg mb-1">🏥</span>
                                     <span class="text-xs font-bold">Sakit</span>
                                 </label>
                                 <label class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 cursor-pointer transition"
                                        :class="formStatus === 'alpa' ? 'border-rose-500 bg-rose-50/50 text-rose-900 font-extrabold shadow-xs' : 'border-slate-200 hover:bg-slate-50 text-slate-600'">
-                                    <input type="radio" name="status" value="alpa" x-model="formStatus" class="sr-only">
+                                    <input type="radio" value="alpa" x-model="formStatus" class="sr-only">
                                     <span class="text-lg mb-1">✕</span>
                                     <span class="text-xs font-bold">Alpa</span>
                                 </label>
                             </div>
+                            <p x-show="!formStatus" class="text-[11px] text-amber-700 font-semibold mt-2">Pilih salah satu status di atas sebelum menyimpan.</p>
                         </div>
 
                         <!-- Optional Times for Hadir -->
@@ -372,7 +374,9 @@
                                 <button type="button" @click="editModalOpen = false" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl text-xs font-bold transition">
                                     Batal
                                 </button>
-                                <button type="submit" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-2xl text-xs font-black transition shadow-sm">
+                                <button type="submit" :disabled="!formStatus"
+                                    :class="!formStatus ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-700 cursor-pointer'"
+                                    class="px-5 py-2.5 bg-red-600 text-white rounded-2xl text-xs font-black transition shadow-sm">
                                     Simpan Status
                                 </button>
                             </div>

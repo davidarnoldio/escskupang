@@ -24,22 +24,32 @@ class QRController extends Controller
         }
 
         $today = now()->format('Y-m-d');
+        $jamTerlambatReguler = Setting::get('jam_terlambat', '07:30');
+        $jamTerlambatGuru = Setting::get('jam_terlambat_guru', $jamTerlambatReguler);
         
-        // Latest student attendance today
+        // All active student attendance today (synced with Dashboard/Attendance)
         $todayAttendances = Attendance::with('student')
             ->where('tanggal', $today)
+            ->whereHas('student', function ($q) {
+                $q->aktif();
+            })
             ->latest('updated_at')
-            ->take(10)
             ->get();
 
-        // Latest teacher attendance today
+        // All teacher attendance today
         $todayTeacherAttendances = TeacherAttendance::with('teacher')
             ->where('tanggal', $today)
+            ->whereHas('teacher')
             ->latest('updated_at')
-            ->take(10)
             ->get();
 
-        return view('qr.scan', compact('todayAttendances', 'todayTeacherAttendances', 'today'));
+        return view('qr.scan', compact(
+            'todayAttendances',
+            'todayTeacherAttendances',
+            'today',
+            'jamTerlambatReguler',
+            'jamTerlambatGuru'
+        ));
     }
 
     /**
