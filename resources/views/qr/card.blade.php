@@ -63,9 +63,10 @@
                 <!-- QR Code Section -->
                 @php $studentQr = $student->nisn ?? $student->nis; @endphp
                 <div class="p-3 bg-white/95 rounded-xl border border-slate-200 inline-block shadow-2xs backdrop-blur-xs">
-                    <img data-qr-value="{{ $studentQr }}"
-                         alt="QR Code NISN {{ $studentQr }}" 
-                         class="w-32 h-32 mx-auto rounded-lg bg-white">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ urlencode($studentQr) }}"
+                         onerror="this.onerror=null; this.src='https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=' + encodeURIComponent('{{ $studentQr }}');"
+                         alt="QR Code NISN {{ $studentQr }}"
+                         class="w-32 h-32 mx-auto rounded-lg">
                     <p class="text-[10px] font-mono text-slate-400 mt-1 font-semibold">NISN: {{ $studentQr }}</p>
                 </div>
             </div>

@@ -45,7 +45,7 @@ class AdditionalImprovementsTest extends TestCase
         Setting::set('jam_pulang_abk', '13:00');
     }
 
-    public function test_local_qr_codes_are_used_across_cards_modal_and_parent_dashboard_with_nisn_fallback(): void
+    public function test_external_qr_api_is_used_across_cards_modal_and_parent_dashboard_with_nisn_fallback(): void
     {
         $student = Student::create([
             'nisn' => '99001122',
@@ -67,25 +67,22 @@ class AdditionalImprovementsTest extends TestCase
 
         $parentRes = $this->actingAs($parent)->get('/parent/dashboard');
         $parentRes->assertStatus(200);
-        $parentRes->assertSee('data-qr-value="99001122"', false);
-        $parentRes->assertDontSee('api.qrserver.com');
+        $parentRes->assertSee('https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=99001122', false);
 
         $studentCard = $this->actingAs($this->admin)->get('/students/' . $student->id . '/qr-card');
         $studentCard->assertStatus(200);
-        $studentCard->assertSee('data-qr-value="99001122"', false);
-        $studentCard->assertDontSee('api.qrserver.com');
-        $studentCard->assertDontSee('chart.googleapis.com');
+        $studentCard->assertSee('https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=99001122', false);
+        $studentCard->assertSee('https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=', false);
 
         $teacherCard = $this->actingAs($this->admin)->get('/teachers/' . $this->teacher->id . '/qr-card');
         $teacherCard->assertStatus(200);
-        $teacherCard->assertSee('data-qr-value="GURU-' . $this->teacher->id . '"', false);
-        $teacherCard->assertDontSee('api.qrserver.com');
+        $teacherCard->assertSee('https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=GURU-' . $this->teacher->id, false);
 
-        // Student index dropdown must include custom class 'Kelas 1A' & use local QR modal
+        // Student index dropdown must include custom class 'Kelas 1A' & use external QR modal
         $studentsIndex = $this->actingAs($this->admin)->get('/students');
         $studentsIndex->assertStatus(200);
         $studentsIndex->assertSee('Kelas 1A');
-        $studentsIndex->assertDontSee('api.qrserver.com');
+        $studentsIndex->assertSee('https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=', false);
     }
 
     public function test_dashboard_separates_late_regular_students_from_hadir_while_abk_stays_hadir(): void

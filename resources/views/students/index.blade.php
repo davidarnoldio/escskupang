@@ -264,7 +264,7 @@
                         <p class="text-xs text-slate-500 font-semibold mt-0.5" x-text="'NISN: ' + (selectedStudent.nisn || selectedStudent.nis) + ' | Kelas ' + selectedStudent.kelas"></p>
                         
                         <div class="my-5 p-4 bg-slate-50 rounded-2xl border border-slate-200 inline-block shadow-xs">
-                            <img :data-qr-value="selectedStudent.nisn || selectedStudent.nis" x-effect="if (qrModalOpen && selectedStudent) $nextTick(() => window.renderLocalQRCodes && window.renderLocalQRCodes())" alt="QR Code" class="w-40 h-40 mx-auto rounded-xl bg-white">
+                            <img :src="'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(selectedStudent.nisn || selectedStudent.nis)" alt="QR Code" class="w-40 h-40 mx-auto rounded-xl">
                         </div>
 
                         <div class="flex items-center justify-center gap-3">
